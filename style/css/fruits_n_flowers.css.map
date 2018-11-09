@@ -1,8 +1,9 @@
 {
     "version": 3,
-    "mappings": "AAAA,AAAA,IAAI,CAAC;EACD,UAAU,EAAE,KAAK;CACpB",
+    "mappings": "ACAA,AAAA,IAAI,CAAC;EACD,UAAU,EDDG,OAAO;CCEvB",
     "sources": [
-        "../scss/fruits_n_flowers.scss"
+        "../scss/fruits_n_flowers.scss",
+        "../scss/_main.scss"
     ],
     "names": [],
     "file": "fruits_n_flowers.css"
