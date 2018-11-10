@@ -1,4 +1,16 @@
 body {
   background: #0c0c1e;
 }
+
+@media (max-width: 481px) {
+  body {
+    background: red;
+  }
+}
+
+@media (min-width: 480px) {
+  body {
+    background: green;
+  }
+}
 /*# sourceMappingURL=fruits_n_flowers.css.map */

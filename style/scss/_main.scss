@@ -1,3 +1,30 @@
+
+$primary-color:  #0c0c1e;
+
+// define only two sizes sm (phone) and lg (desktop) 
+@mixin breakpoint($bp) {
+    @if $bp == sm {
+        @media(max-width: 481px) {
+            @content;
+        }
+    }
+
+    @else if $bp == lg {
+        @media(min-width: 480px) {
+            @content;
+        }
+    }
+}
+
 body {
     background: $primary-color;
+
+    @include breakpoint(sm){
+        background: red;
+    }
+
+    @include breakpoint(lg){
+        background: green;
+    }
 }
+
