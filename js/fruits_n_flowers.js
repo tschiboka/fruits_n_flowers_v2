@@ -5,4 +5,5 @@ $(document).ready(
 
 function start() {
     $(".logo").hide();
+    $("header").show();
 } // end of start

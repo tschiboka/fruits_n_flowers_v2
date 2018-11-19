@@ -60,6 +60,86 @@ body {
   }
 }
 
+header {
+  display: none;
+  padding-top: 20px;
+  text-align: center;
+  -webkit-text-stroke: 2px #3a3a3a;
+}
+
+@media (max-width: 481px) {
+  header {
+    font-size: 7vw;
+  }
+}
+
+@media (min-width: 480px) {
+  header {
+    font-size: 32px;
+  }
+}
+
+header .header__fruits-txt {
+  color: #febc63;
+}
+
+header .header__n-txt {
+  display: inline-block;
+  color: #8bd391;
+  -webkit-animation: header-n-txt 2s linear infinite;
+          animation: header-n-txt 2s linear infinite;
+}
+
+header .header__flowers-txt {
+  color: #00ffff;
+}
+
+@-webkit-keyframes header-n-txt {
+  0% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+  25% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  50% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+  }
+  75% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+}
+
+@keyframes header-n-txt {
+  0% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+  25% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  50% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+  }
+  75% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+  }
+}
+
 .logo {
   padding-top: 50%;
   background-clip: text;
@@ -145,7 +225,7 @@ body {
     -webkit-transform: rotate(210deg);
             transform: rotate(210deg);
   }
-  80% {
+  75% {
     -webkit-transform: rotate(180deg) translateY(0px);
             transform: rotate(180deg) translateY(0px);
   }
@@ -153,8 +233,8 @@ body {
     opacity: 1;
   }
   100% {
-    -webkit-transform: rotate(180deg) translateY(-400px);
-            transform: rotate(180deg) translateY(-400px);
+    -webkit-transform: rotate(180deg) translateY(-600px);
+            transform: rotate(180deg) translateY(-600px);
     opacity: 0;
   }
 }
@@ -185,7 +265,7 @@ body {
     -webkit-transform: rotate(210deg);
             transform: rotate(210deg);
   }
-  80% {
+  75% {
     -webkit-transform: rotate(180deg) translateY(0px);
             transform: rotate(180deg) translateY(0px);
   }
@@ -193,8 +273,8 @@ body {
     opacity: 1;
   }
   100% {
-    -webkit-transform: rotate(180deg) translateY(-400px);
-            transform: rotate(180deg) translateY(-400px);
+    -webkit-transform: rotate(180deg) translateY(-600px);
+            transform: rotate(180deg) translateY(-600px);
     opacity: 0;
   }
 }

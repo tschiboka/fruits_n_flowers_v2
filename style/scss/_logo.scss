@@ -61,14 +61,14 @@
         70% {
             transform: rotate(210deg);
         }
-        80% {
+        75% {
             transform: rotate(180deg) translateY(0px);
         }
         85% {
             opacity: 1;
         }
         100% {
-            transform: rotate(180deg) translateY(-400px);
+            transform: rotate(180deg) translateY(-600px);
             opacity: 0;
         }
     }
