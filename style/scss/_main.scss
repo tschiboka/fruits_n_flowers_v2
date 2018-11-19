@@ -1,5 +1,7 @@
 $bg-color: #c1ffff;
-$primary-color:  #642481;
+$primary-color1:  #7b3897;
+$primary-color2: #f759ef;
+$patt-color: #808080;
 
 // define only two sizes sm (phone) and lg (desktop) 
 @mixin breakpoint($bp) {
@@ -24,21 +26,12 @@ body {
 }
 
 .main_container {
-    background: $primary-color;
-    background:
-    radial-gradient($primary-color 4%, darken($primary-color, 12%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
-    radial-gradient($primary-color 4%, darken($primary-color, 12%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
-    radial-gradient(opacify(darken($primary-color, 10%), 0.8) 20%, hsla(0, 55%, 68%, 0)) 50px 0,
-    radial-gradient(opacify(darken($primary-color, 10%), 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
-    radial-gradient(darken($primary-color, 20%) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
-    radial-gradient(darken($primary-color, 20%) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
-    radial-gradient(opacify(darken($primary-color, 22%), 0.7), hsla(0, 100%, 20%, 0)) 0 0,
-    radial-gradient(opacify(darken($primary-color, 22%), 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
-    linear-gradient(45deg, darken($primary-color, 50%) 49%, $primary-color 50%, darken($primary-color, 50%) 70%) 0 0,
-    linear-gradient(-45deg, darken($primary-color, 50%) 49%, $primary-color 50%, darken($primary-color, 50%) 70%) 0 0; 
-    background-size: 100px 100px;
+    background: $primary-color1;
+    background: linear-gradient(180deg, $primary-color1 0%, $primary-color2 100%);
     margin: auto;
     border-radius: 7px;
+    border: 5px solid darken($primary-color1, 15%);
+    box-shadow: 5px 5px 5px black;
 
     @include breakpoint(sm) {
         width: 98vw;
@@ -50,5 +43,25 @@ body {
         width: 480px;
         height: 700px;
         margin-top: 2vw;
+    }
+
+    .main-container__pattern {
+        background-color: #6d695c;
+        background:
+        repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+        linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+        linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+        background-size: 70px 120px;
+        
+        @include breakpoint(sm) {
+            width: 98vw;
+            height: 95vh;
+        }
+    
+        @include breakpoint(lg) {
+            width: 480px;
+            height: 700px;
+        }
     }
 }
