@@ -1,16 +1,40 @@
+@font-face {
+  font-family: mario-style-font;
+  src: url(../../fonts/SuperMario256.ttf);
+}
+
 body {
-  background: #0c0c1e;
+  background: #c1ffff;
+  margin: 0;
+  padding: 0;
+  font-family: "mario-style-font";
+}
+
+.main_container {
+  background: #642481;
+  background: radial-gradient(#642481 4%, #3f1751 9%, rgba(102, 0, 0, 0) 9%) 0 0, radial-gradient(#642481 4%, #3f1751 8%, rgba(102, 0, 0, 0) 10%) 50px 50px, radial-gradient(#451959 20%, rgba(218, 129, 129, 0)) 50px 0, radial-gradient(#451959 20%, rgba(102, 0, 0, 0)) 0 50px, radial-gradient(#260e31 35%, rgba(102, 0, 0, 0) 60%) 50px 0, radial-gradient(#260e31 35%, rgba(102, 0, 0, 0) 60%) 100px 50px, radial-gradient(#200c29, rgba(102, 0, 0, 0)) 0 0, radial-gradient(#200c29, rgba(102, 0, 0, 0)) 50px 50px, linear-gradient(45deg, black 49%, #642481 50%, black 70%) 0 0, linear-gradient(-45deg, black 49%, #642481 50%, black 70%) 0 0;
+  background-size: 100px 100px;
+  margin: auto;
+  border-radius: 7px;
 }
 
 @media (max-width: 481px) {
-  body {
-    background: red;
+  .main_container {
+    width: 98vw;
+    height: 95vh;
+    margin-top: 1vw;
   }
 }
 
 @media (min-width: 480px) {
-  body {
-    background: green;
+  .main_container {
+    width: 480px;
+    height: 700px;
+    margin-top: 2vw;
   }
+}
+
+.logo {
+  font-size: 3.5vw;
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */

@@ -1,1 +1,7 @@
-@import "_main.scss"
+@font-face {
+    font-family: mario-style-font;
+    src: url(../../fonts/SuperMario256.ttf);
+}
+
+@import "_main.scss";
+@import "_logo.scss";

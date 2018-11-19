@@ -1,5 +1,5 @@
-
-$primary-color:  #0c0c1e;
+$bg-color: #c1ffff;
+$primary-color:  #642481;
 
 // define only two sizes sm (phone) and lg (desktop) 
 @mixin breakpoint($bp) {
@@ -17,14 +17,38 @@ $primary-color:  #0c0c1e;
 }
 
 body {
-    background: $primary-color;
-
-    @include breakpoint(sm){
-        background: red;
-    }
-
-    @include breakpoint(lg){
-        background: green;
-    }
+    background: $bg-color;
+    margin: 0;
+    padding: 0;
+    font-family: "mario-style-font";
 }
 
+.main_container {
+    background: $primary-color;
+    background:
+    radial-gradient($primary-color 4%, darken($primary-color, 12%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
+    radial-gradient($primary-color 4%, darken($primary-color, 12%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
+    radial-gradient(opacify(darken($primary-color, 10%), 0.8) 20%, hsla(0, 55%, 68%, 0)) 50px 0,
+    radial-gradient(opacify(darken($primary-color, 10%), 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
+    radial-gradient(darken($primary-color, 20%) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
+    radial-gradient(darken($primary-color, 20%) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
+    radial-gradient(opacify(darken($primary-color, 22%), 0.7), hsla(0, 100%, 20%, 0)) 0 0,
+    radial-gradient(opacify(darken($primary-color, 22%), 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
+    linear-gradient(45deg, darken($primary-color, 50%) 49%, $primary-color 50%, darken($primary-color, 50%) 70%) 0 0,
+    linear-gradient(-45deg, darken($primary-color, 50%) 49%, $primary-color 50%, darken($primary-color, 50%) 70%) 0 0; 
+    background-size: 100px 100px;
+    margin: auto;
+    border-radius: 7px;
+
+    @include breakpoint(sm) {
+        width: 98vw;
+        height: 95vh;
+        margin-top: 1vw;
+    }
+
+    @include breakpoint(lg) {
+        width: 480px;
+        height: 700px;
+        margin-top: 2vw;
+    }
+}
