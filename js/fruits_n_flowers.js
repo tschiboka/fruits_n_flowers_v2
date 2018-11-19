@@ -6,4 +6,20 @@ $(document).ready(
 function start() {
     $(".logo").hide();
     $("header").show();
+
+    console.log(levels.length);
 } // end of start
+
+
+/*
+
+        LEVELS
+
+*/
+
+
+var levels = [
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}
+]
