@@ -25,7 +25,12 @@ header {
     }
 
     .header__flowers-txt {
-        color: #00ffff; 
+        color: #00ffff;
+        
+        .header__flowers-txt__o-letter {
+            display: inline-block;
+            animation: o-letter-anim 10s linear infinite;
+        }
     }
 }
 
@@ -44,5 +49,25 @@ header {
     }
     100% {
         transform: rotate(5deg);
+    }
+}
+
+@keyframes o-letter-anim {
+    0% {
+        transform: rotate(0);
+        text-shadow: 3px 3px 3px black;
+    }
+    25% {
+        text-shadow: 3px -3px 3px black;   
+    }
+    50% {
+        text-shadow: -3px -3px 3px black;
+    }
+    75% {
+        text-shadow: -3px 3px 3px black;   
+    }
+    100% {
+        transform: rotate(359deg);
+        text-shadow: 3px 3px 3px black;
     }
 }

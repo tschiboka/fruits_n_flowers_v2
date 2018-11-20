@@ -101,6 +101,12 @@ header .header__flowers-txt {
   color: #00ffff;
 }
 
+header .header__flowers-txt .header__flowers-txt__o-letter {
+  display: inline-block;
+  -webkit-animation: o-letter-anim 10s linear infinite;
+          animation: o-letter-anim 10s linear infinite;
+}
+
 @-webkit-keyframes header-n-txt {
   0% {
     -webkit-transform: rotate(5deg);
@@ -144,6 +150,50 @@ header .header__flowers-txt {
   100% {
     -webkit-transform: rotate(5deg);
             transform: rotate(5deg);
+  }
+}
+
+@-webkit-keyframes o-letter-anim {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+    text-shadow: 3px 3px 3px black;
+  }
+  25% {
+    text-shadow: 3px -3px 3px black;
+  }
+  50% {
+    text-shadow: -3px -3px 3px black;
+  }
+  75% {
+    text-shadow: -3px 3px 3px black;
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+    text-shadow: 3px 3px 3px black;
+  }
+}
+
+@keyframes o-letter-anim {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+    text-shadow: 3px 3px 3px black;
+  }
+  25% {
+    text-shadow: 3px -3px 3px black;
+  }
+  50% {
+    text-shadow: -3px -3px 3px black;
+  }
+  75% {
+    text-shadow: -3px 3px 3px black;
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+    text-shadow: 3px 3px 3px black;
   }
 }
 
@@ -319,6 +369,7 @@ header .header__flowers-txt {
   width: 98%;
   height: 65%;
   background: rgba(19, 8, 22, 0.8);
+  color: rgba(175, 241, 161, 0.8);
   -webkit-clip-path: polygon(5% 30%, 5% 5%, 10% 5%, 15% 0, 85% 0, 90% 5%, 95% 5%, 95% 30%, 100% 35%, 100% 65%, 95% 70%, 95% 95%, 90% 95%, 85% 100%, 15% 100%, 10% 95%, 5% 95%, 5% 70%, 0 65%, 0 35%);
           clip-path: polygon(5% 30%, 5% 5%, 10% 5%, 15% 0, 85% 0, 90% 5%, 95% 5%, 95% 30%, 100% 35%, 100% 65%, 95% 70%, 95% 95%, 90% 95%, 85% 100%, 15% 100%, 10% 95%, 5% 95%, 5% 70%, 0 65%, 0 35%);
 }
@@ -352,8 +403,8 @@ header .header__flowers-txt {
       -ms-flex-positive: 1;
           flex-grow: 1;
   background-color: #9bc8ce;
-  background: -webkit-gradient(linear, left top, left bottom, from(#4d939d), color-stop(40%, #79b5bd), color-stop(60%, #68acb5), to(#2b5358));
-  background: linear-gradient(top, #4d939d 0%, #79b5bd 40%, #68acb5 60%, #2b5358 100%);
+  background: -webkit-gradient(linear, left top, left bottom, from(#2b5358), color-stop(40%, #4d939d), color-stop(60%, #79b5bd), to(#cee4e7));
+  background: linear-gradient(top, #2b5358 0%, #4d939d 40%, #79b5bd 60%, #cee4e7 100%);
   opacity: 0.6;
 }
 
@@ -381,22 +432,49 @@ header .header__flowers-txt {
   background: rgba(0, 0, 0, 0.5);
   -webkit-clip-path: polygon(5% 100%, 0 0, 100% 0, 95% 100%);
           clip-path: polygon(5% 100%, 0 0, 100% 0, 95% 100%);
-  line-height: 110%;
   text-align: center;
+  vertical-align: middle;
   font-size: bold;
   -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
-  color: rgba(175, 241, 161, 0.8);
+  letter-spacing: -2px;
 }
 
 .level-menu .level-menu__footer .level-menu__footer__text-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   width: 100%;
   height: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
   background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
-  line-height: 110%;
+  line-height: 100%;
   text-align: center;
-  font-size: bold;
+  font-size: 90%;
   -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
   color: rgba(175, 241, 161, 0.8);
+}
+
+.level-menu .level-menu__arrow-left {
+  position: absolute;
+  top: 32%;
+  left: 1%;
+  width: 4%;
+  height: 36%;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-clip-path: polygon(5% 11%, 100% 0, 100% 100%, 5% 89%);
+          clip-path: polygon(5% 11%, 100% 0, 100% 100%, 5% 89%);
+}
+
+.level-menu .level-menu__arrow-left .level-menu__arrow__button-container {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
+  background: linear-gradient(90deg, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */

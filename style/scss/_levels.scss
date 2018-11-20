@@ -3,10 +3,10 @@ $panel-bg-color: rgba(19, 8, 22, 0.8);
 $level-light-color: rgb(155, 200, 206);
 $level-light-gradient: linear-gradient(
     top,
-    opacify(darken($level-light-color, 25%), 0.7) 0%, 
-    opacify(darken($level-light-color, 10%), 0.9) 40%,
-    opacify(darken($level-light-color, 15%), 0.5) 60%,
-    opacify(darken($level-light-color, 45%), 0.7) 100%);
+    opacify(darken($level-light-color, 45%), 0.7) 0%,
+    opacify(darken($level-light-color, 25%), 0.5) 40%,
+    opacify(darken($level-light-color, 10%), 0.9) 60%,
+    opacify(lighten($level-light-color, 15%), 0.7) 100%); 
 
 
 $level-light-active-color: rgb(104, 207, 221);
@@ -17,8 +17,16 @@ $level-light-active-gradient: linear-gradient(
     opacify(darken($level-light-active-color, 10%), 0.5) 60%,
     opacify(darken($level-light-active-color, 45%), 0.7) 100%);
 
-$footer-gradient : linear-gradient(
+$level-footer-gradient : linear-gradient(
     top,
+    rgba(250, 250, 250, 0.1) 0%, 
+    rgba(250, 250, 250, 0.05) 45%,
+    rgba(0, 0, 0, 0.05) 55%,
+    rgba(0, 0, 0, 0.1) 100%);
+
+$level-arrow-gradient: 
+linear-gradient(
+    90deg,
     rgba(250, 250, 250, 0.1) 0%, 
     rgba(250, 250, 250, 0.05) 45%,
     rgba(0, 0, 0, 0.05) 55%,
@@ -32,6 +40,7 @@ $footer-gradient : linear-gradient(
     width: 98%;
     height: 65%;
     background: $panel-bg-color;
+    color: rgba(175, 241, 161, 0.8);
     clip-path: polygon(
         5% 30%,
         5% 5%,
@@ -109,21 +118,44 @@ $footer-gradient : linear-gradient(
             100% 0,
             95% 100%
         );
-        line-height: 110%;
         text-align: center; 
+        vertical-align: middle;
         font-size: bold;
         -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
-        color: rgba(175, 241, 161, 0.8);
+        letter-spacing: -2px;
 
         .level-menu__footer__text-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
-            background: $footer-gradient;
-            line-height: 110%;
+            background: $level-footer-gradient;
+            line-height: 100%;
             text-align: center; 
-            font-size: bold;
+            font-size: 90%;
             -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
             color: rgba(175, 241, 161, 0.8);
+        }
+    }
+    .level-menu__arrow-left {
+        position: absolute;
+        top: 32%;
+        left: 1%;
+        width: 4%;
+        height: 36%;
+        background: rgba(0, 0, 0, 0.5);
+        clip-path: polygon(
+            5% 11%,
+            100% 0,
+            100% 100%,
+            5% 89%
+        );
+
+        .level-menu__arrow__button-container {
+            width: 100%;
+            height: 100%;
+            background: $level-arrow-gradient;
         }
     }
 }
