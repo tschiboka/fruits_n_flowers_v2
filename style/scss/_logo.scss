@@ -3,6 +3,7 @@
     background-clip: text;
     -webkit-text-stroke: 5px #3a3a3a;
     text-align: center;
+    text-shadow: 7px 7px 7px black;
 
     @include breakpoint(sm) {
         font-size: 17vw;
