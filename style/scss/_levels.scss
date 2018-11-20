@@ -67,11 +67,11 @@ linear-gradient(
         }
         
         .level-light {
+            position: relative;
             margin: 0.2% 0.7%;
             flex-grow: 1;
             background-color: $panel-bg-color;
             background: $level-footer-gradient;
-            opacity: 0.6;
 
         &:first-child {
             margin-left: 0.2%;
@@ -80,12 +80,22 @@ linear-gradient(
         &:last-child {
             margin-right: 0.2%;
         }
+
+        .light {
+            position: absolute;
+            top: 25%;
+            left: 40%;
+            width: 20%;
+            height: 50%;
+            background: rgba(175, 241, 161, 0.8);
+            opacity: 0.4;
+        }
     }
 
     .level-light--active {
-        background-color: $panel-bg-color;
-        background: $level-footer-gradient;
-        opacity: 1;
+        .light {
+            opacity: 1;
+        }
     }
 
     .level-menu__footer {
