@@ -5,7 +5,7 @@ $(document).ready(
 
 function start() {
     $(".logo").hide();
-    $("header").show();
+    $("header, .level-menu").show();
 
     createLevelTable();
 
