@@ -1,4 +1,6 @@
-$level-light-color: rgb(104, 207, 221);
+$panel-bg-color: rgba(19, 8, 22, 0.8);
+
+$level-light-color: rgb(155, 200, 206);
 $level-light-gradient: linear-gradient(
     top,
     opacify(darken($level-light-color, 25%), 0.7) 0%, 
@@ -15,13 +17,21 @@ $level-light-active-gradient: linear-gradient(
     opacify(darken($level-light-active-color, 10%), 0.5) 60%,
     opacify(darken($level-light-active-color, 45%), 0.7) 100%);
 
+$footer-gradient : linear-gradient(
+    top,
+    rgba(250, 250, 250, 0.1) 0%, 
+    rgba(250, 250, 250, 0.05) 45%,
+    rgba(0, 0, 0, 0.05) 55%,
+    rgba(0, 0, 0, 0.1) 100%);
+
+
 .level-menu {
     position: relative;
     display: none;
     margin: 15% 1%;
     width: 98%;
     height: 65%;
-    background: rgba(0, 0, 0, 0.75);
+    background: $panel-bg-color;
     clip-path: polygon(
         5% 30%,
         5% 5%,
@@ -54,21 +64,22 @@ $level-light-active-gradient: linear-gradient(
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-        background: rgba(0, 0, 0, 0.7);
+        box-shadow: 1px 1px 1px $panel-bg-color;
+        background: rgba(0, 0, 0, 0.1);
         clip-path: polygon(
             0 100%,
             5% 0,
             95% 0,
             100% 100%
-        );
-    }
-
-    .level-light {
-        margin: 0.2% 0.7%;
-        flex-grow: 1;
-        background-color: $level-light-color;
-        background: $level-light-gradient;
-        opacity: 0.6;
+            );
+        }
+        
+        .level-light {
+            margin: 0.2% 0.7%;
+            flex-grow: 1;
+            background-color: $level-light-color;
+            background: $level-light-gradient;
+            opacity: 0.6;
 
         &:first-child {
             margin-left: 0.2%;
@@ -83,5 +94,36 @@ $level-light-active-gradient: linear-gradient(
         background-color: $level-light-active-color;
         background: $level-light-active-gradient;
         opacity: 1;
+    }
+
+    .level-menu__footer {
+        position: absolute;
+        bottom: 1%;
+        left: 12%;
+        width: 76%;
+        height: 4%;
+        background: rgba(0, 0, 0, 0.5);
+        clip-path: polygon(
+            5% 100%,
+            0 0,
+            100% 0,
+            95% 100%
+        );
+        line-height: 110%;
+        text-align: center; 
+        font-size: bold;
+        -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
+        color: rgba(175, 241, 161, 0.8);
+
+        .level-menu__footer__text-container {
+            width: 100%;
+            height: 100%;
+            background: $footer-gradient;
+            line-height: 110%;
+            text-align: center; 
+            font-size: bold;
+            -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
+            color: rgba(175, 241, 161, 0.8);
+        }
     }
 }

@@ -3,6 +3,11 @@
   src: url(../../fonts/SuperMario256.ttf);
 }
 
+@font-face {
+  font-family: main-game-font;
+  src: url(../../fonts/MainGameFont.ttf);
+}
+
 body {
   background: #252525;
   margin: 0;
@@ -10,7 +15,7 @@ body {
   background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px, linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px, linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px, linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px, linear-gradient(90deg, #1b1b1b 10px, transparent 10px), linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
   background-color: #131313;
   background-size: 20px 20px;
-  font-family: "mario-style-font";
+  font-family: "main-game-font";
 }
 
 .main_container {
@@ -18,7 +23,7 @@ body {
   background: -webkit-gradient(linear, left top, left bottom, from(#fa2bf0), to(#683180));
   background: linear-gradient(180deg, #fa2bf0 0%, #683180 100%);
   margin: auto;
-  border-radius: 7px;
+  border-radius: 10px;
   border: 5px solid #3b1c49;
   -webkit-box-shadow: 5px 5px 5px black;
           box-shadow: 5px 5px 5px black;
@@ -63,6 +68,7 @@ body {
 header {
   display: none;
   padding-top: 20px;
+  font-family: "mario-style-font";
   text-align: center;
   -webkit-text-stroke: 2px #3a3a3a;
   text-shadow: 3px 3px 3px black;
@@ -144,6 +150,7 @@ header .header__flowers-txt {
 .logo {
   padding-top: 50%;
   background-clip: text;
+  font-family: "mario-style-font";
   -webkit-text-stroke: 5px #3a3a3a;
   text-align: center;
   text-shadow: 7px 7px 7px black;
@@ -311,7 +318,7 @@ header .header__flowers-txt {
   margin: 15% 1%;
   width: 98%;
   height: 65%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(19, 8, 22, 0.8);
   -webkit-clip-path: polygon(5% 30%, 5% 5%, 10% 5%, 15% 0, 85% 0, 90% 5%, 95% 5%, 95% 30%, 100% 35%, 100% 65%, 95% 70%, 95% 95%, 90% 95%, 85% 100%, 15% 100%, 10% 95%, 5% 95%, 5% 70%, 0 65%, 0 35%);
           clip-path: polygon(5% 30%, 5% 5%, 10% 5%, 15% 0, 85% 0, 90% 5%, 95% 5%, 95% 30%, 100% 35%, 100% 65%, 95% 70%, 95% 95%, 90% 95%, 85% 100%, 15% 100%, 10% 95%, 5% 95%, 5% 70%, 0 65%, 0 35%);
 }
@@ -332,7 +339,9 @@ header .header__flowers-txt {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  background: rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 1px 1px 1px rgba(19, 8, 22, 0.8);
+          box-shadow: 1px 1px 1px rgba(19, 8, 22, 0.8);
+  background: rgba(0, 0, 0, 0.1);
   -webkit-clip-path: polygon(0 100%, 5% 0, 95% 0, 100% 100%);
           clip-path: polygon(0 100%, 5% 0, 95% 0, 100% 100%);
 }
@@ -342,9 +351,9 @@ header .header__flowers-txt {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  background-color: #68cfdd;
-  background: -webkit-gradient(linear, left top, left bottom, from(#2492a1), color-stop(40%, #3ec2d4), color-stop(60%, #2eb8cb), to(#12474e));
-  background: linear-gradient(top, #2492a1 0%, #3ec2d4 40%, #2eb8cb 60%, #12474e 100%);
+  background-color: #9bc8ce;
+  background: -webkit-gradient(linear, left top, left bottom, from(#4d939d), color-stop(40%, #79b5bd), color-stop(60%, #68acb5), to(#2b5358));
+  background: linear-gradient(top, #4d939d 0%, #79b5bd 40%, #68acb5 60%, #2b5358 100%);
   opacity: 0.6;
 }
 
@@ -361,5 +370,33 @@ header .header__flowers-txt {
   background: -webkit-gradient(linear, left top, left bottom, from(#fafdfe), color-stop(40%, #92dce6), color-stop(60%, #3ec2d4), to(#12474e));
   background: linear-gradient(top, #fafdfe 0%, #92dce6 40%, #3ec2d4 60%, #12474e 100%);
   opacity: 1;
+}
+
+.level-menu .level-menu__footer {
+  position: absolute;
+  bottom: 1%;
+  left: 12%;
+  width: 76%;
+  height: 4%;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-clip-path: polygon(5% 100%, 0 0, 100% 0, 95% 100%);
+          clip-path: polygon(5% 100%, 0 0, 100% 0, 95% 100%);
+  line-height: 110%;
+  text-align: center;
+  font-size: bold;
+  -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
+  color: rgba(175, 241, 161, 0.8);
+}
+
+.level-menu .level-menu__footer .level-menu__footer__text-container {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
+  background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
+  line-height: 110%;
+  text-align: center;
+  font-size: bold;
+  -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
+  color: rgba(175, 241, 161, 0.8);
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */
