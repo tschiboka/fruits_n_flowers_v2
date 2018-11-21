@@ -45,7 +45,7 @@ linear-gradient(
         5% 70%,
         0 65%,
         0 35%
-       );
+    );
 
 
     .level-menu__page {
@@ -55,6 +55,11 @@ linear-gradient(
         width: 84%;
         height: 84%;
         background: rgba(0, 0, 0, 0.5);
+        &.error--no-level {
+            padding: 5%;
+            font-size: 3em;
+            color: #f80c47;
+        }
 
         .level-page {
             height: 100%;

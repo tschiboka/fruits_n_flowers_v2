@@ -9,6 +9,7 @@ function start() {
 
     createLevelTables();
     createLevelPageIndicator();
+    addLevelEvents();
 } // end of start
 
 
@@ -16,6 +17,14 @@ function start() {
 function createLevelPageIndicator() {
     // create as many page indicator as many tables are
     const tableNum = Math.ceil(levels.length / 25);
+
+    // handle error and give messsage if level obj is missing
+    if (!tableNum) {
+        $(".level-menu__page").addClass("error--no-level")
+            .html("Ooop, it looks like something went wrong: can not load levels! :(");
+
+        throw Error("There is no levels object!");
+    } // end of error handling
 
     for (i = 0; i < tableNum; i++) {
         const indicator = document.createElement("div"),
@@ -42,7 +51,7 @@ function createLevelTables() {
         const table = document.createElement("table"),
             tbody = document.createElement("tbody");
 
-        table.id = `level-page-${t}`;
+        table.id = `level-page-${t + 1}`;
         $(table).addClass("level-page");
 
         // create rows
@@ -89,6 +98,41 @@ function createLevelTables() {
 
 /*
 
+
+        EVENTS
+
+
+*/
+
+function addLevelEvents() {
+    // add eventlistener to arrows, there are only two of them, no need to delegate
+    $(".level-menu__arrow-left").on("click", () => { turnLevelPage("-") });
+} // end of addLevelEvents
+
+function turnLevelPage(turnTo) {
+    // turnTo parameter can be number or + or -
+    // number turn page to the page number
+    // + - increments or decrements it if possible
+
+    const activePage = $(".active-page")[0],
+        pageNum = activePage.id.match(/\d+/)[0];
+
+    if (turnTo === "+") {
+        displayPage(Number(pageNum) + 1);
+    } else if (turnTo === "-") {
+        displayPage(Number(pageNum) - 1);
+    } else if (Number(turnTo)) {
+        displayPage(turnTo);
+    } else throw Error("turnLevelPage function got unvalid parameters : [" + turnTo + "]!");
+} // end of turnLevelPage
+
+function displayPage(pNum) {
+    console.log(pNum);
+}
+
+
+/*
+
         LEVELS
 
 */
@@ -104,5 +148,6 @@ var levels = [
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 ]

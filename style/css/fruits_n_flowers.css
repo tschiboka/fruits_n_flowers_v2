@@ -383,6 +383,12 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.level-menu .level-menu__page.error--no-level {
+  padding: 5%;
+  font-size: 3em;
+  color: #f80c47;
+}
+
 .level-menu .level-menu__page .level-page {
   height: 100%;
   width: 100%;
