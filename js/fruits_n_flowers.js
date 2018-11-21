@@ -7,33 +7,55 @@ function start() {
     $(".logo").hide();
     $("header, .level-menu").show();
 
-    createLevelTable();
+    createLevelTables();
 
 } // end of start
 
-function createLevelTable(selector, rowNum, cellNum) {
-    tbody = document.createElement("tbody");
+function createLevelTables() {
+    // get how many tables are created
+    const tableNum = Math.ceil(levels.length / 25);
+    let levelNum = 1;
 
-    // create rows
-    for (r = 0; r < 5; r++) {
-        const row = document.createElement("tr");
+    for (t = 0; t < tableNum; t++) {
+        const table = document.createElement("table"),
+            tbody = document.createElement("tbody");
 
-        // create cells
-        for (c = 0; c < 5; c++) {
-            const cell = document.createElement("td");
+        table.id = `level-page-${t}`;
+        $(table).addClass("level-page");
 
-            cell.id = `level-btn-${r}-${c}`;
-            cell.innerHTML = `${r * 5 + c}`;
+        // create rows
+        for (r = 0; r < 5; r++) {
+            const row = document.createElement("tr");
 
-            row.append(cell);
-        } // end of for cell
+            // create cells
+            for (c = 0; c < 5; c++) {
+                const cell = document.createElement("td"),
+                    div = document.createElement("div");
 
-        tbody.append(row);
-    } // end of for row
+                div.id = `level-btn-${levelNum}`
+                div.innerHTML = `${levelNum}`;
+                cell.id = `level-cell-${levelNum}`;
 
-    $(".level-table").append(tbody);
+                cell.append(div);
 
-    console.log($(".level-table").get());
+                // do not show cells that are out of the level array
+                if (!levels[levelNum - 1]) {
+                    $(div).hide();
+                } // end of if theres no level at this number
+
+                row.append(cell);
+                levelNum++;
+            } // end of for cell
+            tbody.append(row);
+        } // end of for row
+        // make first table active
+        if (t === 0) {
+            $(table).addClass("active-page");
+        }
+
+        $(table).append(tbody);
+        $(".level-menu__page").append(table);
+    } // and of table for
 } // end of createLevelTable
 
 
@@ -47,5 +69,12 @@ function createLevelTable(selector, rowNum, cellNum) {
 var levels = [
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}
 ]

@@ -383,6 +383,10 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: rgba(0, 0, 0, 0.5);
 }
 
+.level-menu .level-menu__page #level-page::not(.active) {
+  display: none;
+}
+
 .level-menu .level-menu__header__ligths {
   position: absolute;
   top: 1%;

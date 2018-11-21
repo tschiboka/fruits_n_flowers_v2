@@ -55,7 +55,12 @@ linear-gradient(
         width: 84%;
         height: 84%;
         background: rgba(0, 0, 0, 0.5);
+
+        #level-page::not(.active) {
+            display: none;
+        }
     }
+
     .level-menu__header__ligths {
         position: absolute;
         top: 1%;
