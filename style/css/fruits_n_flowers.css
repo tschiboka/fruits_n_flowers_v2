@@ -383,7 +383,22 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.level-menu .level-menu__page #level-page::not(.active) {
+.level-menu .level-menu__page .level-page {
+  height: 100%;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.level-menu .level-menu__page .level-page tr td {
+  width: 20%;
+  height: 20%;
+  border: 1px solid rgba(250, 250, 250, 0.2);
+  text-align: center;
+  color: #58e8f3;
+  font-size: 1.4em;
+}
+
+.level-menu .level-menu__page .level-page:not(.active-page) {
   display: none;
 }
 

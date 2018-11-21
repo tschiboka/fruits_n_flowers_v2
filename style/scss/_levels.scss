@@ -56,7 +56,22 @@ linear-gradient(
         height: 84%;
         background: rgba(0, 0, 0, 0.5);
 
-        #level-page::not(.active) {
+        .level-page {
+            height: 100%;
+            width: 100%;
+            border-collapse: collapse;
+
+            tr td {
+                width: 20%;
+                height: 20%;
+                border: 1px solid rgba(250, 250, 250, 0.2);
+                text-align: center;
+                color: $main-text-color;
+                font-size: 1.4em;
+            }
+        }
+
+        .level-page:not(.active-page) {
             display: none;
         }
     }
