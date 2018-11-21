@@ -1,0 +1,29 @@
+.game-board {
+    position: relative;
+    display: none;
+    margin: 5% 1%;
+    width: 98%;
+    height: 85%;
+    background: $panel-bg-color;
+    clip-path: polygon(
+        0 5%,
+        5% 0,
+        48% 0,
+        50% 1%,
+        52% 0,
+        95% 0,
+        100% 5%,
+        100% 30%,
+        98% 35%,
+        98% 65%,
+        100% 70%,
+        100% 95%,
+        95% 100%,
+        5% 100%,
+        0 95%,
+        0 70%,
+        2% 65%,
+        2% 35%,
+        0 30%
+    );
+}

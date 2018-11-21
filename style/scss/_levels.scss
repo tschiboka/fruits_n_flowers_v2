@@ -1,4 +1,4 @@
-$panel-bg-color: rgba(19, 8, 22, 0.8);
+$green: rgb(141, 238, 121);
 
 $level-footer-gradient : linear-gradient(
     top,
@@ -19,11 +19,11 @@ linear-gradient(
 .level-menu {
     position: relative;
     display: none;
-    margin: 15% 1%;
+    margin: 20% 1%;
     width: 98%;
     height: 65%;
     background: $panel-bg-color;
-    color: rgba(175, 241, 161, 0.8);
+    color: $green;
     clip-path: polygon(
         5% 30%,
         5% 5%,
@@ -137,7 +137,7 @@ linear-gradient(
             left: 40%;
             width: 20%;
             height: 50%;
-            background: rgba(175, 241, 161, 0.8);
+            background: $green;
             opacity: 0.4;
         }
     }
@@ -164,7 +164,7 @@ linear-gradient(
         text-align: center; 
         vertical-align: middle;
         font-size: bold;
-        -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
+        -webkit-text-stroke: 1px $green;
         letter-spacing: -2px;
 
         .level-menu__footer__text-container {
@@ -177,8 +177,8 @@ linear-gradient(
             line-height: 100%;
             text-align: center; 
             font-size: 90%;
-            -webkit-text-stroke: 1px rgba(175, 241, 161, 0.8);
-            color: rgba(175, 241, 161, 0.8);
+            -webkit-text-stroke: 1px $green;
+            color: $green;
         }
     }
     .level-menu__arrow-left {
@@ -208,7 +208,7 @@ linear-gradient(
                 height: 30%;
                 top: 35%;
                 left: 5%;
-                background: rgba(175, 241, 161, 0.3);
+                background: rgba(141, 238, 121, 0.3);
                 clip-path: polygon(
                     80% 0,
                     100% 0,
@@ -220,7 +220,7 @@ linear-gradient(
             }
 
             .level-arrow-left--active {
-                background: rgba(175, 241, 161, 0.8);
+                background: $green;
             }
         }
     }
@@ -252,7 +252,7 @@ linear-gradient(
                 height: 30%;
                 top: 35%;
                 left: 5%;
-                background: rgba(175, 241, 161, 0.3);
+                background: rgba(141, 238, 121, 0.3);
                 clip-path: polygon(
                     0 0,
                     20% 0,
@@ -264,7 +264,7 @@ linear-gradient(
             }
 
             .level-arrow-right--active {
-                background: rgba(175, 241, 161, 0.8);
+                background: $green;
             }
         }
     }

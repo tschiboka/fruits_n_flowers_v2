@@ -7,10 +7,14 @@ function start() {
     $(".logo").hide();
     $("header, .level-menu").show();
 
+    // prepare levels
     createLevelTables();
     createLevelPageIndicator();
     styleLevelMenuToCurrenPage();
     addLevelEvents();
+
+    // prepare game board
+    addGameBoardEvents();
 } // end of start
 
 
@@ -65,14 +69,15 @@ function createLevelTables() {
                     box = document.createElement("div"),
                     progressBar = document.createElement("div");
 
-                box.id = `level-btn-${levelNum}`;
+                box.id = `level-btn-${levelNum} to-level-${levelNum}`;
                 box.innerHTML = `${levelNum}`;
 
-                progressBar.id = `level-progress-${levelNum}`;
+                progressBar.id = `level-progress-${levelNum} to-level-${levelNum}`;
                 $(progressBar).addClass("level-progressbar");
                 box.append(progressBar);
 
                 cell.id = `level-cell-${levelNum}`;
+                $(cell).addClass(`to-level-${levelNum}`);
 
                 cell.append(box);
 
@@ -118,6 +123,11 @@ function addLevelEvents() {
             turnLevelPage(pageNum);
         } // end of if target is valid elem
     }); // end of indicator click
+
+    // add eventListeners to level buttons
+
+    // demo just to trigger game board
+    $(".to-level-1").on("click", () => startLevel(1));
 } // end of addLevelEvents
 
 function turnLevelPage(turnTo) {
@@ -170,6 +180,15 @@ function styleLevelMenuToCurrenPage() {
     $(".level-menu__footer__text-container")
         .html(`-&lt;[&nbsp;&nbsp;${activePageNum} / ${Math.ceil(levels.length / 25)}&nbsp;&nbsp;]&gt;-`);
 } // end of styleLevelMenu
+
+
+function addGameBoardEvents() {
+
+} // end of addGameBoardEvents
+
+
+
+
 /*
 
         LEVELS
@@ -189,4 +208,11 @@ var levels = [
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-]
+];
+
+
+// demo just to trigger game board
+function startLevel(level) {
+    $(".level-menu").hide();
+    $(".game-board").show();
+} // end of 

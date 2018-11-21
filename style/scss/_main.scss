@@ -3,6 +3,7 @@ $main-text-color: #58e8f3;
 $primary-color1:  #683180;
 $primary-color2: #fa2bf0;
 $patt-color: #808080;
+$panel-bg-color: rgba(19, 8, 22, 0.8);
 
 // define only two sizes sm (phone) and lg (desktop) 
 @mixin breakpoint($bp) {
@@ -20,9 +21,10 @@ $patt-color: #808080;
 }
 
 body {
-    background: $bg-color;
     margin: 0;
     padding: 0;
+    min-width: 320px;
+    background: $bg-color;
     background:
     linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
     linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
