@@ -1,9 +1,25 @@
+
+// palette
 $bg-color: #252525;
 $main-text-color: #58e8f3;
 $primary-color1:  #683180;
 $primary-color2: #fa2bf0;
 $patt-color: #808080;
 $panel-bg-color: rgba(19, 8, 22, 0.8);
+$horizontal-gradient: linear-gradient(
+    top,
+    rgba(250, 250, 250, 0.1) 0%, 
+    rgba(250, 250, 250, 0.05) 45%,
+    rgba(0, 0, 0, 0.05) 55%,
+    rgba(0, 0, 0, 0.1) 100%);
+
+$vertical-gradient: linear-gradient(
+    90deg,
+    rgba(250, 250, 250, 0.1) 0%, 
+    rgba(250, 250, 250, 0.05) 45%,
+    rgba(0, 0, 0, 0.05) 55%,
+    rgba(0, 0, 0, 0.1) 100%);
+
 
 // define only two sizes sm (phone) and lg (desktop) 
 @mixin breakpoint($bp) {
@@ -23,7 +39,6 @@ $panel-bg-color: rgba(19, 8, 22, 0.8);
 body {
     margin: 0;
     padding: 0;
-    min-width: 320px;
     background: $bg-color;
     background:
     linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
@@ -38,23 +53,23 @@ body {
 }
 
 .main_container {
+    min-width: 320px;
+    margin: auto;
     background: $primary-color1;
     background: linear-gradient(180deg, $primary-color2 0%, $primary-color1 100%);
-    margin: auto;
-    border-radius: 10px;
-    border: 5px solid darken($primary-color1, 15%);
     box-shadow: 5px 5px 5px black;
 
     @include breakpoint(sm) {
-        width: 98vw;
-        height: 95vh;
-        margin-top: 1vw;
+        width: 100vw;
+        height: 100vh;
     }
 
     @include breakpoint(lg) {
         width: 480px;
         height: 700px;
         margin-top: 2vw;
+        border-radius: 10px;
+        border: 5px solid darken($primary-color1, 15%);
     }
 
     .main-container__pattern {
@@ -67,8 +82,8 @@ body {
         background-size: 70px 120px;
         
         @include breakpoint(sm) {
-            width: 98vw;
-            height: 95vh;
+            width: 100vw;
+            height: 100vh;
         }
     
         @include breakpoint(lg) {
