@@ -30,17 +30,23 @@ function createLevelTables() {
             // create cells
             for (c = 0; c < 5; c++) {
                 const cell = document.createElement("td"),
-                    div = document.createElement("div");
+                    box = document.createElement("div"),
+                    progressBar = document.createElement("div");
 
-                div.id = `level-btn-${levelNum}`
-                div.innerHTML = `${levelNum}`;
+                box.id = `level-btn-${levelNum}`
+                box.innerHTML = `${levelNum}`;
+
+                progressBar.id = `level-progress-${levelNum}`;
+                $(progressBar).addClass("level-progressbar");
+                box.append(progressBar);
+
                 cell.id = `level-cell-${levelNum}`;
 
-                cell.append(div);
+                cell.append(box);
 
                 // do not show cells that are out of the level array
                 if (!levels[levelNum - 1]) {
-                    $(div).hide();
+                    $(box).hide();
                 } // end of if theres no level at this number
 
                 row.append(cell);

@@ -68,6 +68,20 @@ linear-gradient(
                 text-align: center;
                 color: $main-text-color;
                 font-size: 1.4em;
+                
+                div {
+                   position: relative;
+                   transform: translateY(-20%);
+                }
+
+                div .level-progressbar {
+                    position: absolute;
+                    top: 130%;
+                    left: 15%;
+                    width: 70%;
+                    height: 15%;
+                    background: rgba(244, 254, 197, 0.226);
+                }
             }
         }
 

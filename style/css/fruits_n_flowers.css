@@ -398,6 +398,21 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   font-size: 1.4em;
 }
 
+.level-menu .level-menu__page .level-page tr td div {
+  position: relative;
+  -webkit-transform: translateY(-20%);
+          transform: translateY(-20%);
+}
+
+.level-menu .level-menu__page .level-page tr td div .level-progressbar {
+  position: absolute;
+  top: 130%;
+  left: 15%;
+  width: 70%;
+  height: 15%;
+  background: rgba(244, 254, 197, 0.226);
+}
+
 .level-menu .level-menu__page .level-page:not(.active-page) {
   display: none;
 }
