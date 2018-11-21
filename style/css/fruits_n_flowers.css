@@ -395,7 +395,8 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   border: 1px solid rgba(250, 250, 250, 0.2);
   text-align: center;
   color: #58e8f3;
-  font-size: 1.4em;
+  font-size: 1.4rem;
+  cursor: pointer;
 }
 
 .level-menu .level-menu__page .level-page tr td div {
@@ -417,7 +418,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   display: none;
 }
 
-.level-menu .level-menu__header__ligths {
+.level-menu .level-menu__header__level-indicator {
   position: absolute;
   top: 1%;
   left: 12%;
@@ -440,7 +441,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
           clip-path: polygon(0 100%, 5% 0, 95% 0, 100% 100%);
 }
 
-.level-menu .level-light {
+.level-menu .level-indicator {
   position: relative;
   margin: 0.2% 0.7%;
   -webkit-box-flex: 1;
@@ -449,17 +450,18 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background-color: rgba(19, 8, 22, 0.8);
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
   background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
+  cursor: pointer;
 }
 
-.level-menu .level-light:first-child {
+.level-menu .level-indicator:first-child {
   margin-left: 0.2%;
 }
 
-.level-menu .level-light:last-child {
+.level-menu .level-indicator:last-child {
   margin-right: 0.2%;
 }
 
-.level-menu .level-light .light {
+.level-menu .level-indicator .level-light {
   position: absolute;
   top: 25%;
   left: 40%;
@@ -469,7 +471,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   opacity: 0.4;
 }
 
-.level-menu .level-light--active .light {
+.level-menu .level-indicator--active .level-light {
   opacity: 1;
 }
 
@@ -517,6 +519,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   width: 4%;
   height: 36%;
   background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   -webkit-clip-path: polygon(5% 11%, 100% 0, 100% 100%, 5% 89%);
           clip-path: polygon(5% 11%, 100% 0, 100% 100%, 5% 89%);
 }
@@ -547,6 +550,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   width: 4%;
   height: 36%;
   background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   -webkit-clip-path: polygon(0 0, 95% 11%, 95% 89%, 0% 100%);
           clip-path: polygon(0 0, 95% 11%, 95% 89%, 0% 100%);
 }

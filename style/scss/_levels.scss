@@ -67,7 +67,8 @@ linear-gradient(
                 border: 1px solid rgba(250, 250, 250, 0.2);
                 text-align: center;
                 color: $main-text-color;
-                font-size: 1.4em;
+                font-size: 1.4rem;
+                cursor: pointer;
                 
                 div {
                    position: relative;
@@ -90,7 +91,7 @@ linear-gradient(
         }
     }
 
-    .level-menu__header__ligths {
+    .level-menu__header__level-indicator {
         position: absolute;
         top: 1%;
         left: 12%;
@@ -109,12 +110,13 @@ linear-gradient(
             );
         }
         
-        .level-light {
+        .level-indicator {
             position: relative;
             margin: 0.2% 0.7%;
             flex-grow: 1;
             background-color: $panel-bg-color;
             background: $level-footer-gradient;
+            cursor: pointer;
 
         &:first-child {
             margin-left: 0.2%;
@@ -124,7 +126,7 @@ linear-gradient(
             margin-right: 0.2%;
         }
 
-        .light {
+        .level-light {
             position: absolute;
             top: 25%;
             left: 40%;
@@ -135,8 +137,8 @@ linear-gradient(
         }
     }
 
-    .level-light--active {
-        .light {
+    .level-indicator--active {
+        .level-light {
             opacity: 1;
         }
     }
@@ -181,6 +183,7 @@ linear-gradient(
         width: 4%;
         height: 36%;
         background: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
         clip-path: polygon(
             5% 11%,
             100% 0,
@@ -220,6 +223,7 @@ linear-gradient(
         width: 4%;
         height: 36%;
         background: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
         clip-path: polygon(
             0 0,
             95% 11%,

@@ -8,8 +8,30 @@ function start() {
     $("header, .level-menu").show();
 
     createLevelTables();
-
+    createLevelPageIndicator();
 } // end of start
+
+
+
+function createLevelPageIndicator() {
+    // create as many page indicator as many tables are
+    const tableNum = Math.ceil(levels.length / 25);
+
+    for (i = 0; i < tableNum; i++) {
+        const indicator = document.createElement("div"),
+            light = document.createElement("div");
+
+        $(indicator).addClass("level-indicator");
+        $(light).addClass("level-light");
+
+        if (i == 0) {
+            $(indicator).addClass("level-indicator--active");
+        }
+
+        $(indicator).append(light);
+        $(".level-menu__header__level-indicator").append(indicator);
+    }
+}
 
 function createLevelTables() {
     // get how many tables are created
@@ -33,7 +55,7 @@ function createLevelTables() {
                     box = document.createElement("div"),
                     progressBar = document.createElement("div");
 
-                box.id = `level-btn-${levelNum}`
+                box.id = `level-btn-${levelNum}`;
                 box.innerHTML = `${levelNum}`;
 
                 progressBar.id = `level-progress-${levelNum}`;
@@ -74,13 +96,13 @@ function createLevelTables() {
 
 var levels = [
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    /* {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},*/
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}
 ]
