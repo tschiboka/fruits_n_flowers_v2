@@ -214,5 +214,6 @@ var levels = [
 // demo just to trigger game board
 function startLevel(level) {
     $(".level-menu").hide();
+    $("header").addClass("header-out");
     $(".game-board").show();
 } // end of 
