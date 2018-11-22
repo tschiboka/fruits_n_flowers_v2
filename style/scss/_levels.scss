@@ -8,6 +8,7 @@ $green: rgb(141, 238, 121);
     height: 65%;
     background: $panel-bg-color;
     color: $green;
+    animation: level-menu-in-anim 0.3s ease-in;
     clip-path: polygon(
         5% 30%,
         5% 5%,
@@ -251,5 +252,14 @@ $green: rgb(141, 238, 121);
                 background: $green;
             }
         }
+    }
+}
+
+@keyframes level-menu-in-anim {
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
     }
 }

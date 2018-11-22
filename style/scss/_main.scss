@@ -81,6 +81,7 @@ body {
         linear-gradient(60deg, rgba(0,0,0,.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.2) 75%, rgba(0,0,0,.2)),
         linear-gradient(120deg, rgba(0,0,0,.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.2) 75%, rgba(0,0,0,.2));
         background-size: 70px 120px;
+        border-radius: 10px;
         
         @include breakpoint(sm) {
             width: 100vw;

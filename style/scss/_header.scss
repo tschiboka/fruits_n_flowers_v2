@@ -5,6 +5,7 @@ header {
     text-align: center;
     -webkit-text-stroke: 2px #3a3a3a;
     text-shadow: 3px 3px 3px black;
+    animation: header-in-anim 0.2s ease-in;
 
     @include breakpoint(sm) {
         font-size: 7vw;
@@ -69,5 +70,18 @@ header {
     100% {
         transform: rotate(359deg);
         text-shadow: 3px 3px 3px black;
+    }
+}
+
+@keyframes header-in-anim {
+    0% {
+        transform: translateY(-60px);
+    }
+
+    80% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
     }
 }
