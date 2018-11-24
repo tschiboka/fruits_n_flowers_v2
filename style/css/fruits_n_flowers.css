@@ -882,7 +882,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
 
 .game-board .game-board__dark-layer-right {
   position: absolute;
-  top: 7%;
+  top: 6.9%;
   right: 0;
   width: 5%;
   height: 88%;
@@ -910,6 +910,22 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
 }
 
 .game-board .game-board__dark-layer-bottom__inner {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
+  background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.game-board .game-board__inventory {
+  position: absolute;
+  width: 90%;
+  height: 10%;
+  top: 85%;
+  left: 5%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.game-board .game-board__inventory .game-board__inventory__inner {
   width: 100%;
   height: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));

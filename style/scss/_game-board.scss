@@ -95,7 +95,7 @@
 
     .game-board__dark-layer-right {
         position: absolute;
-        top: 7%;
+        top: 6.9%;
         right: 0;
         width: 5%;
         height: 88%;
@@ -131,9 +131,25 @@
             5.5% 85%
         );
     }
+
     .game-board__dark-layer-bottom__inner {
         width: 100%;
         height: 100%;
         background: $horizontal-gradient;
+    }
+
+    .game-board__inventory {
+        position: absolute;
+        width: 90%;
+        height: 10%;
+        top: 85%;
+        left: 5%;
+        background: rgba(0, 0, 0, 0.7);
+
+        .game-board__inventory__inner {
+            width: 100%;
+            height: 100%;
+            background: $horizontal-gradient;
+        }
     }
 }
