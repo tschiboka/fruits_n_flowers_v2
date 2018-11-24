@@ -1,9 +1,9 @@
 .game-board {
     position: relative;
     display: none;
-    margin: 0 1%;
+    margin: -1% 1%;
     width: 98%;
-    height: 90%;
+    height: 95%;
     background: $panel-bg-color;
     text-shadow: -2px -2px black;
     clip-path: polygon(
@@ -152,4 +152,13 @@
             background: $horizontal-gradient;
         }
     }
+}
+
+.game-board__inventory__panel {
+    position: absolute;
+    width: 94%;
+    height: 80%;
+    top: 10%;
+    left: 3%;
+    background: $panel-bg-color;
 }
