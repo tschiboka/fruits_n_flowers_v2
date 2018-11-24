@@ -697,6 +697,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   display: none;
   width: 100%;
   height: 12%;
+  height: 20px;
   left: 0;
   bottom: 0;
   background: rgba(19, 8, 22, 0.8);
@@ -808,7 +809,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   display: none;
   margin: 0 1%;
   width: 98%;
-  height: 85%;
+  height: 90%;
   background: rgba(19, 8, 22, 0.8);
   text-shadow: -2px -2px black;
   -webkit-clip-path: polygon(0 5%, 5% 0, 48% 0, 50% 1%, 52% 0, 95% 0, 100% 5%, 100% 30%, 98% 35%, 98% 65%, 100% 70%, 100% 95%, 95% 100%, 5% 100%, 0 95%, 0 70%, 2% 65%, 2% 35%, 0 30%);
@@ -863,10 +864,10 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
 
 .game-board .game-board__dark-layer-left {
   position: absolute;
-  top: 7%;
+  top: 6.9%;
   left: 0;
   width: 5%;
-  height: 88%;
+  height: 88.1%;
   background: rgba(0, 0, 0, 0.7);
   -webkit-clip-path: polygon(20% 0, 100% 0, 100% 100%, 20% 100%, 20% 72%, 60% 67%, 60% 31%, 20% 25%);
           clip-path: polygon(20% 0, 100% 0, 100% 100%, 20% 100%, 20% 72%, 60% 67%, 60% 31%, 20% 25%);
@@ -899,10 +900,19 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
 
 .game-board .game-board__dark-layer-bottom {
   position: absolute;
-  top: 83%;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 17%;
+  height: 5%;
   background: rgba(0, 0, 0, 0.7);
+  -webkit-clip-path: polygon(1% 0, 99% 0, 94.5% 85%, 5.5% 85%);
+          clip-path: polygon(1% 0, 99% 0, 94.5% 85%, 5.5% 85%);
+}
+
+.game-board .game-board__dark-layer-bottom__inner {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
+  background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */
