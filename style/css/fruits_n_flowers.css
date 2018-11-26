@@ -922,7 +922,24 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   left: 5%;
   width: 90%;
   height: 78%;
-  border: 2px solid red;
+  background: rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
+}
+
+.game-board .game-board__table tr:nth-child(even) td:nth-child(odd) {
+  background: rgba(250, 250, 250, 0.05);
+}
+
+.game-board .game-board__table tr:nth-child(even) td:nth-child(even) {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.game-board .game-board__table tr:nth-child(odd) td:nth-child(even) {
+  background: rgba(250, 250, 250, 0.05);
+}
+
+.game-board .game-board__table tr:nth-child(odd) td:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .game-board .game-board__table .game-board__cell-box {
@@ -931,10 +948,10 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
 
 .game-board .game-board__table .game-board__cell-box .game-board__cell-pic {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 14%;
+  left: 14%;
+  width: 72%;
+  height: 72%;
   background-size: contain;
 }
 
