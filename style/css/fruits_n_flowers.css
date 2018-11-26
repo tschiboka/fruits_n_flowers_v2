@@ -916,6 +916,28 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
 }
 
+.game-board .game-board__table {
+  position: absolute;
+  top: 7%;
+  left: 5%;
+  width: 90%;
+  height: 78%;
+  border: 2px solid red;
+}
+
+.game-board .game-board__table .game-board__cell-box {
+  position: relative;
+}
+
+.game-board .game-board__table .game-board__cell-box .game-board__cell-pic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+}
+
 .game-board__inventory {
   position: absolute;
   width: 90%;

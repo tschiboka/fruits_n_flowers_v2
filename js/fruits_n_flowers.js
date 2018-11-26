@@ -299,12 +299,31 @@ function createGameBoard() {
 
 function createBoardArray(level) {
     app.board = levels[level]["blueprint"].map(row => row.split(","));
-    console.log(app.board);
-
 } // end of loadBoardArray
 
 
 
 function displayBoard(level) {
+    fileName = {
+        "1": "fruits/strawberry",
+        "2": "fruits/peach",
+        "3": "fruits/plum",
+        "4": "fruits/orange",
+        "5": "fruits/lime",
+        "6": "fruits/apple",
+        "7": "fruits/lemon",
+        "8": "fruits/kiwi",
+        "9": "fruits/blood-orange"
+    }
 
+    // add the corrisponding icons to the board table
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            const idName = `#r${r}c${c}-pic`;
+
+            $(idName).css("background-image", `url(../images/fruits/strawberry.png)`); // ../images/${fileName[app.board[r][c]]}
+
+            console.log($(idName).css("background-image"));
+        } // end of cell iteration
+    } // end of row iteration
 } // end of displayBoard
