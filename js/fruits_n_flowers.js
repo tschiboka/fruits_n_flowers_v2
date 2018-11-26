@@ -195,9 +195,27 @@ function addGameBoardEvents() {
 
 */
 
-
+/* 
+ * Each level object consist :
+ *   - blueprint: array of 11 strings with 9 chars
+ */
 var levels = [
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+    // level 1
+    {
+        "blueprint": [
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+            "1,2,3,4,5,6,7,8,9",
+        ]
+    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -216,4 +234,36 @@ function startLevel(level) {
     $(".level-menu").hide();
     $("header").addClass("header-out");
     $(".game-board").show();
-} // end of 
+    createGameBoard(level);
+} // end of startLevel
+
+function createGameBoard(level) {
+    const board = document.createElement("table"),
+        tbody = document.createElement("tbody");
+
+    // add rows
+    for (r = 0; r < 11; r++) {
+        const row = document.createElement("tr");
+
+        // add picture holding cells and pic divs
+        for (c = 0; c < 9; c++) {
+            const picBox = document.createElement("td"),
+                picDiv = document.createElement("div");
+
+            picBox.id = `r${r}c${c}-box`;
+            picDiv.id = `r${r}c${c}-pic`;
+
+            $(picBox).addClass("game-board__cell-box");
+            $(picDiv).addClass("game-board__cell-pic");
+
+            $(picBox).append(picDiv);
+            $(row).append(picBox);
+            console.log(row);
+        } // end of creating cells
+        $(tbody).append(row);
+        $(".game-board").append(board);
+    } // end of adding rows
+
+    $(board).addClass("game-board__table");
+    $(board).append(tbody);
+} // end of createGameBoard
