@@ -154,7 +154,7 @@ function displayPage(pNum, currentActive) {
 
     if (pNum > 0 && pNum <= lastPage) {
         $(currentActive).removeClass("active-page");
-        const newActive = $("#level-page-" + pNum).addClass("active-page")[0];
+        $("#level-page-" + pNum).addClass("active-page")[0];
         styleLevelMenuToCurrenPage();
     } // end of if num in range
 } // end of displayPage
@@ -257,14 +257,14 @@ function startLevel(level) {
     $(".game-board").show();
 
     // create game environment
-    createGameBoard(level);
-    createBoardArray(level);
-    displayBoard(level);
+    createGameBoard();
+    createBoardArray(level - 1);
+    displayBoard(level - 1);
 } // end of startLevel
 
 
 
-function createGameBoard(level) {
+function createGameBoard() {
     const board = document.createElement("table"),
         tbody = document.createElement("tbody");
 
@@ -297,8 +297,10 @@ function createGameBoard(level) {
 
 
 
-function createBoardArray() {
+function createBoardArray(level) {
+    app.board = levels[level]["blueprint"].map(row => row.split(","));
     console.log(app.board);
+
 } // end of loadBoardArray
 
 
