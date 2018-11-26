@@ -197,8 +197,16 @@ function addGameBoardEvents() {
 
 /* 
  * Each level object consist :
- *   - blueprint: array of 11 strings with 9 chars
+ *     - blueprint: array of 11 strings with 9 chars
+ *         - "0": cell is transparent
+ *         - "1" - "9" : cell is different fruits
+ *         - "A" - "G" : cell is one of the flowers
+ *         - "W" : cell is wall (unbreakable)
+ *         - "R" : cell is rock (breakable)
+ *         - "O" : cell is basket
+ *         - "a" - "z" :lower case letters are kept for special characters like explosions and tome stopppers
  */
+
 var levels = [
     // level 1
     {
@@ -229,13 +237,32 @@ var levels = [
 ];
 
 
+/*
+
+        GLOBAL APP VARIABLES
+
+*/
+
+var app = {
+    "board": [],          // the current game gems position
+};
+
+
+
 // demo just to trigger game board
 function startLevel(level) {
+    // arrange new layout
     $(".level-menu").hide();
     $("header").addClass("header-out");
     $(".game-board").show();
+
+    // create game environment
     createGameBoard(level);
+    createBoardArray(level);
+    displayBoard(level);
 } // end of startLevel
+
+
 
 function createGameBoard(level) {
     const board = document.createElement("table"),
@@ -258,8 +285,8 @@ function createGameBoard(level) {
 
             $(picBox).append(picDiv);
             $(row).append(picBox);
-            console.log(row);
         } // end of creating cells
+
         $(tbody).append(row);
         $(".game-board").append(board);
     } // end of adding rows
@@ -267,3 +294,15 @@ function createGameBoard(level) {
     $(board).addClass("game-board__table");
     $(board).append(tbody);
 } // end of createGameBoard
+
+
+
+function createBoardArray() {
+    console.log(app.board);
+} // end of loadBoardArray
+
+
+
+function displayBoard(level) {
+
+} // end of displayBoard
