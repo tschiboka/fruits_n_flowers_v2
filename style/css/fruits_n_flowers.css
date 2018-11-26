@@ -916,7 +916,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
 }
 
-.game-board .game-board__inventory {
+.game-board__inventory {
   position: absolute;
   width: 90%;
   height: 10%;
@@ -925,19 +925,83 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   background: rgba(0, 0, 0, 0.7);
 }
 
-.game-board .game-board__inventory .game-board__inventory__inner {
+.game-board__inventory .game-board__inventory__inner {
   width: 100%;
   height: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, 0.1)), color-stop(45%, rgba(250, 250, 250, 0.05)), color-stop(55%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.1)));
   background: linear-gradient(top, rgba(250, 250, 250, 0.1) 0%, rgba(250, 250, 250, 0.05) 45%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.1) 100%);
 }
 
-.game-board__inventory__panel {
+.game-board__inventory__menu {
   position: absolute;
   width: 94%;
   height: 80%;
   top: 10%;
   left: 3%;
   background: rgba(19, 8, 22, 0.8);
+}
+
+.game-board__inventory__menu .game-board__inventory__menu__arrow--left-box, .game-board__inventory__menu .game-board__inventory__menu__arrow--right-box {
+  position: absolute;
+  top: 0;
+  width: 10%;
+  height: 100%;
+}
+
+.game-board__inventory__menu .game-board__inventory__menu__arrow--left-box {
+  left: 0;
+}
+
+.game-board__inventory__menu .game-board__inventory__menu__arrow--right-box {
+  right: 0;
+}
+
+.game-board__inventory__menu .inventory-items {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: white;
+  list-style: none;
+}
+
+.game-board__inventory__menu .inventory-items .inventory-item {
+  width: 20%;
+  height: 100%;
+  margin: 0;
+}
+
+.game-board__inventory__menu__arrow--left {
+  width: 100%;
+  height: 100%;
+  background: #8dee79;
+  -webkit-clip-path: polygon(30% 50%, 70% 10%, 80% 10%, 55% 50%, 80% 90%, 70% 90%);
+          clip-path: polygon(30% 50%, 70% 10%, 80% 10%, 55% 50%, 80% 90%, 70% 90%);
+}
+
+.game-board__inventory__menu__arrow--right {
+  width: 100%;
+  height: 100%;
+  background: #8dee79;
+  -webkit-clip-path: polygon(70% 50%, 30% 10%, 20% 10%, 45% 50%, 20% 90%, 30% 90%);
+          clip-path: polygon(70% 50%, 30% 10%, 20% 10%, 45% 50%, 20% 90%, 30% 90%);
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */
