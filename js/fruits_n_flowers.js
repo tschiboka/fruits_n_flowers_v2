@@ -212,18 +212,32 @@ function styleLevelMenuToCurrenPage() {
 
 
 function addGameBoardEvents() {
-    const extractRowCol = el => {
-        // eleminate any invalid elements
-        if ($(el).hasClass("game-board__cell-pic") || $(el).hasClass("game-board__cell-box")) {
-            return el.id.match(/r\d+c\d+/g)[0];
-        } // end of if invalid element
-    }, // end of extract row col from id
+    const
+        extractRowCol = el => {
+            // eleminate any invalid elements
+            if ($(el).hasClass("game-board__cell-pic") || $(el).hasClass("game-board__cell-box")) {
+                return el.id.match(/r\d+c\d+/g)[0];
+            } // end of if invalid element
+        }, // end of extract row col from id
+
         checkSwipeDirection = ids => {
             if (ids[0] && ids[1]) {
-                console.log("OK");
-            } else {
-                console.log("NOT OK");
-            } // end of if one of the ids missing
+                // extract coordinates from ids
+                const [Y1, X1] = [...ids[0].match(/\d+/g)].map(Number),
+                    [Y2, X2] = [...ids[1].match(/\d+/g)].map(Number),
+                    X = X2 - X1,
+                    Y = Y2 - Y1;
+
+                // check which axis is affected more by the swipe
+                if (Math.abs(X) === Math.abs(Y)) {
+                    console.log("NO MOVE");
+                } else
+                    if (Math.abs(X) > Math.abs(Y)) {
+                        console.log("HORIZONTAL", X, Y);
+                    } else {
+                        console.log("VERTICAL", X, Y);
+                    } // end of determining of axis
+            } // end of if none of the ids missing
         }; // end of checkSwipeDirection
 
     let swapIds = [null, null];
@@ -235,14 +249,19 @@ function addGameBoardEvents() {
         console.log("MOUSEDOWN", swapIds);
     }); // end of game board mousedown
 
-    $(".game-board__table").on("mouseup", function (event) {
+    $(".game-board__table").on("mouseout", function (event) {
         event.preventDefault();
         swapIds[1] = extractRowCol(event.target);
         checkSwipeDirection(swapIds);
-        console.log("MOUSEUP", swapIds);
+        //console.log("MOUSEUP", swapIds);
+    }); // end of game board mouseout
+
+    $(".game-board__table").on("mouseup", function (event) {
+        event.preventDefault();
 
         // reset ids
         swapIds = [null, null];
+        console.log("MOUSEUP", swapIds);
     }); // end of game board mouseup
 } // end of addGameBoardEvents
 
