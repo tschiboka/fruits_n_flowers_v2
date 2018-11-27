@@ -1,6 +1,11 @@
 $(document).ready(
-    // delay start while logo animation is running
-    () => { setTimeout(() => { start(); }, 3000); }
+    () => {
+        // preload pictures while logo animation is running
+        preloadPics();
+
+        // delay start while logo animation is running
+        setTimeout(() => { start(); }, 3000);
+    } // end of ready
 );
 
 function start() {
@@ -17,6 +22,33 @@ function start() {
     addGameBoardEvents();
 } // end of start
 
+
+function preloadPics() {
+    path = [
+        "fruits/strawberry",
+        "fruits/peach",
+        "fruits/plum",
+        "fruits/orange",
+        "fruits/lime",
+        "fruits/apple",
+        "fruits/lemon",
+        "fruits/kiwi",
+        "fruits/blood_orange"
+    ]; // end of fileName
+
+    try {
+        path.forEach(p => {
+            const picVarName = p.match(/\/.+/g)[0].match(/\w+/)[0],
+                img = new Image();
+
+            img.src = `../images/${p}.png`;
+            app.images[picVarName] = img;
+        }); // end of forEach path
+    } // end of try loading images
+    catch (e) {
+        alert("One or more picture couldn't be loaded from server!");
+    } // end of catch
+} // end of preloadPics
 
 
 function createLevelPageIndicator() {
@@ -245,7 +277,8 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
-};
+    "images": [],         // the preloaded pictures
+}; // end of app global object
 
 
 
@@ -304,24 +337,15 @@ function createBoardArray(level) {
 
 
 function displayBoard(level) {
-    fileName = {
-        "1": "fruits/strawberry",
-        "2": "fruits/peach",
-        "3": "fruits/plum",
-        "4": "fruits/orange",
-        "5": "fruits/lime",
-        "6": "fruits/apple",
-        "7": "fruits/lemon",
-        "8": "fruits/kiwi",
-        "9": "fruits/blood-orange"
-    }
+    console.log(app.images);
+
 
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
             const idName = `#r${r}c${c}-pic`;
 
-            $(idName).css("background-image", `url(../images/${fileName[app.board[r][c]]}.png)`);
+            $(idName).css("background-image");
 
             console.log($(idName).css("background-image"));
         } // end of cell iteration
