@@ -174,10 +174,10 @@
 
             .game-board__cell-pic {
                 position: absolute;
-                top: 14%;
-                left: 14%;
-                width: 72%;
-                height: 72%;
+                top: 12%;
+                left: 12%;
+                width: 76%;
+                height: 76%;
                 background-size: cover;
             }
 
@@ -189,6 +189,20 @@
                 height: 100%;
                 background-size: cover;
             }
+
+            .spin-pic {
+                animation: spin-cell 15s linear infinite;
+            }
         }
+    }
+}
+
+@keyframes spin-cell {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(359deg);
     }
 }

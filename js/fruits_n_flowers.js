@@ -35,6 +35,13 @@ function preloadPics() {
         "walls/stone_sm",
         "walls/stone_md",
         "walls/stone_lg",
+        "flowers/flower1",
+        "flowers/flower2",
+        "flowers/flower3",
+        "flowers/flower4",
+        "flowers/flower5",
+        "misc/basket",
+        "misc/diamond",
     ]; // end of fileName
 
     try {
@@ -303,13 +310,13 @@ var levels = [
             "#########",
             "#6632729#",
             "#4436882#",
-            "#3426163#",
+            "#3426*63#",
             "#5921125#",
             "#1155489#",
-            "#1898686#",
+            "#18ABCDE#",
             "#9912937#",
             "#SL35581#",
-            "#7M26792#",
+            "#UM26792#",
             "#########",
         ]
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -334,7 +341,7 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
-    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "R", "S", "M", "L"],
+    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
     "images": [],         // the preloaded pictures
 }; // end of app global object
 
@@ -430,6 +437,13 @@ function displayBoard() {
         "S": app.images.stone_sm,
         "M": app.images.stone_md,
         "L": app.images.stone_lg,
+        "A": app.images.flower1,
+        "B": app.images.flower2,
+        "C": app.images.flower3,
+        "D": app.images.flower4,
+        "E": app.images.flower5,
+        "U": app.images.basket,
+        "*": app.images.diamond,
     }; // end of imgMap
 
 
@@ -441,13 +455,20 @@ function displayBoard() {
             // set wall sizes bigger
             if (app.board[r][c] === "#") {
                 $(idName).addClass("wall-size");
-                console.log("wall");
             } // end of if it's a wall 
             else {
                 $(idName).removeClass("wall-size");
             } // end of if not a wall
 
-            console.log(imgMap[app.board[r][c]]);
+
+            // spin flowers and diamonds
+            if (["A", "B", "C", "D", "E", "*"].find(cell => cell === app.board[r][c])) {
+                $(idName).addClass("spin-pic");
+            } // end of if cell is spinning
+            else {
+                $(idName).removeClass("spin-pic");
+            }
+
             $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
         } // end of cell iteration
     } // end of row iteration
