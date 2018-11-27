@@ -30,7 +30,8 @@ function preloadPics() {
         "fruits/apple",
         "fruits/lemon",
         "fruits/kiwi",
-        "fruits/blood_orange"
+        "fruits/blood_orange",
+        "walls/rock_wall",
     ]; // end of fileName
 
     try {
@@ -69,12 +70,12 @@ function createLevelPageIndicator() {
 
         if (i == 0) {
             $(light).addClass("level-light--active");
-        }
+        } // end of if first page
 
         $(indicator).append(light);
         $(".level-menu__header__level-indicator").append(indicator);
-    }
-}
+    } // end of level page iteration
+} // end of createLevelPageIndicator
 
 function createLevelTables() {
     // get how many tables are created
@@ -229,13 +230,15 @@ function addGameBoardEvents() {
                     Y = Y2 - Y1;
 
                 // check which axis is affected more by the swipe
-                if (Math.abs(X) === Math.abs(Y)) {
-                    console.log("NO MOVE");
+                if (X === Y) {
+                    return "NOMOVE";
                 } else
                     if (Math.abs(X) > Math.abs(Y)) {
-                        console.log("HORIZONTAL", X, Y);
+                        if (X1 > X2) return "LEFT";
+                        else return "RIGHT";
                     } else {
-                        console.log("VERTICAL", X, Y);
+                        if (Y1 > Y2) return "UP";
+                        else return "DOWN";
                     } // end of determining of axis
             } // end of if none of the ids missing
         }; // end of checkSwipeDirection
@@ -250,10 +253,12 @@ function addGameBoardEvents() {
     }); // end of game board mousedown
 
     $(".game-board__table").on("mouseout", function (event) {
-        event.preventDefault();
-        swapIds[1] = extractRowCol(event.target);
-        checkSwipeDirection(swapIds);
-        //console.log("MOUSEUP", swapIds);
+        if (swapIds[0]) {
+            event.preventDefault();
+            swapIds[1] = extractRowCol(event.target);
+            console.log("TARGET", swapIds);
+            console.log("DIRECTION", checkSwipeDirection(swapIds));
+        } // end of if mousedown has already happened
     }); // end of game board mouseout
 
     $(".game-board__table").on("mouseup", function (event) {
@@ -280,8 +285,8 @@ function addGameBoardEvents() {
  *         - "1" - "9" : cell is different fruits
  *         - "*" - : any random fruits
  *         - "A" - "G" : cell is one of the flowers
- *         - "#" : cell is wall (unbreakable)
- *         - "@" : cell is rock (breakable)
+ *         - "W" : cell is wall (breakable)
+ *         - "R" : cell is rock (unbreakable)
  *         - "U" : cell is basket
  *         - "a" - "z" :lower case letters are kept for special characters like explosions and tome stopppers
  */
@@ -290,17 +295,17 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "1,2,5,4,8,9,7,8,1",
-            "2,2,6,6,3,2,7,2,9",
-            "1,3,4,4,3,6,8,8,2",
-            "9,4,4,3,2,6,1,6,3",
-            "8,9,5,1,2,6,1,2,5",
-            "6,9,1,1,5,5,4,8,9",
-            "6,9,1,8,9,8,6,8,6",
-            "4,6,9,9,1,2,9,3,7",
-            "8,7,8,5,3,5,5,5,8",
-            "9,8,7,7,2,6,7,9,2",
-            "2,7,7,1,7,6,7,1,4",
+            "RRRRRRRRR",
+            "R6632729R",
+            "R4436882R",
+            "R3426163R",
+            "R5921125R",
+            "R1155489R",
+            "R1898686R",
+            "R9912937R",
+            "R8535581R",
+            "R7726792R",
+            "RRRRRRRRR",
         ]
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -324,7 +329,7 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
-    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "R"],
     "images": [],         // the preloaded pictures
 }; // end of app global object
 
@@ -380,7 +385,7 @@ function createGameBoard() {
 
 
 function createBoardArray(level) {
-    const board = levels[level]["blueprint"].map(row => row.split(","));
+    const board = levels[level]["blueprint"].map(row => [...row]);
 
     // check if level is crafted correctly
 
@@ -416,6 +421,7 @@ function displayBoard() {
         "7": app.images.lemon,
         "8": app.images.blood_orange,
         "9": app.images.kiwi,
+        "R": app.images.rock_wall,
     }; // end of imgMap
 
 
@@ -423,6 +429,16 @@ function displayBoard() {
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
             const idName = `#r${r}c${c}-pic`;
+
+            // set wall sizes bigger
+            if (app.board[r][c] === "R" || app.board[r][c] === "W") {
+                $(idName).addClass("wall-size");
+                console.log("wall");
+            } // end of if it's a wall 
+            else {
+                $(idName).removeClass("wall-size");
+            } // end of if not a wall
+
 
             $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
         } // end of cell iteration
