@@ -221,7 +221,9 @@ function styleLevelMenuToCurrenPage() {
         .html(`-&lt;[&nbsp;&nbsp;${activePageNum} / ${Math.ceil(levels.length / 25)}&nbsp;&nbsp;]&gt;-`);
 } // end of styleLevelMenu
 
-
+// In this function the event delegation is done by the characters id.
+// Both box and picture can be targets, and their class name has their 
+// unic number.
 function addGameBoardEvents() {
     const
         extractRowCol = el => {
@@ -241,7 +243,7 @@ function addGameBoardEvents() {
 
                 // check which axis is affected more by the swipe
                 if (X === Y) {
-                    return "NOMOVE";
+                    return "NOMOVE"; // diagonal swipes are not valid
                 } else
                     if (Math.abs(X) > Math.abs(Y)) {
                         if (X1 > X2) return "LEFT";
@@ -271,17 +273,21 @@ function addGameBoardEvents() {
     $(".game-board__table").on("mouseup", function (event) {
         event.preventDefault();
 
-        select(swapIds[0], checkSwipeDirection(swapIds));
+        if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
+            swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
+        } // end of if swipe is mobile
         // reset ids
         swapIds = [null, null];
     }); // end of game board mouseup
 } // end of addGameBoardEvents
 
 
-
-function select(startId, dir) {
+// Check if swipe is valid in terms of immobile characters
+// And return the row and column coords.
+function checkswipeMobility(startId, dir) {
     if (["LEFT", "RIGHT", "UP", "DOWN"].find(dirs => dirs === dir)) {
         const [R1, C1] = startId.match(/\d+/g).map(Number);  // ROW COL
+
         // check board if the move is not possible because of walls and stones
         const originVal = app.board[R1][C1];
         let [R2, C2] = [R1, C1];  // copy
@@ -296,12 +302,40 @@ function select(startId, dir) {
 
         const destinVal = app.board[R2][C2],
             immobileChars = ["S", "M", "L", "#", "U"];
+
+        // check if swipe origin or destination are immobile
         if (immobileChars.find(ch => ch === originVal || ch === destinVal)) {
-            console.log("MOVE IS IMPOSSIBLE");
-        }
-        console.log(originVal, destinVal);
+            return void (0);
+        } // end of immobiliti check
+
+        return [R1, C1, R2, C2, dir];
     } // end of if direction is valid
 } // end of select
+
+
+function swipeCharacters(swipeArgs) {
+    function swapCharacters(r1, c1, r2, c2) {
+        const temp = app.board[r1][c1];
+
+        app.board[r1][c1] = app.board[r2][c2];
+        app.board[r2][c2] = temp;
+    } // end of swipeCharacters
+
+
+    const [R1, C1, R2, C2, dir] = [...swipeArgs];  // destruct args
+
+    // check if origin ar destination is a flower and swipe them if they are
+    const flowerChars = ["A", "B", "C", "D", "E"];
+    if (flowerChars.find(fl => fl === app.board[R1][C1] || fl === app.board[R2][C2])) {
+        console.log("ITS A FLOWER!", dir);
+        // swap if direction is horizontal
+        if (dir === "LEFT" || dir === "RIGHT") {
+            swapCharacters(R1, C1, R2, C2);
+            displayBoard();
+        } // end of if left or right
+    } // end of if any char is flower
+    console.log("SWIPE", R1, C1, R2, C2);
+} // end of swipeCharacters
 
 
 /*
