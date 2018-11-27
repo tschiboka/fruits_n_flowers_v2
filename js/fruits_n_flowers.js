@@ -17,9 +17,6 @@ function start() {
     createLevelPageIndicator();
     styleLevelMenuToCurrenPage();
     addLevelEvents();
-
-    // prepare game board
-    addGameBoardEvents();
 } // end of start
 
 
@@ -215,7 +212,38 @@ function styleLevelMenuToCurrenPage() {
 
 
 function addGameBoardEvents() {
+    const extractRowCol = el => {
+        // eleminate any invalid elements
+        if ($(el).hasClass("game-board__cell-pic") || $(el).hasClass("game-board__cell-box")) {
+            return el.id.match(/r\d+c\d+/g)[0];
+        } // end of if invalid element
+    }, // end of extract row col from id
+        checkSwipeDirection = ids => {
+            if (ids[0] && ids[1]) {
+                console.log("OK");
+            } else {
+                console.log("NOT OK");
+            } // end of if one of the ids missing
+        }; // end of checkSwipeDirection
 
+    let swapIds = [null, null];
+
+    // event on a game board cell delegated to game board
+    $(".game-board__table").on("mousedown", function (event) {
+        event.preventDefault();
+        swapIds[0] = extractRowCol(event.target);
+        console.log("MOUSEDOWN", swapIds);
+    }); // end of game board mousedown
+
+    $(".game-board__table").on("mouseup", function (event) {
+        event.preventDefault();
+        swapIds[1] = extractRowCol(event.target);
+        checkSwipeDirection(swapIds);
+        console.log("MOUSEUP", swapIds);
+
+        // reset ids
+        swapIds = [null, null];
+    }); // end of game board mouseup
 } // end of addGameBoardEvents
 
 
@@ -277,6 +305,7 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
+    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
     "images": [],         // the preloaded pictures
 }; // end of app global object
 
@@ -292,7 +321,8 @@ function startLevel(level) {
     // create game environment
     createGameBoard();
     createBoardArray(level - 1);
-    displayBoard(level - 1);
+    displayBoard();
+    addGameBoardEvents();
 } // end of startLevel
 
 
@@ -345,9 +375,7 @@ function createBoardArray(level) {
         } // end of if length is incorrect
 
         row.map((cell, cellInd) => {
-            const validChars = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-            if (!validChars.find(ch => ch === cell)) {
+            if (!app.valid_board_characters.find(ch => ch === cell)) {
                 return Error(`Invalid character (${cell}) at row ${rowInd} cell ${cellInd}!`);
             } // end of if cell is not a valid char
         }); // end of cell iteration
@@ -358,7 +386,7 @@ function createBoardArray(level) {
 
 
 
-function displayBoard(level) {
+function displayBoard() {
     const imgMap = {
         "1": app.images.apple,
         "2": app.images.orange,
@@ -378,9 +406,6 @@ function displayBoard(level) {
             const idName = `#r${r}c${c}-pic`;
 
             $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
-            console.log(imgMap[app.board[r][c]].src);
-
-            console.log($(idName).css("background-image"));
         } // end of cell iteration
     } // end of row iteration
 } // end of displayBoard
