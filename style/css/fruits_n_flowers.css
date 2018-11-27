@@ -952,7 +952,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   left: 14%;
   width: 72%;
   height: 72%;
-  background-size: contain;
+  background-size: cover;
 }
 
 .game-board .game-board__table .game-board__cell-box .wall-size {
@@ -961,7 +961,7 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   left: 0%;
   width: 100%;
   height: 100%;
-  background-size: contain;
+  background-size: cover;
 }
 
 .game-board__inventory {
