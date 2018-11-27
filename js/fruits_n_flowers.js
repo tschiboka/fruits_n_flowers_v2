@@ -337,7 +337,17 @@ function createBoardArray(level) {
 
 
 function displayBoard(level) {
-    console.log(app.images);
+    const imgMap = {
+        "1": app.images.apple,
+        "2": app.images.orange,
+        "3": app.images.peach,
+        "4": app.images.strawberry,
+        "5": app.images.plum,
+        "6": app.images.lime,
+        "7": app.images.lemon,
+        "8": app.images.blood_orange,
+        "9": app.images.kiwi,
+    };
 
 
     // add the corrisponding icons to the board table
@@ -345,7 +355,8 @@ function displayBoard(level) {
         for (c = 0; c < 9; c++) {
             const idName = `#r${r}c${c}-pic`;
 
-            $(idName).css("background-image");
+            $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
+            console.log(imgMap[app.board[r][c]].src);
 
             console.log($(idName).css("background-image"));
         } // end of cell iteration
