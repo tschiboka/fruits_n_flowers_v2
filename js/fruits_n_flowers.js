@@ -32,6 +32,9 @@ function preloadPics() {
         "fruits/kiwi",
         "fruits/blood_orange",
         "walls/rock_wall",
+        "walls/stone_sm",
+        "walls/stone_md",
+        "walls/stone_lg",
     ]; // end of fileName
 
     try {
@@ -283,29 +286,31 @@ function addGameBoardEvents() {
  * Each level object consist :
  *     - blueprint: array of 11 strings with 9 chars
  *         - "1" - "9" : cell is different fruits
- *         - "*" - : any random fruits
- *         - "A" - "G" : cell is one of the flowers
- *         - "W" : cell is wall (breakable)
- *         - "R" : cell is rock (unbreakable)
- *         - "U" : cell is basket
- *         - "a" - "z" :lower case letters are kept for special characters like explosions and tome stopppers
+ *         - "*"       : any random fruits
+ *         - "A" - "E" : cell is one of the flowers
+ *         - "F"       : any random flower
+ *         - "S, M, L" : cell is stone small medium large (breakable)
+ *         - "#"       : cell is wall (unbreakable)
+ *         - "U"       : cell is basket
+ *         - "*"       : diamonds 
+ *         - "a" - "z" :lower case letters are kept for special characters like explosions and time stopers
  */
 
 var levels = [
     // level 1
     {
         "blueprint": [
-            "RRRRRRRRR",
-            "R6632729R",
-            "R4436882R",
-            "R3426163R",
-            "R5921125R",
-            "R1155489R",
-            "R1898686R",
-            "R9912937R",
-            "R8535581R",
-            "R7726792R",
-            "RRRRRRRRR",
+            "#########",
+            "#6632729#",
+            "#4436882#",
+            "#3426163#",
+            "#5921125#",
+            "#1155489#",
+            "#1898686#",
+            "#9912937#",
+            "#SL35581#",
+            "#7M26792#",
+            "#########",
         ]
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -329,7 +334,7 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
-    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "R"],
+    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "R", "S", "M", "L"],
     "images": [],         // the preloaded pictures
 }; // end of app global object
 
@@ -421,7 +426,10 @@ function displayBoard() {
         "7": app.images.lemon,
         "8": app.images.blood_orange,
         "9": app.images.kiwi,
-        "R": app.images.rock_wall,
+        "#": app.images.rock_wall,
+        "S": app.images.stone_sm,
+        "M": app.images.stone_md,
+        "L": app.images.stone_lg,
     }; // end of imgMap
 
 
@@ -431,7 +439,7 @@ function displayBoard() {
             const idName = `#r${r}c${c}-pic`;
 
             // set wall sizes bigger
-            if (app.board[r][c] === "R" || app.board[r][c] === "W") {
+            if (app.board[r][c] === "#") {
                 $(idName).addClass("wall-size");
                 console.log("wall");
             } // end of if it's a wall 
@@ -439,7 +447,7 @@ function displayBoard() {
                 $(idName).removeClass("wall-size");
             } // end of if not a wall
 
-
+            console.log(imgMap[app.board[r][c]]);
             $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
         } // end of cell iteration
     } // end of row iteration
