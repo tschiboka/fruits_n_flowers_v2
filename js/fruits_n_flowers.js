@@ -46,7 +46,7 @@ function preloadPics() {
         }); // end of forEach path
     } // end of try loading images
     catch (e) {
-        alert("One or more picture couldn't be loaded from server!");
+        throw Error("404 One or more picture couldn't be loaded from server!");
     } // end of catch
 } // end of preloadPics
 
@@ -230,12 +230,12 @@ function addGameBoardEvents() {
 /* 
  * Each level object consist :
  *     - blueprint: array of 11 strings with 9 chars
- *         - "0": cell is transparent
  *         - "1" - "9" : cell is different fruits
+ *         - "*" - : any random fruits
  *         - "A" - "G" : cell is one of the flowers
- *         - "W" : cell is wall (unbreakable)
- *         - "R" : cell is rock (breakable)
- *         - "O" : cell is basket
+ *         - "#" : cell is wall (unbreakable)
+ *         - "@" : cell is rock (breakable)
+ *         - "U" : cell is basket
  *         - "a" - "z" :lower case letters are kept for special characters like explosions and tome stopppers
  */
 
@@ -253,7 +253,7 @@ var levels = [
             "4,6,9,9,1,2,9,3,7",
             "8,7,8,5,3,5,5,5,8",
             "9,8,7,7,2,6,7,9,2",
-            "2,7,7,1,7,6,7,1,3",
+            "2,7,7,1,7,6,7,1,4",
         ]
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -331,7 +331,29 @@ function createGameBoard() {
 
 
 function createBoardArray(level) {
-    app.board = levels[level]["blueprint"].map(row => row.split(","));
+    const board = levels[level]["blueprint"].map(row => row.split(","));
+
+    // check if level is crafted correctly
+
+    if (board.length !== 11) {
+        return Error("The length of game-board is incorrect, it must be 11, instead it is :" + board.length + "!");
+    } // end of if board length is incorrect
+
+    board.map((row, rowInd) => {
+        if (row.length !== 9) {
+            return Error(`Invalid length of row[${rowInd}]. It must be 9, instead it is ${row.length}!`);
+        } // end of if length is incorrect
+
+        row.map((cell, cellInd) => {
+            const validChars = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+            if (!validChars.find(ch => ch === cell)) {
+                return Error(`Invalid character (${cell}) at row ${rowInd} cell ${cellInd}!`);
+            } // end of if cell is not a valid char
+        }); // end of cell iteration
+    }); // end of board row iteration
+
+    app.board = board;
 } // end of loadBoardArray
 
 
@@ -347,7 +369,7 @@ function displayBoard(level) {
         "7": app.images.lemon,
         "8": app.images.blood_orange,
         "9": app.images.kiwi,
-    };
+    }; // end of imgMap
 
 
     // add the corrisponding icons to the board table
