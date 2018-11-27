@@ -281,9 +281,25 @@ function addGameBoardEvents() {
 
 function select(startId, dir) {
     if (["LEFT", "RIGHT", "UP", "DOWN"].find(dirs => dirs === dir)) {
-        // check board if the move is possible because of walls and stones
-        const originVal = []
-        console.log(startId, dir);
+        const [R1, C1] = startId.match(/\d+/g).map(Number);  // ROW COL
+        // check board if the move is not possible because of walls and stones
+        const originVal = app.board[R1][C1];
+        let [R2, C2] = [R1, C1];  // copy
+
+        // adjust it to the new direction
+        switch (dir) {
+            case "LEFT": { --C2; break; }
+            case "RIGHT": { ++C2; break; }
+            case "UP": { --R2; break; }
+            case "DOWN": { ++R2; break; }
+        } // end of switch
+
+        const destinVal = app.board[R2][C2],
+            immobileChars = ["S", "M", "L", "#", "U"];
+        if (immobileChars.find(ch => ch === originVal || ch === destinVal)) {
+            console.log("MOVE IS IMPOSSIBLE");
+        }
+        console.log(originVal, destinVal);
     } // end of if direction is valid
 } // end of select
 
@@ -313,7 +329,7 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "16632729#",
+            "#6632729#",
             "#4436882#",
             "#3426*63#",
             "#5921125#",
