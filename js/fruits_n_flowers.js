@@ -259,28 +259,33 @@ function addGameBoardEvents() {
     $(".game-board__table").on("mousedown", function (event) {
         event.preventDefault();
         swapIds[0] = extractRowCol(event.target);
-        console.log("MOUSEDOWN", swapIds);
     }); // end of game board mousedown
 
     $(".game-board__table").on("mouseout", function (event) {
         if (swapIds[0]) {
             event.preventDefault();
             swapIds[1] = extractRowCol(event.target);
-            console.log("TARGET", swapIds);
-            console.log("DIRECTION", checkSwipeDirection(swapIds));
         } // end of if mousedown has already happened
     }); // end of game board mouseout
 
     $(".game-board__table").on("mouseup", function (event) {
         event.preventDefault();
 
+        select(swapIds[0], checkSwipeDirection(swapIds));
         // reset ids
         swapIds = [null, null];
-        console.log("MOUSEUP", swapIds);
     }); // end of game board mouseup
 } // end of addGameBoardEvents
 
 
+
+function select(startId, dir) {
+    if (["LEFT", "RIGHT", "UP", "DOWN"].find(dirs => dirs === dir)) {
+        // check board if the move is possible because of walls and stones
+        const originVal = []
+        console.log(startId, dir);
+    } // end of if direction is valid
+} // end of select
 
 
 /*
@@ -308,7 +313,7 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "#6632729#",
+            "16632729#",
             "#4436882#",
             "#3426*63#",
             "#5921125#",
@@ -353,6 +358,7 @@ function startLevel(level) {
     $(".level-menu").hide();
     $("header").addClass("header-out");
     $(".game-board").show();
+    //toggleFullScreen();
 
     // create game environment
     createGameBoard();
