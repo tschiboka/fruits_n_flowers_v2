@@ -221,6 +221,9 @@ function styleLevelMenuToCurrenPage() {
         .html(`-&lt;[&nbsp;&nbsp;${activePageNum} / ${Math.ceil(levels.length / 25)}&nbsp;&nbsp;]&gt;-`);
 } // end of styleLevelMenu
 
+
+
+
 // In this function the event delegation is done by the characters id.
 // Both box and picture can be targets, and their class name has their 
 // unic number.
@@ -240,7 +243,6 @@ function addGameBoardEvents() {
                     [Y2, X2] = [...ids[1].match(/\d+/g)].map(Number),
                     X = X2 - X1,
                     Y = Y2 - Y1;
-
                 // check which axis is affected more by the swipe
                 if (X === Y) {
                     return "NOMOVE"; // diagonal swipes are not valid
@@ -258,26 +260,51 @@ function addGameBoardEvents() {
     let swapIds = [null, null];
 
     // event on a game board cell delegated to game board
-    $(".game-board__table").on("mousedown", function (event) {
+
+
+    $(".game-board__table").on("mousedown touchstart", function (event) {
         event.preventDefault();
         swapIds[0] = extractRowCol(event.target);
     }); // end of game board mousedown
 
-    $(".game-board__table").on("mouseout", function (event) {
-        if (swapIds[0]) {
-            event.preventDefault();
-            swapIds[1] = extractRowCol(event.target);
-        } // end of if mousedown has already happened
-    }); // end of game board mouseout
-
     $(".game-board__table").on("mouseup", function (event) {
         event.preventDefault();
 
-        if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
-            swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
-        } // end of if swipe is mobile
-        // reset ids
-        swapIds = [null, null];
+        if (swapIds[0]) {
+            event.preventDefault();
+            swapIds[1] = extractRowCol(event.target);
+
+            // check for mobility (walls, stones...)
+            if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
+                swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
+            } // end of if swipe is mobile
+            // reset ids
+            swapIds = [null, null];
+        } // end of if mousedown or touchstart has already happened
+    }); // end of game board mouseup
+
+    $(".game-board__table").on("touchend", function (event) {
+        event.preventDefault();
+
+        if (swapIds[0]) {
+            event.preventDefault();
+
+            // Touchend returns the start position as a target by default
+            // So we extract the end element by identifying which element
+            // is on the current cursor position when the tounchend happens.
+            const x = event.changedTouches[0].pageX,
+                y = event.changedTouches[0].pageY,
+                touchEndElem = document.elementFromPoint(x, y);
+
+            swapIds[1] = extractRowCol(touchEndElem);
+
+            // check for mobility (walls, stones...)
+            if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
+                swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
+            } // end of if swipe is mobile
+            // reset ids
+            swapIds = [null, null];
+        } // end of if mousedown or touchstart has already happened
     }); // end of game board mouseup
 } // end of addGameBoardEvents
 
@@ -327,14 +354,12 @@ function swipeCharacters(swipeArgs) {
     // check if origin ar destination is a flower and swipe them if they are
     const flowerChars = ["A", "B", "C", "D", "E"];
     if (flowerChars.find(fl => fl === app.board[R1][C1] || fl === app.board[R2][C2])) {
-        console.log("ITS A FLOWER!", dir);
         // swap if direction is horizontal
         if (dir === "LEFT" || dir === "RIGHT") {
             swapCharacters(R1, C1, R2, C2);
             displayBoard();
         } // end of if left or right
     } // end of if any char is flower
-    console.log("SWIPE", R1, C1, R2, C2);
 } // end of swipeCharacters
 
 
