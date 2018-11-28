@@ -365,6 +365,7 @@ function swipeCharacters(swipeArgs) {
     swapCharacters(R1, C1, R2, C2);
     displayBoard();
     const matches = checkMatches();
+    console.log(matches);
     if (!matches) {
         swapCharacters(R1, C1, R2, C2);
         displayBoard();
@@ -394,9 +395,10 @@ function checkMatches() {
     } // end of row iteration
 
     function checkT7(r, c) {
-
         match("T7", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4], [r + 1, c + 2], [r + 2, c + 2]);
-
+        match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 4, c + 2], [r, c + 2], [r + 1, c + 2]);
+        match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3], [r + 2, c + 4]);
+        match("T7", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 4, c], [r + 2, c + 1], [r + 2, c + 2]);
     } // end of checking T7 matches
 
     function match(pattern, ...ids) {
@@ -445,10 +447,10 @@ var levels = [
         "blueprint": [
             "#########",
             "#6642729#",
-            "#4434482#",
-            "#3446*63#",
+            "#2946682#",
+            "#24144*3#",
             "#5941125#",
-            "#1155489#",
+            "#1145489#",
             "#18ABCDE#",
             "#9912937#",
             "#SL35581#",
