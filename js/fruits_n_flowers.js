@@ -363,17 +363,14 @@ function swipeCharacters(swipeArgs) {
 
 
     swapCharacters(R1, C1, R2, C2);
-    console.log("DISPLAY11111");
     displayBoard();
     const matches = checkMatches();
     console.log(JSON.stringify(matches));
     if (!matches) {
         swapCharacters(R1, C1, R2, C2);
+        console.log("SWAP");
     } // end of swap the chars back
-    else {
-        console.log("DISPLAY2222");
-        displayBoard();
-    } // end of if matches found
+    displayBoard();
 } // end of swipeCharacters
 
 
@@ -400,21 +397,19 @@ function checkMatches() {
 
     function checkPattern(r, c) {
         match("T7", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 2], [2, 2]);
-        /*
-        match("T7", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4], [r + 1, c + 2], [r + 2, c + 2]);
-        match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 4, c + 2], [r, c + 2], [r + 1, c + 2]);
-        match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3], [r + 2, c + 4]);
-        match("T7", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 4, c], [r + 2, c + 1], [r + 2, c + 2]);
-        match("T6", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r + 1, c + 2], [r + 2, c + 2]);
-        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 2, c + 1], [r + 2, c]);
-        match("T6", [r, c + 1], [r + 1, c + 1], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3]);
-        match("T6", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 2, c + 1], [r + 2, c + 2]);
-        match("T6", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r + 1, c + 1], [r + 2, c + 1]);
-        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 1, c + 1], [r + 1, c]);
-        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3]);
-        match("T6", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 1, c + 1], [r + 1, c + 2]);
-        match("I5", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4]);
-        match("I5", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 4, c]); */
+        match("T7", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [2, 0], [2, 1]);
+        match("T7", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [0, 2], [1, 2]);
+        match("T7", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [2, 1], [2, 2]);
+        match("T6", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [1, 2], [2, 2]);
+        match("T6", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [2, 0], [2, 1]);
+        match("T6", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [0, 1], [1, 1]);
+        match("T6", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [2, 1], [2, 2]);
+        match("T6", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [1, 1], [2, 1]);
+        match("T6", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [1, 0], [1, 1]);
+        match("T6", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [0, 2], [1, 2]);
+        match("T6", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [1, 1], [1, 2]);
+        match("I5", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4]);
+        match("I5", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [4, 0]);
     } // end of checking matches
 
 
@@ -486,7 +481,7 @@ var levels = [
             "#########",
             "#6684729#",
             "#2954382#",
-            "#244344*#",
+            "#215344*#",
             "#5914125#",
             "#1154489#",
             "#189BCDE#",
@@ -623,7 +618,6 @@ function displayBoard() {
         "*": app.images.diamond,
     }; // end of imgMap
 
-    console.log("DISPLAY");
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
@@ -646,7 +640,6 @@ function displayBoard() {
                 $(idName).removeClass("spin-pic");
             }
 
-            console.log(app.board[r][c]);
             if (app.board[r][c] === "X") {
                 $(idName).css("background-image", "none");
             } else {
