@@ -42,6 +42,15 @@ function preloadPics() {
         "flowers/flower5",
         "misc/basket",
         "misc/diamond",
+        "shards/apple_shard1", "shards/apple_shard2", "shards/apple_shard3", "shards/apple_shard4", "shards/apple_shard5",
+        "shards/blood-orange_shard1", "shards/blood-orange_shard2", "shards/blood-orange_shard3", "shards/blood-orange_shard4", "shards/blood-orange_shard5",
+        "shards/kiwi_shard1", "shards/kiwi_shard2", "shards/kiwi_shard3", "shards/kiwi_shard4", "shards/kiwi_shard5",
+        "shards/lemon_shard1", "shards/lemon_shard2", "shards/lemon_shard3", "shards/lemon_shard4", "shards/lemon_shard5",
+        "shards/lime_shard1", "shards/lime_shard2", "shards/lime_shard3", "shards/lime_shard4", "shards/lime_shard5",
+        "shards/orange_shard1", "shards/orange_shard2", "shards/orange_shard3", "shards/orange_shard4", "shards/orange_shard5",
+        "shards/peach_shard1", "shards/peach_shard2", "shards/peach_shard3", "shards/peach_shard4", "shards/peach_shard5",
+        "shards/plum_shard1", "shards/plum_shard2", "shards/plum_shard3", "shards/plum_shard4", "shards/plum_shard5",
+        "shards/strawberry_shard1", "shards/strawberry_shard2", "shards/strawberry_shard3", "shards/strawberry_shard4", "shards/strawberry_shard5",
     ]; // end of fileName
 
     try {
@@ -384,7 +393,10 @@ function swipeCharacters(swipeArgs) {
             // delay and stop user interaction while showing unmatched swap
             swapDelay();
         } // end of none is flower
-    } // end of swap the chars back
+    } // end of if no matches found
+    else {
+        animateExplosions(matches);
+    } // end of if matches found
     displayBoard();
 } // end of swipeCharacters
 
@@ -484,6 +496,10 @@ function checkMatches() {
 } // end of checkMatches
 
 
+
+function animateExplosions(matches) {
+
+} // end of animateExplosions
 
 
 /*
