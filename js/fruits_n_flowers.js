@@ -390,16 +390,24 @@ function checkMatches() {
     const matches = [];
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
-            checkT7(r, c);
+            checkPattern(r, c);
         } // end of cell iteration
     } // end of row iteration
 
-    function checkT7(r, c) {
+    function checkPattern(r, c) {
         match("T7", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4], [r + 1, c + 2], [r + 2, c + 2]);
         match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 4, c + 2], [r, c + 2], [r + 1, c + 2]);
         match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3], [r + 2, c + 4]);
         match("T7", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 4, c], [r + 2, c + 1], [r + 2, c + 2]);
-    } // end of checking T7 matches
+        match("T6", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r + 1, c + 2], [r + 2, c + 2]);
+        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 2, c + 1], [r + 2, c]);
+        match("T6", [r, c + 1], [r + 1, c + 1], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3]);
+        match("T6", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 2, c + 1], [r + 2, c + 2]);
+        match("T6", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r + 1, c + 1], [r + 2, c + 1]);
+        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 1, c + 1], [r + 1, c]);
+        match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3]);
+        match("T6", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 1, c + 1], [r + 1, c + 2]);
+    } // end of checking matches
 
     function match(pattern, ...ids) {
         const validId = (ca => ca[0] < 10 && ca[1] < 8); // if any coords out of range return false
@@ -446,11 +454,11 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "#6642729#",
-            "#2946682#",
-            "#24144*3#",
-            "#5941125#",
-            "#1145489#",
+            "#6683729#",
+            "#2954382#",
+            "#294344*#",
+            "#5914125#",
+            "#1154489#",
             "#18ABCDE#",
             "#9912937#",
             "#SL35581#",
