@@ -261,7 +261,6 @@ function addGameBoardEvents() {
 
     // event on a game board cell delegated to game board
 
-
     $(".game-board__table").on("mousedown touchstart", function (event) {
         event.preventDefault();
         swapIds[0] = extractRowCol(event.target);
@@ -359,8 +358,38 @@ function swipeCharacters(swipeArgs) {
             swapCharacters(R1, C1, R2, C2);
             displayBoard();
         } // end of if left or right
+        else return void (0); // dont check matches if flowers are attempted to move vertically
     } // end of if any char is flower
+
+    swapCharacters(R1, C1, R2, C2);
+    if (!checkMatches()) {
+        swapCharacters(R1, C1, R2, C2);
+    } // swap the chars back
 } // end of swipeCharacters
+
+
+
+/*
+ 
+
+            GAME BOARD FUNCTIONS
+
+
+*/
+
+
+
+// Check all possible match patterns and return them in an array
+// Multiple matches return multiple arrays
+function checkMatches() {
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            console.log(app.board[r][c]);
+        } // end of cell iteration
+    } // end of row iteration
+} // end of checkMatches
+
+
 
 
 /*
