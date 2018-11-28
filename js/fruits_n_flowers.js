@@ -361,10 +361,7 @@ function swipeCharacters(swipeArgs) {
     const flowerChars = ["A", "B", "C", "D", "E"];
     if (flowerChars.find(fl => fl === app.board[R1][C1] || fl === app.board[R2][C2])) {
         // swap if direction is horizontal
-        if (dir === "LEFT" || dir === "RIGHT") {
-            swapCharacters(R1, C1, R2, C2);
-        } // end of if left or right
-        else return void (0); // dont check matches if flowers are attempted to move vertically
+        if (dir === "UP" || dir === "DOWN") return void (0); // dont check matches if flowers are attempted to move vertically
     } // end of if any char is flower
 
 
@@ -372,17 +369,21 @@ function swipeCharacters(swipeArgs) {
     const matches = checkMatches();
     console.log(JSON.stringify(matches));
     if (!matches) {
-        // delay to see the unmatching swipe
-        const swapDelay = () => setTimeout(() => {
-            swapCharacters(R1, C1, R2, C2);
-            console.log("SWAP Delay Up");
-            clearTimeout(swapDelay);
-            app.game_interaction_enabled = true; // set interaction back
-        }, 300); // end of swapDelay
+        // if none of the characters are flower don't delay and swipe back
+        if (!flowerChars.find(fl => fl === app.board[R1][C1]) && !flowerChars.find(fl => fl === app.board[R2][C2])) {
+            app.game_interaction_enabled = false;
 
-        // delay and stop user interaction while showing unmatched swap
-        swapDelay();
-        app.game_interaction_enabled = false;
+            // delay to see the unmatching swipe
+            const swapDelay = () => setTimeout(() => {
+                swapCharacters(R1, C1, R2, C2);
+                console.log("SWAP Delay Up");
+                clearTimeout(swapDelay);
+                app.game_interaction_enabled = true; // set interaction back
+            }, 300); // end of swapDelay 
+
+            // delay and stop user interaction while showing unmatched swap
+            swapDelay();
+        } // end of none is flower
     } // end of swap the chars back
     displayBoard();
 } // end of swipeCharacters
