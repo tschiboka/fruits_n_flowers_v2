@@ -361,9 +361,13 @@ function swipeCharacters(swipeArgs) {
         else return void (0); // dont check matches if flowers are attempted to move vertically
     } // end of if any char is flower
 
+
     swapCharacters(R1, C1, R2, C2);
-    if (!checkMatches()) {
+    displayBoard();
+    const matches = checkMatches();
+    if (!matches) {
         swapCharacters(R1, C1, R2, C2);
+        displayBoard();
     } // swap the chars back
 } // end of swipeCharacters
 
@@ -382,11 +386,34 @@ function swipeCharacters(swipeArgs) {
 // Check all possible match patterns and return them in an array
 // Multiple matches return multiple arrays
 function checkMatches() {
+    const matches = [];
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
-            console.log(app.board[r][c]);
+            checkT7(r, c);
         } // end of cell iteration
     } // end of row iteration
+
+    function checkT7(r, c) {
+
+        match("T7", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4], [r + 1, c + 2], [r + 2, c + 2]);
+
+    } // end of checking T7 matches
+
+    function match(pattern, ...ids) {
+        const validId = (ca => ca[0] < 10 && ca[1] < 8); // if any coords out of range return false
+
+        // if any of the ids are invalid return
+        for (i = 0; i < ids.length; i++) {
+            if (!validId(ids[i])) return void (0);
+        } // end of for ids
+
+        chars = ids.map(el => app.board[el[0]][el[1]]); // get all board values
+        const isMatching = chars.every((ch, _, a) => ch === a[0]); // check  if every char is the same
+        if (isMatching) {
+            matches.push([pattern, ...ids]);
+        } // end of its matching
+    } // end of general match function
+    return matches.length ? matches : false; // return false if no matches
 } // end of checkMatches
 
 
@@ -417,10 +444,10 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "#6632729#",
-            "#4436882#",
-            "#3426*63#",
-            "#5921125#",
+            "#6642729#",
+            "#4434482#",
+            "#3446*63#",
+            "#5941125#",
             "#1155489#",
             "#18ABCDE#",
             "#9912937#",
