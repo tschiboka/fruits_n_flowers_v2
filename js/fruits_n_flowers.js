@@ -363,13 +363,17 @@ function swipeCharacters(swipeArgs) {
 
 
     swapCharacters(R1, C1, R2, C2);
+    console.log("DISPLAY11111");
     displayBoard();
     const matches = checkMatches();
-    console.log(matches);
+    console.log(JSON.stringify(matches));
     if (!matches) {
         swapCharacters(R1, C1, R2, C2);
+    } // end of swap the chars back
+    else {
+        console.log("DISPLAY2222");
         displayBoard();
-    } // swap the chars back
+    } // end of if matches found
 } // end of swipeCharacters
 
 
@@ -395,6 +399,8 @@ function checkMatches() {
     } // end of row iteration
 
     function checkPattern(r, c) {
+        match("T7", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 2], [2, 2]);
+        /*
         match("T7", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4], [r + 1, c + 2], [r + 2, c + 2]);
         match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 4, c + 2], [r, c + 2], [r + 1, c + 2]);
         match("T7", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3], [r + 2, c + 4]);
@@ -407,37 +413,61 @@ function checkMatches() {
         match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c + 2], [r + 3, c + 2], [r + 1, c + 1], [r + 1, c]);
         match("T6", [r, c + 2], [r + 1, c + 2], [r + 2, c], [r + 2, c + 1], [r + 2, c + 2], [r + 2, c + 3]);
         match("T6", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 1, c + 1], [r + 1, c + 2]);
+        match("I5", [r, c], [r, c + 1], [r, c + 2], [r, c + 3], [r, c + 4]);
+        match("I5", [r, c], [r + 1, c], [r + 2, c], [r + 3, c], [r + 4, c]); */
     } // end of checking matches
 
-    function match(pattern, ...ids) {
-        const validId = (ca => ca[0] < 10 && ca[1] < 8); // if any coords out of range return false
 
-        // if any of the ids are invalid return
+
+    // match function arguments explained:
+    // 1 - pattern name: later on we can get bonus points by referring which pattern we matched
+    // 2 - [top-leftX, Y coordinates]: every single pattern search must start form top left,
+    //     thus we certainly can avoid bumping into negative numbers
+    // 3 - [[the pattern distance coordinates]]: the coordinates are representing the difference
+    //     from the top-left coordinates, resulting dryer code.
+    function match(patternName, [topLeftY, topLeftX], ...patterns) {
+        // create ids from pattern
+        const ids = patterns.map(p => [p[0] + topLeftY, p[1] + topLeftX]);
+
+
+        const fruits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+            isFruit = (r, c) => fruits.find(fr => fr === app.board[r][c]),
+            // if any coords in range and is fruit
+            validId = (ca => ca[0] < 10 && ca[1] < 8 && isFruit(ca[0], ca[1]));
+
+        // if any of the ids are invalid, return, making the search faster if we certainly know
+        // the pattern can not be matched
         for (i = 0; i < ids.length; i++) {
             if (!validId(ids[i])) return void (0);
         } // end of for ids
 
-        chars = ids.map(el => app.board[el[0]][el[1]]); // get all board values
+        chars = ids.map(ch => app.board[ch[0]][ch[1]]); // get all board values
+
         const isMatching = chars.every((ch, _, a) => ch === a[0]); // check  if every char is the same
         if (isMatching) {
-            matches.push([pattern, ...ids]);
-        } // end of its matching
+            matches.push([patternName, ...ids]);
+
+            // make matched patterns 0, so they won't be matched in other pattern searchres
+            // resulting faster code running
+            ids.forEach(id => app.board[id[0]][id[1]] = "X");
+        } // end of its matching 
     } // end of general match function
-    return matches.length ? matches : false; // return false if no matches
+    return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
 
 
 
 /*
-
+ 
         LEVELS
-
+ 
 */
 
 /* 
  * Each level object consist :
  *     - blueprint: array of 11 strings with 9 chars
+ *         - "X"       : transparent (when matches found)
  *         - "1" - "9" : cell is different fruits
  *         - "*"       : any random fruits
  *         - "A" - "E" : cell is one of the flowers
@@ -454,13 +484,13 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "#6683729#",
+            "#6684729#",
             "#2954382#",
-            "#294344*#",
+            "#244344*#",
             "#5914125#",
             "#1154489#",
-            "#18ABCDE#",
-            "#9912937#",
+            "#189BCDE#",
+            "#9919937#",
             "#SL35581#",
             "#UM26792#",
             "#########",
@@ -480,14 +510,14 @@ var levels = [
 
 
 /*
-
+ 
         GLOBAL APP VARIABLES
-
+ 
 */
 
 var app = {
     "board": [],          // the current game gems position
-    "valid_board_characters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
+    "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
     "images": [],         // the preloaded pictures
 }; // end of app global object
 
@@ -593,7 +623,7 @@ function displayBoard() {
         "*": app.images.diamond,
     }; // end of imgMap
 
-
+    console.log("DISPLAY");
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
@@ -616,7 +646,12 @@ function displayBoard() {
                 $(idName).removeClass("spin-pic");
             }
 
-            $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
+            console.log(app.board[r][c]);
+            if (app.board[r][c] === "X") {
+                $(idName).css("background-image", "none");
+            } else {
+                $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
+            } // end of if board value is not "0"
         } // end of cell iteration
     } // end of row iteration
 } // end of displayBoard
