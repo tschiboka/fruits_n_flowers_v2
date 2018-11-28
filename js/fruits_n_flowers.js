@@ -263,46 +263,52 @@ function addGameBoardEvents() {
 
     $(".game-board__table").on("mousedown touchstart", function (event) {
         event.preventDefault();
-        swapIds[0] = extractRowCol(event.target);
+        if (app.game_interaction_enabled) {
+            swapIds[0] = extractRowCol(event.target);
+        } // interact only when it's allowed
     }); // end of game board mousedown
 
     $(".game-board__table").on("mouseup", function (event) {
         event.preventDefault();
 
-        if (swapIds[0]) {
-            event.preventDefault();
-            swapIds[1] = extractRowCol(event.target);
+        if (app.game_interaction_enabled) {
+            if (swapIds[0]) {
+                event.preventDefault();
+                swapIds[1] = extractRowCol(event.target);
 
-            // check for mobility (walls, stones...)
-            if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
-                swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
-            } // end of if swipe is mobile
-            // reset ids
-            swapIds = [null, null];
-        } // end of if mousedown or touchstart has already happened
+                // check for mobility (walls, stones...)
+                if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
+                    swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
+                } // end of if swipe is mobile
+                // reset ids
+                swapIds = [null, null];
+            } // end of if mousedown or touchstart has already happened
+        } // interact only when it's allowed
     }); // end of game board mouseup
 
     $(".game-board__table").on("touchend", function (event) {
         event.preventDefault();
 
-        if (swapIds[0]) {
-            event.preventDefault();
+        if (app.game_interaction_enabled) {
+            if (swapIds[0]) {
+                event.preventDefault();
 
-            // Touchend returns the start position as a target by default
-            // So we extract the end element by identifying which element
-            // is on the current cursor position when the tounchend happens.
-            const x = event.changedTouches[0].pageX,
-                y = event.changedTouches[0].pageY,
-                touchEndElem = document.elementFromPoint(x, y);
+                // Touchend returns the start position as a target by default
+                // So we extract the end element by identifying which element
+                // is on the current cursor position when the tounchend happens.
+                const x = event.changedTouches[0].pageX,
+                    y = event.changedTouches[0].pageY,
+                    touchEndElem = document.elementFromPoint(x, y);
 
-            swapIds[1] = extractRowCol(touchEndElem);
+                swapIds[1] = extractRowCol(touchEndElem);
 
-            // check for mobility (walls, stones...)
-            if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
-                swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
-            } // end of if swipe is mobile
-            // reset ids
-            swapIds = [null, null];
+                // check for mobility (walls, stones...)
+                if (checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds))) {
+                    swipeCharacters(checkswipeMobility(swapIds[0], checkSwipeDirection(swapIds)));
+                } // end of if swipe is mobile
+                // reset ids
+                swapIds = [null, null];
+            } // interact only when it's allowed
         } // end of if mousedown or touchstart has already happened
     }); // end of game board mouseup
 } // end of addGameBoardEvents
@@ -345,6 +351,7 @@ function swipeCharacters(swipeArgs) {
 
         app.board[r1][c1] = app.board[r2][c2];
         app.board[r2][c2] = temp;
+        displayBoard(); // show the new board when swap is done
     } // end of swipeCharacters
 
 
@@ -356,19 +363,26 @@ function swipeCharacters(swipeArgs) {
         // swap if direction is horizontal
         if (dir === "LEFT" || dir === "RIGHT") {
             swapCharacters(R1, C1, R2, C2);
-            displayBoard();
         } // end of if left or right
         else return void (0); // dont check matches if flowers are attempted to move vertically
     } // end of if any char is flower
 
 
     swapCharacters(R1, C1, R2, C2);
-    displayBoard();
     const matches = checkMatches();
     console.log(JSON.stringify(matches));
     if (!matches) {
-        swapCharacters(R1, C1, R2, C2);
-        console.log("SWAP");
+        // delay to see the unmatching swipe
+        const swapDelay = () => setTimeout(() => {
+            swapCharacters(R1, C1, R2, C2);
+            console.log("SWAP Delay Up");
+            clearTimeout(swapDelay);
+            app.game_interaction_enabled = true; // set interaction back
+        }, 300); // end of swapDelay
+
+        // delay and stop user interaction while showing unmatched swap
+        swapDelay();
+        app.game_interaction_enabled = false;
     } // end of swap the chars back
     displayBoard();
 } // end of swipeCharacters
@@ -433,6 +447,7 @@ function checkMatches() {
     //     thus we certainly can avoid bumping into negative numbers
     // 3 - [[the pattern distance coordinates]]: the coordinates are representing the difference
     //     from the top-left coordinates, resulting dryer code.
+    // The function returns false when no matches found or the matches array
     function match(patternName, [topLeftY, topLeftX], ...patterns) {
         // create ids from pattern
         const ids = patterns.map(p => [p[0] + topLeftY, p[1] + topLeftX]);
@@ -453,7 +468,11 @@ function checkMatches() {
 
         const isMatching = chars.every((ch, _, a) => ch === a[0]); // check  if every char is the same
         if (isMatching) {
-            matches.push([patternName, ...ids]);
+            matches.push({
+                "patternName": patternName,
+                "sample": chars[0],
+                "coords": [...ids]
+            });
 
             // make matched patterns 0, so they won't be matched in other pattern searchres
             // resulting faster code running
@@ -527,6 +546,7 @@ var app = {
     "board": [],          // the current game gems position
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
     "images": [],         // the preloaded pictures
+    "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
 }; // end of app global object
 
 
