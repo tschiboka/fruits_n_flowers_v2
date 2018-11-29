@@ -558,7 +558,17 @@ function animateExplosions(matches) {
 
 
 function gravity() {
+    // turn board 90 degree on side bottom to left top to right
+    // to see the gaps vertically
+    const slices90deg = [];
 
+    const testArr =
+        [[1, 2, 3, 4, 5],
+        [6, 7, 8, 9, 10],
+        [11, 12, 13, 14, 15],
+        [16, 17, 16, 19, 20]];
+
+    console.log(testArr);
 } // end of gravity
 
 
