@@ -397,7 +397,6 @@ function swipeCharacters(swipeArgs) {
     } // end of if no matches found
     else {
         animateExplosions(matches);
-        dripingNewFruits();
     } // end of if matches found
     displayBoard();
 } // end of swipeCharacters
@@ -544,18 +543,34 @@ function animateExplosions(matches) {
     }); //end of match iteration
 
     // remove elements with 0.45s delay
-    const removeShardsDelay = () => {
-        setTimeout(() => {
-            console.log("HERE I DELETE");
-            $(".shard").remove();
-        }, 450);
-    } // end of removeShards delay
-    removeShardsDelay(); // invoke the delay
+    const removeShardsDelay = setTimeout(() => {
+        $(".shard").remove();
+
+        // when animation is done start to fill the board up again
+        dripingNewFruits(matches);
+        clearTimeout(removeShardsDelay);
+    }, 450);
 } // end of animateExplosions
 
 
-function dripingNewFruits() {
+function dripingNewFruits(matches) {
+    const idsToFill = [].concat.apply([], matches.map(match => match.coords.reverse()));
+    console.log("ids to fill", idsToFill.length);
 
+    function fillEmptyCell(num) {
+        console.log("IM FILLING", num);
+    } // end of fillEmptyCell
+
+    let nextId = 0;
+    const drippingDelay = setInterval(() => {
+        if (nextId === idsToFill.length - 1) {
+            clearInterval(drippingDelay);
+        } else {
+            fillEmptyCell(nextId);
+            nextId++;
+            console.log("END");
+        } // end of if there are still more ids to fill
+    }, 50); // end of drippingDelay
 } // end of drippingNewFruits
 
 
