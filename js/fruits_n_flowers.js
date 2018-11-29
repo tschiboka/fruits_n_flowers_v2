@@ -397,6 +397,7 @@ function swipeCharacters(swipeArgs) {
     } // end of if no matches found
     else {
         animateExplosions(matches);
+        dripingNewFruits();
     } // end of if matches found
     displayBoard();
 } // end of swipeCharacters
@@ -534,7 +535,7 @@ function animateExplosions(matches) {
                 $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
 
                 // delay explosion on pieces randomly
-                const randomDelay = ((Math.random() * 1) / 10).toFixed(2) + "s";
+                const randomDelay = ((Math.random() * 1.5) / 10).toFixed(2) + "s";
                 $(shard)[0].style.animationDelay = randomDelay;
                 $(shard)[0].style.WebkitAnimationDelay = randomDelay;
                 $(".game-board").append(shard);
@@ -553,6 +554,13 @@ function animateExplosions(matches) {
 } // end of animateExplosions
 
 
+function dripingNewFruits() {
+
+} // end of drippingNewFruits
+
+
+
+
 /*
  
         LEVELS
@@ -564,7 +572,7 @@ function animateExplosions(matches) {
  *     - blueprint: array of 11 strings with 9 chars
  *         - "X"       : transparent (when matches found)
  *         - "1" - "9" : cell is different fruits
- *         - "*"       : any random fruits
+ *         - "."       : any random fruits
  *         - "A" - "E" : cell is one of the flowers
  *         - "F"       : any random flower
  *         - "S, M, L" : cell is stone small medium large (breakable)
@@ -572,6 +580,8 @@ function animateExplosions(matches) {
  *         - "U"       : cell is basket
  *         - "*"       : diamonds 
  *         - "a" - "z" :lower case letters are kept for special characters like explosions and time stopers
+ *     - fruitVariationNumber : determine the number of the possible randomly
+ *         created fruits [5 - 9]
  */
 
 var levels = [
@@ -589,7 +599,8 @@ var levels = [
             "#SL89591#",
             "#UM86887#",
             "#########",
-        ]
+        ],
+        "fruitVariationNumber": 6,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
