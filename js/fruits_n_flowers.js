@@ -551,16 +551,19 @@ function animateExplosions(matches) {
         $(".shard").remove();
 
         // when animation is done start to fill the board up again
-        dripingNewFruits(matches);
+        gravity();
         clearTimeout(removeShardsDelay);
     }, 450);
 } // end of animateExplosions
 
 
-function dripingNewFruits(matches) {
-    const idsToFill = [];
+function gravity() {
 
-    console.log("HERE");
+} // end of gravity
+
+
+function FillBoardWithNewFruits() {
+    const idsToFill = [];
 
     for (r = 10; r >= 0; r--) {
         console.log("ROW", r);
@@ -572,13 +575,10 @@ function dripingNewFruits(matches) {
         } // end of cell iteration
     } // end of reverse row iteration
 
-    console.log("ids to fill", idsToFill.length);
-
     function fillEmptyCell(num) {
-        const randFruit = Math.ceil(Math.random() * levels[app.currentLevel - 1].fruitVariationNumber);
+        const randFruit = Math.ceil(Math.random() * levels[app.currentLevel - 1].fruitVariationNumber) + "";
         app.board[idsToFill[num][0]][idsToFill[num][1]] = randFruit;
         displayBoard();
-        console.log("IM FILLING", num, randFruit);
     } // end of fillEmptyCell
 
     let nextId = 0;
@@ -587,6 +587,7 @@ function dripingNewFruits(matches) {
             // give interaction back only when all characters are present on the table
             app.game_interaction_enabled = true;
 
+            console.log(app.board);
             clearInterval(drippingDelay);
         } else {
             fillEmptyCell(nextId);
