@@ -1,4 +1,11 @@
-$shard-anim-time: 5s;
+$shard-anim-time: 0.35s;
+$shX1: 10; 
+$shY1: 10;
+$shX2: 40;
+$shY2: 40;
+$shX3: 90;
+$shY3: 90;
+
 
 .game-board {
     .shard {
@@ -15,70 +22,120 @@ $shard-anim-time: 5s;
     .shard1 {
         animation: shard1-anim $shard-anim-time linear;
     }
+
     .shard2 {
         animation: shard2-anim $shard-anim-time linear;
     }
+
     .shard3 {
         animation: shard3-anim $shard-anim-time linear;
+    }
+
+    .shard4 {
+        animation: shard4-anim $shard-anim-time linear;
+    }
+
+    .shard5 {
+        animation: shard5-anim $shard-anim-time linear;
     }
 }
 
 @keyframes shard1-anim {
     0% {
         opacity : 1;
-        transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+        transform: translateX(0) translateY(0) scale(0) rotate(0);
     }
     20% {
-        transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0,2, 1deg);
+        transform: translateX($shX1+random(5)+0px) translateY(-$shY1+random(4)+0px) scale(2) rotate(4deg);
     }
     40% {
-        transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+        transform: translateX($shX2+random(9)+0px) translateY(-$shY2+random(8)+0px) scale(1.6) rotate(7deg);
     }
     80% {
         opacity : 1;
     }
     100% {
         opacity : 0;
-        transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+        transform: translateX($shX3+random(12)+0px) translateY(-$shY3+random(15)+0px) scale(0.3) rotate(50deg);
     }
 }
 
 @keyframes shard2-anim {
     0% {
         opacity : 1;
-        transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+        transform: translateX(0+random(3)+0px) translateY(0+random(5)+0px) scale(0) rotate(0);
     }
     20% {
-        transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0,2, 1deg);
+        transform: translateX($shX1+random(7)+0px) translateY($shY1+random(5)+0px) scale(2) rotate(4deg);
     }
     40% {
-        transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+        transform: translateX($shX2+random(13)+0px) translateY($shY2+random(10)+0px) scale(1.6) rotate(7deg);
     }
     80% {
         opacity : 1;
     }
     100% {
         opacity : 0;
-        transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+        transform: translateX($shX3+random(3)+0px) translateY($shY3+random(5)+0px) scale(0.3) rotate(50deg);
     }
 }
 
 @keyframes shard3-anim {
     0% {
         opacity : 1;
-        transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+        transform: translateY(0) scale(0) rotate(0, 0, 0, 0);
     }
     20% {
-        transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, -0,2, 1deg);
+        transform: translateY($shY1+random(6)+0px) scale(2) rotate(4deg);
     }
     40% {
-        transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+        transform: translateY($shY2+random(4)+0px) scale(1.6) rotate(7deg);
     }
     80% {
         opacity : 1;
     }
     100% {
         opacity : 0;
-        transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
+        transform: translateY($shY3+random(10)+0px) scale(0.3) rotate(50deg);
+    }
+}
+
+@keyframes shard4-anim {
+    0% {
+        opacity : 1;
+        transform: translateX(0) translateY(0) scale(0) rotate(0, 0, 0, 0);
+    }
+    20% {
+        transform: translateX(-$shX1+random(4)+0px) translateY($shY1+random(8)+0px) scale(2) rotate(4deg);
+    }
+    40% {
+        transform: translateX(-$shX2+random(6)+0px) translateY($shY2+random(7)+0px) scale(1.6) rotate(7deg);
+    }
+    80% {
+        opacity : 1;
+    }
+    100% {
+        opacity : 0;
+        transform: translateX(-$shX3+random(10)+0px) translateY($shY3+random(14)+0px) scale(0.3) rotate(50deg);
+    }
+}
+
+@keyframes shard5-anim {
+    0% {
+        opacity : 1;
+        transform: translateX(0) translateY(0) scale(0) rotate(0, 0, 0, 0);
+    }
+    20% {
+        transform: translateX(-$shX1+random(5)+0px) translateY(-$shY1+random(7)+0px) scale(3) rotate(4deg);
+    }
+    40% {
+        transform: translateX(-$shX2+random(4)+0px) translateY(-$shY2+random(6)+0px) scale(1.6) rotate(7deg);
+    }
+    80% {
+        opacity : 1;
+    }
+    100% {
+        opacity : 0;
+        transform: translateX(-$shX3+random(14)+0px) translateY(-$shY3+random(16)+0px) scale(0.3) rotate(50deg);
     }
 }

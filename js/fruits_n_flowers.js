@@ -532,10 +532,24 @@ function animateExplosions(matches) {
 
                 $(shard).css(`backgroundImage`, imgURL);
                 $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
+
+                // delay explosion on pieces randomly
+                const randomDelay = ((Math.random() * 1) / 10).toFixed(2) + "s";
+                $(shard)[0].style.animationDelay = randomDelay;
+                $(shard)[0].style.WebkitAnimationDelay = randomDelay;
                 $(".game-board").append(shard);
             } // end of creating five shards
         }; // end of iteration id times
     }); //end of match iteration
+
+    // remove elements with 0.45s delay
+    const removeShardsDelay = () => {
+        setTimeout(() => {
+            console.log("HERE I DELETE");
+            $(".shard").remove();
+        }, 450);
+    } // end of removeShards delay
+    removeShardsDelay(); // invoke the delay
 } // end of animateExplosions
 
 
