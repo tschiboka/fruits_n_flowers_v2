@@ -1081,4 +1081,14 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   -webkit-clip-path: polygon(70% 50%, 30% 10%, 20% 10%, 45% 50%, 20% 90%, 30% 90%);
           clip-path: polygon(70% 50%, 30% 10%, 20% 10%, 45% 50%, 20% 90%, 30% 90%);
 }
+
+.game-board .shard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  background: red;
+  z-index: 10;
+}
 /*# sourceMappingURL=fruits_n_flowers.css.map */

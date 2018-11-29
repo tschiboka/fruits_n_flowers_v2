@@ -498,7 +498,34 @@ function checkMatches() {
 
 
 function animateExplosions(matches) {
+    const div = document.createElement("div");
+    $(div).addClass("shard");
+    $(".game-board").append(div);
 
+    const parentXY = $(".game-board")[0].getBoundingClientRect();
+
+    // iterate matches
+    matches.map(match => {
+        // iterate id coordinates
+        for (i = 0; i < match.coords.length; i++) {
+            const coord = match.coords[i];
+
+            // get id XY position
+            const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
+
+            // create a shard
+            shard = document.createElement("div");
+            shard.id = `shard_r${coord[0]}c${coord[1]}`;
+            $(shard).addClass("shard");
+
+            // set x y relative to gameboard
+            $(shard).css({ top: idXY.y - parentXY.y, left: idXY.x - parentXY.x });
+            $(".game-board").append(shard);
+
+
+            console.log(shard);
+        }; // end of iteration id times
+    }); //end of match iteration
 } // end of animateExplosions
 
 
