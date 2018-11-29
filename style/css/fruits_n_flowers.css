@@ -1090,5 +1090,165 @@ header .header__flowers-txt .header__flowers-txt__o-letter {
   height: 20px;
   background-size: cover;
   z-index: 10;
+  opacity: 0;
+}
+
+.game-board .shard1 {
+  -webkit-animation: shard1-anim 5s linear;
+          animation: shard1-anim 5s linear;
+}
+
+.game-board .shard2 {
+  -webkit-animation: shard2-anim 5s linear;
+          animation: shard2-anim 5s linear;
+}
+
+.game-board .shard3 {
+  -webkit-animation: shard3-anim 5s linear;
+          animation: shard3-anim 5s linear;
+}
+
+@-webkit-keyframes shard1-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+            transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+            transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+            transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+  }
+}
+
+@keyframes shard1-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+            transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+            transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+            transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+  }
+}
+
+@-webkit-keyframes shard2-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0, 2, 1deg);
+            transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+            transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+            transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+  }
+}
+
+@keyframes shard2-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0, 2, 1deg);
+            transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+            transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+            transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+  }
+}
+
+@-webkit-keyframes shard3-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+            transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+            transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
+            transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
+  }
+}
+
+@keyframes shard3-anim {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+            transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+  }
+  20% {
+    -webkit-transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+            transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, 0, 2, 1deg);
+  }
+  40% {
+    -webkit-transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+            transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
+            transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
+  }
 }
 /*# sourceMappingURL=fruits_n_flowers.css.map */

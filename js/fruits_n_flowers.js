@@ -502,14 +502,12 @@ function animateExplosions(matches) {
     // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
 
-    console.log(app.images.apple_shard1.src);
     // iterate matches
     matches.map(match => {
         // iterate id coordinates
         for (i = 0; i < match.coords.length; i++) {
             const coord = match.coords[i];
 
-            console.log(app.images);
             // get id XY position
             const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
 
@@ -529,14 +527,12 @@ function animateExplosions(matches) {
                 // set background image according to the fruit type
                 // 0 is reserved for transparent so array should start from 1
                 const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
-                    imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1);
-                imgURL = `url(${app.images[imgName].src})`;
+                    imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
+                    imgURL = `url(${app.images[imgName].src})`;
 
-                //console.log(`url(${app.images[imgName].src})`);
                 $(shard).css(`backgroundImage`, imgURL);
+                $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
                 $(".game-board").append(shard);
-                //console.log(imgName);
-                console.log(shard);
             } // end of creating five shards
         }; // end of iteration id times
     }); //end of match iteration

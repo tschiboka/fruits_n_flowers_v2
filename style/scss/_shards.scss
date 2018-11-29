@@ -1,3 +1,5 @@
+$shard-anim-time: 5s;
+
 .game-board {
     .shard {
         position: absolute;
@@ -7,5 +9,76 @@
         height: 20px;
         background-size: cover;
         z-index: 10;
+        opacity: 0;
+    }
+
+    .shard1 {
+        animation: shard1-anim $shard-anim-time linear;
+    }
+    .shard2 {
+        animation: shard2-anim $shard-anim-time linear;
+    }
+    .shard3 {
+        animation: shard3-anim $shard-anim-time linear;
+    }
+}
+
+@keyframes shard1-anim {
+    0% {
+        opacity : 1;
+        transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+    }
+    20% {
+        transform: translateX(1vw) translateY(-5vh) scale(3) rotate3d(0.2, 0.2, 0,2, 1deg);
+    }
+    40% {
+        transform: translateX(3vw) translateY(-15vh) scale(1.6) rotate3d(0.4, 0.4, 0.4, 20deg);
+    }
+    80% {
+        opacity : 1;
+    }
+    100% {
+        opacity : 0;
+        transform: translateX(5vw) translateY(-20vh) scale(0.3) rotate3d(1, 1, 1, 360deg);
+    }
+}
+
+@keyframes shard2-anim {
+    0% {
+        opacity : 1;
+        transform: translateX(0) translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+    }
+    20% {
+        transform: translateX(1vw) translateY(5vh) scale(3) rotate3d(0.2, -0.2, 0,2, 1deg);
+    }
+    40% {
+        transform: translateX(3vw) translateY(15vh) scale(1.6) rotate3d(0.4, -0.4, 0.4, 20deg);
+    }
+    80% {
+        opacity : 1;
+    }
+    100% {
+        opacity : 0;
+        transform: translateX(5vw) translateY(20vh) scale(0.3) rotate3d(1, -1, 1, 360deg);
+    }
+}
+
+@keyframes shard3-anim {
+    0% {
+        opacity : 1;
+        transform: translateY(0) scale(0) rotate3d(0, 0, 0, 0);
+    }
+    20% {
+        transform: translateY(5vh) scale(3) rotate3d(0.2, 0.2, -0,2, 1deg);
+    }
+    40% {
+        transform: translateY(15vh) scale(1.6) rotate3d(0.4, 0.4, -0.4, 20deg);
+    }
+    80% {
+        opacity : 1;
+    }
+    100% {
+        opacity : 0;
+        transform: translateY(20vh) scale(0.3) rotate3d(1, 1, -1, 360deg);
     }
 }
