@@ -554,23 +554,38 @@ function animateExplosions(matches) {
 
 
 function dripingNewFruits(matches) {
-    const idsToFill = [].concat.apply([], matches.map(match => match.coords.reverse()));
+    const idsToFill = [];
+
+    console.log("HERE");
+
+    for (r = 10; r >= 0; r--) {
+        console.log("ROW", r);
+        for (c = 0; c < 8; c++) {
+            console.log("CELL", app.board[r][c]);
+            if (app.board[r][c] === "X") {
+                idsToFill.push([[r], [c]]);
+            } // end of if cell is empty
+        } // end of cell iteration
+    } // end of reverse row iteration
+
     console.log("ids to fill", idsToFill.length);
 
     function fillEmptyCell(num) {
-        console.log("IM FILLING", num);
+        const randFruit = Math.ceil(Math.random() * levels[app.currentLevel - 1].fruitVariationNumber);
+        app.board[idsToFill[num][0]][idsToFill[num][1]] = randFruit;
+        displayBoard();
+        console.log("IM FILLING", num, randFruit);
     } // end of fillEmptyCell
 
     let nextId = 0;
     const drippingDelay = setInterval(() => {
-        if (nextId === idsToFill.length - 1) {
+        if (nextId === idsToFill.length) {
             clearInterval(drippingDelay);
         } else {
             fillEmptyCell(nextId);
             nextId++;
-            console.log("END");
         } // end of if there are still more ids to fill
-    }, 50); // end of drippingDelay
+    }, 500); // end of drippingDelay
 } // end of drippingNewFruits
 
 
@@ -641,6 +656,7 @@ var app = {
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
     "images": [],         // the preloaded pictures
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
+    "currentLevel": 1,
 }; // end of app global object
 
 
