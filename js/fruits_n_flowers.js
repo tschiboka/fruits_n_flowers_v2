@@ -51,6 +51,7 @@ function preloadPics() {
         "shards/peach_shard1", "shards/peach_shard2", "shards/peach_shard3", "shards/peach_shard4", "shards/peach_shard5",
         "shards/plum_shard1", "shards/plum_shard2", "shards/plum_shard3", "shards/plum_shard4", "shards/plum_shard5",
         "shards/strawberry_shard1", "shards/strawberry_shard2", "shards/strawberry_shard3", "shards/strawberry_shard4", "shards/strawberry_shard5",
+        "shards/blood_orange_shard1", "shards/blood_orange_shard2", "shards/blood_orange_shard3", "shards/blood_orange_shard4", "shards/blood_orange_shard5",
     ]; // end of fileName
 
     try {
@@ -498,32 +499,45 @@ function checkMatches() {
 
 
 function animateExplosions(matches) {
-    const div = document.createElement("div");
-    $(div).addClass("shard");
-    $(".game-board").append(div);
-
+    // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
 
+    console.log(app.images.apple_shard1.src);
     // iterate matches
     matches.map(match => {
         // iterate id coordinates
         for (i = 0; i < match.coords.length; i++) {
             const coord = match.coords[i];
 
+            console.log(app.images);
             // get id XY position
             const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
 
-            // create a shard
-            shard = document.createElement("div");
-            shard.id = `shard_r${coord[0]}c${coord[1]}`;
-            $(shard).addClass("shard");
+            // create 5 shards for each id
+            for (sh = 0; sh < 5; sh++) {
+                // create a shard
+                shard = document.createElement("div");
+                shard.id = `shard_r${coord[0]}c${coord[1]}`;
+                $(shard).addClass("shard");
 
-            // set x y relative to gameboard
-            $(shard).css({ top: idXY.y - parentXY.y, left: idXY.x - parentXY.x });
-            $(".game-board").append(shard);
+                // set x y relative to gameboard and its own piece position
+                const diffX = [18, 18, 10, 2, 0], // each piece is placed a bit differently
+                    diffY = [0, 14, 17, 14, 0];
 
+                $(shard).css({ top: idXY.y - parentXY.y + diffY[sh], left: idXY.x - parentXY.x + diffX[sh] });
 
-            console.log(shard);
+                // set background image according to the fruit type
+                // 0 is reserved for transparent so array should start from 1
+                const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
+                    imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1);
+                imgURL = `url(${app.images[imgName].src})`;
+
+                //console.log(`url(${app.images[imgName].src})`);
+                $(shard).css(`backgroundImage`, imgURL);
+                $(".game-board").append(shard);
+                //console.log(imgName);
+                console.log(shard);
+            } // end of creating five shards
         }; // end of iteration id times
     }); //end of match iteration
 } // end of animateExplosions
