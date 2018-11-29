@@ -499,6 +499,10 @@ function checkMatches() {
 
 
 function animateExplosions(matches) {
+    // disable interaction with the gameboard while animation is going 
+    // and new characters are on the table
+    app.game_interaction_enabled = false;
+
     // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
 
@@ -580,6 +584,9 @@ function dripingNewFruits(matches) {
     let nextId = 0;
     const drippingDelay = setInterval(() => {
         if (nextId === idsToFill.length) {
+            // give interaction back only when all characters are present on the table
+            app.game_interaction_enabled = true;
+
             clearInterval(drippingDelay);
         } else {
             fillEmptyCell(nextId);
