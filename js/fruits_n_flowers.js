@@ -563,20 +563,57 @@ function gravity() {
     const slices90deg = [];
 
     const testArr =
-        [[1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-        [11, 12, 13, 14, 15],
-        [16, 17, 16, 19, 20]];
+        [
+            ["1", "1", "1", "1", "1", "1", "1"],
+            ["2", "2", "2", "2", "2", "X", "2"],
+            ["3", "X", "X", "X", "3", "X", "3"],
+            ["4", "X", "4", "4", "4", "X", "4"],
+            ["5", "X", "5", "5", "5", "5", "5"],
+            ["6", "6", "6", "6", "6", "6", "6"],
+            ["7", "X", "X", "X", "X", "7", "7"]
+        ];
 
+
+    // turn array 90 deg here
     for (sl = 0; sl < testArr[0].length; sl++) {
         const slice = [];
         for (row = testArr.length - 1; row > 0; row--) {
-            console.log(row, sl);
             slice.push(testArr[row][sl]);
         } // end of row iteration
         slices90deg.push(slice);
     } // end of reverse iteration of rows
-    console.log("Test", testArr, "slices", slices90deg);
+
+    const allFell = slices90deg.map(fell => false);
+
+    const fallTest = ["1", "X", "3", "4", "5", "X", "7"];
+
+    // fall returns the modified slice and if there no gap left
+    function fall(sl) {
+        console.log("Before", sl);
+
+        // find first index of a gap and return if none found
+        const firstGapAt = sl.indexOf("X");
+
+        if (firstGapAt === -1) return [sl, true];
+
+        // take it out of the array
+        sl.splice(firstGapAt, 1);
+        sl.push("X");
+
+        // check if all Xs are at the top
+        // 1. take the Xs from the end
+        // 2. check if any has left
+        sl = sl.reverse()
+            .join("")
+            .replace(/^X+/g, "")
+            .split("")
+            .reverse();
+        // check if there is any X remained
+        console.log("after", sl);
+        return sl.indexOf("X") === -1 ? [sl, true] : [[...sl, "X"], false];
+    } // end of fall
+
+    console.log(fall(fallTest));
 } // end of gravity
 
 
