@@ -560,37 +560,43 @@ function animateExplosions(matches) {
 function gravity() {
     // turn board 90 degree on side bottom to left top to right
     // to see the gaps vertically
-    const slices90deg = [];
 
-    const testArr =
-        [
-            ["1", "1", "1", "1", "1", "1", "1"],
-            ["2", "2", "2", "2", "2", "X", "2"],
-            ["3", "X", "X", "X", "3", "X", "3"],
-            ["4", "X", "4", "4", "4", "X", "4"],
-            ["5", "X", "5", "5", "5", "5", "5"],
-            ["6", "6", "6", "6", "6", "6", "6"],
-            ["7", "X", "X", "X", "X", "7", "7"]
-        ];
+    let slices = turnArr90deg(app.board);
 
+    function turnArr90deg(arr) {
+        const slices90deg = [];
+        for (sl = 0; sl < arr[0].length; sl++) {
+            const slice = [];
+            for (row = arr.length - 1; row > 0; row--) {
+                slice.push(arr[row][sl]);
+            } // end of row iteration
+            slices90deg.push(slice);
+        } // end of reverse iteration of rows
+        return slices90deg;
+    } // end of turnArr90deg
 
-    // turn array 90 deg here
-    for (sl = 0; sl < testArr[0].length; sl++) {
-        const slice = [];
-        for (row = testArr.length - 1; row > 0; row--) {
-            slice.push(testArr[row][sl]);
-        } // end of row iteration
-        slices90deg.push(slice);
-    } // end of reverse iteration of rows
+    tst = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [0, 0, 0]
+    ];
 
-    const allFell = slices90deg.map(fell => false);
-
-    const fallTest = ["1", "X", "3", "4", "5", "X", "7"];
+    // turn back arr to original for displaying
+    function backArr90deg(arr) {
+        const slices90deg = [];
+        for (sl = 0; sl < arr[0].length; sl++) {
+            const slice = [];
+            for (row = arr.length - 1; row > 0; row--) {
+                slice.push(arr[row][sl]);
+            } // end of row iteration
+            slices90deg.push(slice);
+        } // end of reverse iteration of rows
+        return slices90deg;
+    } // end of backArr90deg
 
     // fall returns the modified slice and if there no gap left
-    function fall(sl) {
-        console.log("Before", sl);
-
+    function fallSlice(sl) {
         // find first index of a gap and return if none found
         const firstGapAt = sl.indexOf("X");
 
@@ -600,20 +606,37 @@ function gravity() {
         sl.splice(firstGapAt, 1);
         sl.push("X");
 
-        // check if all Xs are at the top
-        // 1. take the Xs from the end
-        // 2. check if any has left
-        sl = sl.reverse()
-            .join("")
-            .replace(/^X+/g, "")
-            .split("")
-            .reverse();
+        // check if all Xs are at the top: 1. take the Xs from the end 2. check if any has left
+        slCut = sl.join("").replace(/X+$/g, "").split("");
+
         // check if there is any X remained
-        console.log("after", sl);
-        return sl.indexOf("X") === -1 ? [sl, true] : [[...sl, "X"], false];
+        return slCut.indexOf("X") === -1 ? [sl, true] : [sl, false];
     } // end of fall
 
-    console.log(fall(fallTest));
+
+    // go through the slices
+    function fallRow() {
+        console.log("BEFORE");
+        slices.map(e => { console.log(JSON.stringify(e)); });
+
+
+        const newSlices = [], noMoreFall = [];
+        // iterate slices
+        slices.forEach(slice => {
+            const res = fallSlice(slice);
+            newSlices.push(res[0]);
+            noMoreFall.push(res[1]);
+        }); // end of slice forEach
+
+        console.log("AFTER");
+        newSlices.map(e => { console.log(JSON.stringify(e)); });
+        slices = newSlices;
+        return noMoreFall;
+    } // end of fallRow 
+
+    fallRow(slices);
+
+    console.log("TESTBACK", JSON.stringify(backArr90deg(tst)));
 } // end of gravity
 
 
