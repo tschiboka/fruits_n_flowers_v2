@@ -568,7 +568,15 @@ function gravity() {
         [11, 12, 13, 14, 15],
         [16, 17, 16, 19, 20]];
 
-    console.log(testArr);
+    for (sl = 0; sl < testArr[0].length; sl++) {
+        const slice = [];
+        for (row = testArr.length - 1; row > 0; row--) {
+            console.log(row, sl);
+            slice.push(testArr[row][sl]);
+        } // end of row iteration
+        slices90deg.push(slice);
+    } // end of reverse iteration of rows
+    console.log("Test", testArr, "slices", slices90deg);
 } // end of gravity
 
 
