@@ -558,85 +558,68 @@ function animateExplosions(matches) {
 
 
 function gravity() {
-    // turn board 90 degree on side bottom to left top to right
-    // to see the gaps vertically
-
-    let slices = turnArr90deg(app.board);
-
-    function turnArr90deg(arr) {
-        const slices90deg = [];
-        for (sl = 0; sl < arr[0].length; sl++) {
-            const slice = [];
-            for (row = arr.length - 1; row > 0; row--) {
-                slice.push(arr[row][sl]);
+    /*    // turn board 90 degree on side bottom to left top to right
+        // to see the gaps vertically
+    
+        let slices = turnArr90deg(app.board);
+    
+        function turnArr90deg(arr) {
+            const slices90deg = [];
+            for (sl = 0; sl < arr[0].length; sl++) {
+                const slice = [];
+                for (row = arr.length - 1; row >= 0; row--) {
+                    slice.push(arr[row][sl]);
+                } // end of reverse iteration of cols
+                slices90deg.push(slice);
             } // end of row iteration
-            slices90deg.push(slice);
-        } // end of reverse iteration of rows
-        return slices90deg;
-    } // end of turnArr90deg
-
-    tst = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [0, 0, 0]
-    ];
-
-    // turn back arr to original for displaying
-    function backArr90deg(arr) {
-        const slices90deg = [];
-        for (sl = 0; sl < arr[0].length; sl++) {
-            const slice = [];
-            for (row = arr.length - 1; row > 0; row--) {
-                slice.push(arr[row][sl]);
-            } // end of row iteration
-            slices90deg.push(slice);
-        } // end of reverse iteration of rows
-        return slices90deg;
-    } // end of backArr90deg
-
-    // fall returns the modified slice and if there no gap left
-    function fallSlice(sl) {
-        // find first index of a gap and return if none found
-        const firstGapAt = sl.indexOf("X");
-
-        if (firstGapAt === -1) return [sl, true];
-
-        // take it out of the array
-        sl.splice(firstGapAt, 1);
-        sl.push("X");
-
-        // check if all Xs are at the top: 1. take the Xs from the end 2. check if any has left
-        slCut = sl.join("").replace(/X+$/g, "").split("");
-
-        // check if there is any X remained
-        return slCut.indexOf("X") === -1 ? [sl, true] : [sl, false];
-    } // end of fall
-
-
-    // go through the slices
-    function fallRow() {
-        console.log("BEFORE");
-        slices.map(e => { console.log(JSON.stringify(e)); });
-
-
-        const newSlices = [], noMoreFall = [];
-        // iterate slices
-        slices.forEach(slice => {
-            const res = fallSlice(slice);
-            newSlices.push(res[0]);
-            noMoreFall.push(res[1]);
-        }); // end of slice forEach
-
-        console.log("AFTER");
-        newSlices.map(e => { console.log(JSON.stringify(e)); });
-        slices = newSlices;
-        return noMoreFall;
-    } // end of fallRow 
-
-    fallRow(slices);
-
-    console.log("TESTBACK", JSON.stringify(backArr90deg(tst)));
+            return slices90deg;
+        } // end of turnArr90deg
+    
+    
+    
+        // turn back arr to original for displaying
+        function backArr90deg(arr) {
+            return turnArr90deg(arr.reverse());
+    
+        } // end of backArr90deg
+    
+        console.log("test board turn");
+        backArr90deg(turnArr90deg(app.board)).map(e => { console.log(JSON.stringify(e)); });
+    
+        // fall returns the modified slice and if there no gap left
+        function fallSlice(sl) {
+            // find first index of a gap and return if none found
+            const firstGapAt = sl.indexOf("X");
+    
+            if (firstGapAt === -1) return [sl, true];
+    
+            // take it out of the array
+            sl.splice(firstGapAt, 1);
+            sl.push("X");
+    
+            // check if all Xs are at the top: 1. take the Xs from the end 2. check if any has left
+            slCut = sl.join("").replace(/X+$/g, "").split("");
+    
+            // check if there is any X remained
+            return slCut.indexOf("X") === -1 ? [sl, true] : [sl, false];
+        } // end of fall
+    
+    
+        // go through the slices
+        function fallRow() {
+            const newSlices = [], noMoreFall = [];
+            // iterate slices
+            slices.forEach(slice => {
+                const res = fallSlice(slice);
+                newSlices.push(res[0]);
+                noMoreFall.push(res[1]);
+            }); // end of slice forEach
+    
+            slices = newSlices;
+            return noMoreFall;
+        } // end of fallRow 
+    
+        fallRow(slices); */
 } // end of gravity
 
 
