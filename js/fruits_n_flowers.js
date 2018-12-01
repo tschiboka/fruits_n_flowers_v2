@@ -558,6 +558,29 @@ function animateExplosions(matches) {
 
 
 function gravity() {
+    // all columns need to have a check if it has ta fall at least once
+    const columnNoMoreMove = Array(9).fill("false");
+
+
+    let testCol = ["1", "2", "3", "X", "5", "X", "X", "S", "#", "X", "X"];
+    // the argument is the column number, func returns if no falling needed
+
+    checkColumnGravity(testCol);
+
+    function checkColumnGravity(col) {
+        // check if column has any X (gaps)
+        if (!col.some(e => e === "X")) return true;
+
+        // check if the first gap has any mobile element above (any fruit or flower, rest are immobile) 
+        const firstGap = col.indexOf("X"),
+            restOfCol = col.slice(firstGap + 1, col.length - 1);
+
+
+        return !(/[A-E1-9]/g.test(restOfCol.join("")));
+    } // end of checkColumnGravity
+
+    console.log(checkColumnGravity(testCol));
+
     /*    // turn board 90 degree on side bottom to left top to right
         // to see the gaps vertically
     
