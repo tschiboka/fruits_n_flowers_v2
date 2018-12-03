@@ -671,15 +671,24 @@ function fillBoardWithNewFruits() {
     let nextId = 0;
     const drippingDelay = setInterval(() => {
         if (nextId === idsToFill.length) {
-            // give interaction back only when all characters are present on the table
-            app.game_interaction_enabled = true;
 
-            clearInterval(drippingDelay);
+            const matches = checkMatches();
+            console.log("NEW MATCHES", JSON.stringify(matches), matches);
+            if (matches) {
+                animateExplosions(matches);
+            }
+            else {
+                // give interaction back only when all characters are present on the table
+                //app.game_interaction_enabled = true;
+                clearInterval(drippingDelay);
+            }
         } else {
+            console.log("ENABLED", app.game_interaction_enabled);
             fillEmptyCell(nextId);
             nextId++;
         } // end of if there are still more ids to fill
-    }, 50); // end of drippingDelay
+    }, 500); // end of drippingDelay
+    console.log("END OF CICLE");
 } // end of drippingNewFruits
 
 
