@@ -383,11 +383,7 @@ function swipeCharacters(swipeArgs) {
     console.log(JSON.stringify(matches));
     if (!matches) {
         // 
-        if (flowerAndHorizontal()) {
-            console.log("FLOWER");
-            //swapCharacters(R2, C2, R1, C1); // swap back
-        } // end of if flower dir horizontal
-        else {
+        if (!flowerAndHorizontal()) {
             app.game_interaction_enabled = false;
 
             // delay to see the unmatching swipe
@@ -396,7 +392,7 @@ function swipeCharacters(swipeArgs) {
                 console.log("SWAP Delay Up");
                 clearTimeout(swapDelay);
                 app.game_interaction_enabled = true; // set interaction back
-            }, 300); // end of swapDelay 
+            }, 150); // end of swapDelay 
 
             // delay and stop user interaction while showing unmatched swap
             swapDelay();
@@ -626,32 +622,25 @@ function gravity() {
                 let column = board.map(row => row[colNum]).reverse();
 
                 if (!updateColumnGravityDone(column, colNum)) {
-                    console.log("Before", colNum, column.join(""));
-
                     column = gravitiseColumn(column);
-
-                    console.log("After", colNum, column.join(""));
                     // modify the board
                     let gem = 0; // column counter for row iteration
                     for (r = currentBoard.length - 1; r >= 0; r--) {
-                        console.log("RC", r, c, "COL", column[gem]);
                         currentBoard[r][colNum] = column[gem++]; // update board 
                     } // end of row iteration
                     updateColumnGravityDone(column, colNum); // if done, it can skip next iteration
                 } // end of if gravity needed
             } // end of first gravity arr check
         } // end of column iteration
-        console.log(columnGravityDone);
         app.board = currentBoard; // update the live board
         displayBoard();
 
         // recursive function with delay until all gaps are on the top
-        console.log("FINAL", columnGravityDone.some(c => !c));
         if (columnGravityDone.some(c => !c)) {
             const gravityDelay = setTimeout(() => {
                 gravitiseBoard(currentBoard);
                 clearTimeout(gravityDelay);
-            }, 100); // end of timer
+            }, 20); // end of timer
         } // end of if board incomplete 
         else {
             fillBoardWithNewFruits();
@@ -666,9 +655,7 @@ function fillBoardWithNewFruits() {
     const idsToFill = [];
 
     for (r = 10; r >= 0; r--) {
-        console.log("ROW", r);
         for (c = 0; c < 8; c++) {
-            console.log("CELL", app.board[r][c]);
             if (app.board[r][c] === "X") {
                 idsToFill.push([[r], [c]]);
             } // end of if cell is empty
@@ -687,7 +674,6 @@ function fillBoardWithNewFruits() {
             // give interaction back only when all characters are present on the table
             app.game_interaction_enabled = true;
 
-            console.log(app.board);
             clearInterval(drippingDelay);
         } else {
             fillEmptyCell(nextId);
@@ -727,15 +713,15 @@ var levels = [
     {
         "blueprint": [
             "#########",
-            "#6684729#",
-            "#2954382#",
-            "#29###7*#",
-            "#5914129#",
-            "#2315489#",
-            "#181BCDE#",
-            "#2949939#",
-            "#SL89591#",
-            "#UM86987#",
+            "#6214423#",
+            "#2154332#",
+            "#22###3*#",
+            "#5414123#",
+            "#2315452#",
+            "#121BCDE#",
+            "#2544434#",
+            "#SL59511#",
+            "#UM56622#",
             "#########",
         ],
         "fruitVariationNumber": 6,
