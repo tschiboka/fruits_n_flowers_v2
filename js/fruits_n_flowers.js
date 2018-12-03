@@ -562,7 +562,7 @@ function gravity() {
     const columnNoMoreMove = Array(9).fill("false");
 
 
-    let testCol = ["1", "2", "3", "X", "5", "X", "X", "S", "#", "X", "X"];
+    let testCol = ["1", "3", "9", "X", "L", "X", "M", "S", "#", "X", "#"];
     // the argument is the column number, func returns if no falling needed
 
     checkColumnGravity(testCol);
@@ -586,29 +586,27 @@ function gravity() {
 
     // Function applies gravity on column recieved as its parameter.
     function gravityseColumn(col) {
-        console.log("BEFORE GRAVITY", col.join(""));
-
         // take off fixed positioned elements from column
         const fixedPosGem = ["S", "M", "L", "#"],
             isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
             newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
 
-        console.log("NO FIXED GEMS", newCol.join(""));
-        // find first gap ("X") and remove it from column
+        // find first gap ("X") and remove it from column and put it on the top (end)
         const firstGap = col.indexOf("X");
-        newCol.splice(firstGap, 1);
+        newCol.splice(firstGap, 1)
+        newCol.push("X");
 
-        console.log("NO FIRST GAP", newCol.join(""));
         // place fixed pos items back to their original place
         col.map((orig, oInd) => {
             if (isFixedPosGem(orig)) {
-                console.log("Paste", orig, oInd, newCol.join(""));
+                newCol.splice(oInd, 0, orig);
             } // end of if gem is a fixedPos
         }); // end of original column iteration
+
         return newCol;
     } // end of gravitiseColumn
 
-    console.log("Gravitize", gravityseColumn(testCol).join(""));
+    console.log("Gravitize", gravityseColumn(testCol).join(""), checkColumnGravity(testCol));
 
 
     /*    // turn board 90 degree on side bottom to left top to right
