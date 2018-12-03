@@ -368,19 +368,26 @@ function swipeCharacters(swipeArgs) {
     const [R1, C1, R2, C2, dir] = [...swipeArgs];  // destruct args
 
     // check if origin ar destination is a flower and swipe them if they are
-    const flowerChars = ["A", "B", "C", "D", "E"];
-    if (flowerChars.find(fl => fl === app.board[R1][C1] || fl === app.board[R2][C2])) {
-        // swap if direction is horizontal
-        if (dir === "UP" || dir === "DOWN") return void (0); // dont check matches if flowers are attempted to move vertically
-    } // end of if any char is flower
+    const flowerAndHorizontal = () => {
+        const flowerChars = ["A", "B", "C", "D", "E"],
+            isFlower = (r, c) => flowerChars.find(fl => fl === app.board[r][c]);
 
+
+        anyFlower = (isFlower(R1, C1) || isFlower(R2, C2)) ? true : false;
+        isHorizontal = (dir === "LEFT" || dir === "RIGHT") ? true : false;
+        return anyFlower && isHorizontal;
+    };
 
     swapCharacters(R1, C1, R2, C2);
     const matches = checkMatches();
     console.log(JSON.stringify(matches));
     if (!matches) {
-        // if none of the characters are flower don't delay and swipe back
-        if (!flowerChars.find(fl => fl === app.board[R1][C1]) && !flowerChars.find(fl => fl === app.board[R2][C2])) {
+        // 
+        if (flowerAndHorizontal()) {
+            console.log("FLOWER");
+            //swapCharacters(R2, C2, R1, C1); // swap back
+        } // end of if flower dir horizontal
+        else {
             app.game_interaction_enabled = false;
 
             // delay to see the unmatching swipe
@@ -393,7 +400,7 @@ function swipeCharacters(swipeArgs) {
 
             // delay and stop user interaction while showing unmatched swap
             swapDelay();
-        } // end of none is flower
+        } // end of swap back
     } // end of if no matches found
     else {
         animateExplosions(matches);
@@ -608,18 +615,15 @@ function gravity() {
     function gravitiseBoard(board) {
         const updateColumnGravityDone = (c, cn) => {
             columnGravityDone[cn] = checkColumnGravity(c);
-            console.log(c, cn, columnGravityDone);
             return columnGravityDone[cn];
         } // end of update...
 
         for (colNum = 0; colNum < board[0].length; colNum++) {
-            console.log(columnGravityDone[colNum]);
             // check if column need gravity end skip the ones 
             // that have no altering needed (first iteration all cols checked)
             if (!columnGravityDone[colNum]) {
                 // Extract the column from board
                 let column = board.map(row => row[colNum]).reverse();
-
 
                 if (!updateColumnGravityDone(column, colNum)) {
                     console.log("Before", colNum, column.join(""));
@@ -640,13 +644,25 @@ function gravity() {
         console.log(columnGravityDone);
         app.board = currentBoard; // update the live board
         displayBoard();
+
+        // recursive function with delay until all gaps are on the top
+        console.log("FINAL", columnGravityDone.some(c => !c));
+        if (columnGravityDone.some(c => !c)) {
+            const gravityDelay = setTimeout(() => {
+                gravitiseBoard(currentBoard);
+                clearTimeout(gravityDelay);
+            }, 100); // end of timer
+        } // end of if board incomplete 
+        else {
+            fillBoardWithNewFruits();
+        } // end of if board is done and ready to refill
     } // end of gravitizeBoard
 
     gravitiseBoard(currentBoard);
 } // end of gravity
 
 
-function FillBoardWithNewFruits() {
+function fillBoardWithNewFruits() {
     const idsToFill = [];
 
     for (r = 10; r >= 0; r--) {
@@ -677,7 +693,7 @@ function FillBoardWithNewFruits() {
             fillEmptyCell(nextId);
             nextId++;
         } // end of if there are still more ids to fill
-    }, 500); // end of drippingDelay
+    }, 50); // end of drippingDelay
 } // end of drippingNewFruits
 
 
@@ -714,10 +730,10 @@ var levels = [
             "#6684729#",
             "#2954382#",
             "#29###7*#",
-            "#5914125#",
+            "#5914129#",
             "#2315489#",
             "#181BCDE#",
-            "#2949937#",
+            "#2949939#",
             "#SL89591#",
             "#UM86987#",
             "#########",
