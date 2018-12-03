@@ -558,7 +558,7 @@ function animateExplosions(matches) {
 
 
 function gravity() {
-    // all columns need to have a check if it has ta fall at least once
+    // each column need to be tested against column gravity
     const columnNoMoreMove = Array(9).fill("false");
 
 
@@ -567,6 +567,10 @@ function gravity() {
 
     checkColumnGravity(testCol);
 
+
+    // function returns if the column has any element that is against gravity
+    // Consider: walls, stones, baskets have fixed position on the board,
+    // while fruits and flowers are mobile elements 
     function checkColumnGravity(col) {
         // check if column has any X (gaps)
         if (!col.some(e => e === "X")) return true;
@@ -579,7 +583,33 @@ function gravity() {
         return !(/[A-E1-9]/g.test(restOfCol.join("")));
     } // end of checkColumnGravity
 
-    console.log(checkColumnGravity(testCol));
+
+    // Function applies gravity on column recieved as its parameter.
+    function gravityseColumn(col) {
+        console.log("BEFORE GRAVITY", col.join(""));
+
+        // take off fixed positioned elements from column
+        const fixedPosGem = ["S", "M", "L", "#"],
+            isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
+            newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
+
+        console.log("NO FIXED GEMS", newCol.join(""));
+        // find first gap ("X") and remove it from column
+        const firstGap = col.indexOf("X");
+        newCol.splice(firstGap, 1);
+
+        console.log("NO FIRST GAP", newCol.join(""));
+        // place fixed pos items back to their original place
+        col.map((orig, oInd) => {
+            if (isFixedPosGem(orig)) {
+                console.log("Paste", orig, oInd, newCol.join(""));
+            } // end of if gem is a fixedPos
+        }); // end of original column iteration
+        return newCol;
+    } // end of gravitiseColumn
+
+    console.log("Gravitize", gravityseColumn(testCol).join(""));
+
 
     /*    // turn board 90 degree on side bottom to left top to right
         // to see the gaps vertically
