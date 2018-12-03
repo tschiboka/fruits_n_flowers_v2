@@ -546,27 +546,24 @@ function animateExplosions(matches) {
         }; // end of iteration id times
     }); //end of match iteration
 
-    // remove elements with 0.45s delay
+    // remove elements with 0.45s delay, giving time for animation
     const removeShardsDelay = setTimeout(() => {
         $(".shard").remove();
 
         // when animation is done start to fill the board up again
-        gravity();
+        gravity();  // make elements fill the created gaps
         clearTimeout(removeShardsDelay);
     }, 450);
 } // end of animateExplosions
 
 
 function gravity() {
+    let currentBoard = app.board;
     // each column need to be tested against column gravity
-    const columnNoMoreMove = Array(9).fill("false");
-
-
-    let testCol = ["1", "3", "9", "X", "L", "X", "M", "S", "#", "X", "#"];
-    // the argument is the column number, func returns if no falling needed
+    const columnGravityDone = Array(9).fill(false);
+    let testCol = ["1", "3", "9", "X", "L", "A", "M", "S", "#", "X", "#"];
 
     checkColumnGravity(testCol);
-
 
     // function returns if the column has any element that is against gravity
     // Consider: walls, stones, baskets have fixed position on the board,
@@ -583,17 +580,16 @@ function gravity() {
         return !(/[A-E1-9]/g.test(restOfCol.join("")));
     } // end of checkColumnGravity
 
-
     // Function applies gravity on column recieved as its parameter.
-    function gravityseColumn(col) {
+    function gravitiseColumn(col) {
         // take off fixed positioned elements from column
         const fixedPosGem = ["S", "M", "L", "#"],
             isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
             newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
-
         // find first gap ("X") and remove it from column and put it on the top (end)
-        const firstGap = col.indexOf("X");
-        newCol.splice(firstGap, 1)
+        const firstGap = newCol.indexOf("X");
+        newCol.splice(firstGap, 1);
+
         newCol.push("X");
 
         // place fixed pos items back to their original place
@@ -606,71 +602,47 @@ function gravity() {
         return newCol;
     } // end of gravitiseColumn
 
-    console.log("Gravitize", gravityseColumn(testCol).join(""), checkColumnGravity(testCol));
+
+    // function iterates all columns, if column needs gravity, apply
+    // else correct columnGravityDone array 
+    function gravitiseBoard(board) {
+        const updateColumnGravityDone = (c, cn) => {
+            columnGravityDone[cn] = checkColumnGravity(c);
+            console.log(c, cn, columnGravityDone);
+            return columnGravityDone[cn];
+        } // end of update...
+
+        for (colNum = 0; colNum < board[0].length; colNum++) {
+            console.log(columnGravityDone[colNum]);
+            // check if column need gravity end skip the ones 
+            // that have no altering needed (first iteration all cols checked)
+            if (!columnGravityDone[colNum]) {
+                // Extract the column from board
+                let column = board.map(row => row[colNum]).reverse();
 
 
-    /*    // turn board 90 degree on side bottom to left top to right
-        // to see the gaps vertically
-    
-        let slices = turnArr90deg(app.board);
-    
-        function turnArr90deg(arr) {
-            const slices90deg = [];
-            for (sl = 0; sl < arr[0].length; sl++) {
-                const slice = [];
-                for (row = arr.length - 1; row >= 0; row--) {
-                    slice.push(arr[row][sl]);
-                } // end of reverse iteration of cols
-                slices90deg.push(slice);
-            } // end of row iteration
-            return slices90deg;
-        } // end of turnArr90deg
-    
-    
-    
-        // turn back arr to original for displaying
-        function backArr90deg(arr) {
-            return turnArr90deg(arr.reverse());
-    
-        } // end of backArr90deg
-    
-        console.log("test board turn");
-        backArr90deg(turnArr90deg(app.board)).map(e => { console.log(JSON.stringify(e)); });
-    
-        // fall returns the modified slice and if there no gap left
-        function fallSlice(sl) {
-            // find first index of a gap and return if none found
-            const firstGapAt = sl.indexOf("X");
-    
-            if (firstGapAt === -1) return [sl, true];
-    
-            // take it out of the array
-            sl.splice(firstGapAt, 1);
-            sl.push("X");
-    
-            // check if all Xs are at the top: 1. take the Xs from the end 2. check if any has left
-            slCut = sl.join("").replace(/X+$/g, "").split("");
-    
-            // check if there is any X remained
-            return slCut.indexOf("X") === -1 ? [sl, true] : [sl, false];
-        } // end of fall
-    
-    
-        // go through the slices
-        function fallRow() {
-            const newSlices = [], noMoreFall = [];
-            // iterate slices
-            slices.forEach(slice => {
-                const res = fallSlice(slice);
-                newSlices.push(res[0]);
-                noMoreFall.push(res[1]);
-            }); // end of slice forEach
-    
-            slices = newSlices;
-            return noMoreFall;
-        } // end of fallRow 
-    
-        fallRow(slices); */
+                if (!updateColumnGravityDone(column, colNum)) {
+                    console.log("Before", colNum, column.join(""));
+
+                    column = gravitiseColumn(column);
+
+                    console.log("After", colNum, column.join(""));
+                    // modify the board
+                    let gem = 0; // column counter for row iteration
+                    for (r = currentBoard.length - 1; r >= 0; r--) {
+                        console.log("RC", r, c, "COL", column[gem]);
+                        currentBoard[r][colNum] = column[gem++]; // update board 
+                    } // end of row iteration
+                    updateColumnGravityDone(column, colNum); // if done, it can skip next iteration
+                } // end of if gravity needed
+            } // end of first gravity arr check
+        } // end of column iteration
+        console.log(columnGravityDone);
+        app.board = currentBoard; // update the live board
+        displayBoard();
+    } // end of gravitizeBoard
+
+    gravitiseBoard(currentBoard);
 } // end of gravity
 
 
@@ -741,13 +713,13 @@ var levels = [
             "#########",
             "#6684729#",
             "#2954382#",
-            "#298347*#",
+            "#29###7*#",
             "#5914125#",
             "#2315489#",
             "#181BCDE#",
             "#2949937#",
             "#SL89591#",
-            "#UM86887#",
+            "#UM86987#",
             "#########",
         ],
         "fruitVariationNumber": 6,
