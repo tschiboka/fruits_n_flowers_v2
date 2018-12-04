@@ -505,6 +505,7 @@ function animateExplosions(matches) {
     // disable interaction with the gameboard while animation is going 
     // and new characters are on the table
     app.game_interaction_enabled = false;
+    console.log("ENABLED ANIMATION", app.game_interaction_enabled);
 
     // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
@@ -671,27 +672,26 @@ function fillBoardWithNewFruits() {
     let nextId = 0;
     const drippingDelay = setInterval(() => {
         if (nextId === idsToFill.length) {
-
-            const matches = checkMatches();
-            console.log("NEW MATCHES", JSON.stringify(matches), matches);
-            if (matches) {
-                animateExplosions(matches);
-            }
-            else {
-                // give interaction back only when all characters are present on the table
-                //app.game_interaction_enabled = true;
-                clearInterval(drippingDelay);
-            }
+            clearInterval(drippingDelay);
+            cicleMatches(); // cicle back and look for more matches
         } else {
-            console.log("ENABLED", app.game_interaction_enabled);
             fillEmptyCell(nextId);
             nextId++;
         } // end of if there are still more ids to fill
-    }, 500); // end of drippingDelay
-    console.log("END OF CICLE");
+    }, 50); // end of drippingDelay
 } // end of drippingNewFruits
 
 
+
+function cicleMatches() {
+    const matches = checkMatches();
+    if (matches) {
+        animateExplosions(matches);
+    } // if there are further matches
+    else {
+        app.game_interaction_enabled = true;
+    } // give interaction back to player
+} // end of cicleMatches
 
 
 /*
