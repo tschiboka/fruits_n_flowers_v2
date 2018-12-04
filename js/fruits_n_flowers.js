@@ -495,6 +495,10 @@ function checkMatches() {
             // make matched patterns 0, so they won't be matched in other pattern searchres
             // resulting faster code running
             ids.forEach(id => app.board[id[0]][id[1]] = "X");
+
+            // get special gems, function modifies the board!!! in order to leave
+            // one fruit with the special sign, avoiding destroying it
+            getSpecialGems(matches);
         } // end of its matching 
     } // end of general match function
     return matches.length ? matches : false; // return false if no matches 
@@ -558,9 +562,6 @@ function animateExplosions(matches) {
         gravity();  // make elements fill the created gaps
         clearTimeout(removeShardsDelay);
     }, 450);
-
-    // get special gems
-    getSpecialGems(matches);
 } // end of animateExplosions
 
 
@@ -741,13 +742,26 @@ function getSpecialGems(matches) {
         // bonus + patternName on it
         switch (match.patternName) {
             case "I4V": {
-                specialCoord = match.coords[getRandomPos(match.coords)];
+                const specialCoord = match.coords[getRandomPos(match.coords)];
                 $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus-I4V");
+                createspecialGemDiv(specialCoord, "I4V-sign");
+
+                // leave one of the sample on the board
+                app.board[specialCoord[0]][specialCoord[1]] = match.sample;
                 break;
             } // end of case I4V
         } // end of pattern switch
     }); // end of match iteration
 } // end of getSpecialGems
+
+
+function createspecialGemDiv(coord, name) {
+    const specialDiv = document.createElement("div");
+
+    $(specialDiv).addClass("bonus-sign I4V-sign");
+    $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
+} // end of createSpecialGemDiv
+
 
 /*
  
@@ -934,6 +948,7 @@ function displayBoard() {
             } // end of if not a wall
 
             // SPECIAL GEMS
+
 
             // spin flowers and diamonds
             if (["A", "B", "C", "D", "E", "*"].find(cell => cell === app.board[r][c])) {
