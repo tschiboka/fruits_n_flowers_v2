@@ -450,8 +450,8 @@ function checkMatches() {
         match("T5", [r, c], [1, 0], [1, 1], [1, 2], [0, 2], [2, 2]);
         match("T5", [r, c], [2, 0], [2, 1], [2, 2], [0, 1], [1, 1]);
         match("T5", [r, c], [0, 0], [1, 0], [2, 0], [1, 1], [1, 2]);
-        match("I4", [r, c], [0, 0], [0, 1], [0, 2], [0, 3]);
-        match("I4", [r, c], [0, 0], [1, 0], [2, 0], [3, 0]);
+        match("I4H", [r, c], [0, 0], [0, 1], [0, 2], [0, 3]);
+        match("I4V", [r, c], [0, 0], [1, 0], [2, 0], [3, 0]);
         match("O4", [r, c], [0, 0], [0, 1], [1, 0], [1, 1]);
         match("I3", [r, c], [0, 0], [0, 1], [0, 2]);
         match("I3", [r, c], [0, 0], [1, 0], [2, 0]);
@@ -558,6 +558,9 @@ function animateExplosions(matches) {
         gravity();  // make elements fill the created gaps
         clearTimeout(removeShardsDelay);
     }, 450);
+
+    // get special gems
+    getSpecialGems(matches);
 } // end of animateExplosions
 
 
@@ -719,15 +722,32 @@ function checkFlowersOverBasket() {
                 // remove class if animation is done
                 const flowerTimer = setTimeout(() => {
                     $(`#r${basket[0] - 1}c${basket[1]}-pic`).removeClass("flower-disappear");
+
                     clearTimeout(flowerTimer);
                 }, 4500); // end of delayed class removal
             } // if flower
         } // end of if row > 0
     });
     displayBoard();
-
-    console.log("OVERBASKET", JSON.stringify(basketsPos));
 } // end of checkFloversOverBasket
+
+
+function getSpecialGems(matches) {
+    const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
+    console.log("GEMS");
+    matches.forEach(match => {
+        console.log(match.patternName);
+        // get one of the position randomly and put the special class 
+        // bonus + patternName on it
+        switch (match.patternName) {
+            case "I4V": {
+                specialCoord = match.coords[getRandomPos(match.coords)];
+                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus-I4V");
+                break;
+            } // end of case I4V
+        } // end of pattern switch
+    }); // end of match iteration
+} // end of getSpecialGems
 
 /*
  
@@ -758,9 +778,9 @@ var levels = [
         "blueprint": [
             "A245U321B",
             "#6214423#",
-            "#2154332#",
+            "#2454532#",
             "#2212332#",
-            "#5414123#",
+            "#5454123#",
             "#2315452#",
             "#1215566#",
             "#254B434#",
@@ -795,6 +815,7 @@ var app = {
     "images": [],         // the preloaded pictures
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "currentLevel": 1,
+    "flowers": 0,         // the players collected flowers on the actual level
 }; // end of app global object
 
 
@@ -912,6 +933,7 @@ function displayBoard() {
                 $(idName).removeClass("wall-size");
             } // end of if not a wall
 
+            // SPECIAL GEMS
 
             // spin flowers and diamonds
             if (["A", "B", "C", "D", "E", "*"].find(cell => cell === app.board[r][c])) {
@@ -920,6 +942,8 @@ function displayBoard() {
             else {
                 $(idName).removeClass("spin-pic");
             }
+
+            // Bonus horizontal
 
             if (app.board[r][c] === "X") {
                 $(idName).css("background-image", "none");
