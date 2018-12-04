@@ -402,6 +402,7 @@ function swipeCharacters(swipeArgs) {
         animateExplosions(matches);
     } // end of if matches found
     displayBoard();
+    checkFlowersOverBasket();
 } // end of swipeCharacters
 
 
@@ -505,7 +506,6 @@ function animateExplosions(matches) {
     // disable interaction with the gameboard while animation is going 
     // and new characters are on the table
     app.game_interaction_enabled = false;
-    console.log("ENABLED ANIMATION", app.game_interaction_enabled);
 
     // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
@@ -565,9 +565,7 @@ function gravity() {
     let currentBoard = app.board;
     // each column need to be tested against column gravity
     const columnGravityDone = Array(9).fill(false);
-    let testCol = ["1", "3", "9", "X", "L", "A", "M", "S", "#", "X", "#"];
-
-    checkColumnGravity(testCol);
+    let testCol = ["1", "3", "9", "X", "L", "A", "M", "S", "#", "X", "U"];
 
     // function returns if the column has any element that is against gravity
     // Consider: walls, stones, baskets have fixed position on the board,
@@ -587,7 +585,7 @@ function gravity() {
     // Function applies gravity on column recieved as its parameter.
     function gravitiseColumn(col) {
         // take off fixed positioned elements from column
-        const fixedPosGem = ["S", "M", "L", "#"],
+        const fixedPosGem = ["S", "M", "L", "#", "U"],
             isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
             newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
         // find first gap ("X") and remove it from column and put it on the top (end)
@@ -687,12 +685,49 @@ function cicleMatches() {
     const matches = checkMatches();
     if (matches) {
         animateExplosions(matches);
+        checkFlowersOverBasket();
     } // if there are further matches
     else {
         app.game_interaction_enabled = true;
     } // give interaction back to player
+    checkFlowersOverBasket();
 } // end of cicleMatches
 
+
+function checkFlowersOverBasket() {
+    // get the basket positions
+    basketsPos = []
+    app.board.forEach((row, rowPos) =>
+        row.forEach((cell, cellPos) => {
+            if (cell === "U") basketsPos.push([rowPos, cellPos]); // fill up basketPositions
+        })); // end of board search
+
+    // check if character above is flower
+    const isFlower = (r, c) => ["A", "B", "C", "D", "E"].find(fl => fl === app.board[r][c]);
+
+    // remove flowers from board
+    basketsPos.forEach(basket => {
+        // skip basket on row 0, it gets Error, flower on row -1 is impossible
+        if (basket[0] !== 0) {
+            if (isFlower(basket[0] - 1, basket[1])) {
+                app.board[basket[0] - 1][basket[1]] = "X";
+                // add animation
+                $(`#r${basket[0] - 1}c${basket[1]}-pic`)
+                    .removeClass("spin-pic")
+                    .addClass("flower-disappear");
+
+                // remove class if animation is done
+                const flowerTimer = setTimeout(() => {
+                    $(`#r${basket[0] - 1}c${basket[1]}-pic`).removeClass("flower-disappear");
+                    clearTimeout(flowerTimer);
+                }, 4500); // end of delayed class removal
+            } // if flower
+        } // end of if row > 0
+    });
+    displayBoard();
+
+    console.log("OVERBASKET", JSON.stringify(basketsPos));
+} // end of checkFloversOverBasket
 
 /*
  
@@ -721,17 +756,17 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "#########",
+            "A245U321B",
             "#6214423#",
             "#2154332#",
-            "#22###3*#",
+            "#2212332#",
             "#5414123#",
             "#2315452#",
-            "#121BCDE#",
-            "#2544434#",
-            "#SL59511#",
-            "#UM56622#",
-            "#########",
+            "#1215566#",
+            "#254B434#",
+            "#2159511#",
+            "#455C622#",
+            "###UUU###",
         ],
         "fruitVariationNumber": 6,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},

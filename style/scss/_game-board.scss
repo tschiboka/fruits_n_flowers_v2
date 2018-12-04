@@ -195,6 +195,10 @@
             .spin-pic {
                 animation: spin-cell 15s linear infinite;
             }
+
+            .flower-disappear {
+                animation: flower-disappear-anim 0.3s linear;
+            }
         }
     }
 }
@@ -206,5 +210,21 @@
 
     to {
         transform: rotate(359deg);
+    }
+}
+
+@keyframes flower-disappear-anim {
+    0% {
+        transform: scale(1);
+        background-color: rgb(148, 247, 252);
+    }
+    10% {
+        transform: scale(1.5);
+    }
+    80% {
+        transform: scale(0.2);
+    }
+    100% {
+        transform: scale(1);
     }
 }
