@@ -3,7 +3,8 @@
 $bg-color: #252525;
 $main-text-color: #58e8f3;
 $primary-color1:  #683180;
-$primary-color2: #fa2bf0;
+$primary-color2: #f860f0;
+$primary-color3: #dad9a7;
 $patt-color: #808080;
 $panel-bg-color: rgba(19, 8, 22, 0.8);
 $horizontal-gradient: linear-gradient(
@@ -56,7 +57,7 @@ body {
     min-width: 320px;
     margin: auto;
     background: $primary-color1;
-    background: linear-gradient(180deg, $primary-color2 0%, $primary-color1 100%);
+    background: linear-gradient(180deg, $primary-color3 1%, $primary-color2 50%, $primary-color1 100%);
     box-shadow: 5px 5px 5px black;
 
     @include breakpoint(sm) {

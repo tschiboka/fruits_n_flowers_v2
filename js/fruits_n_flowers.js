@@ -754,19 +754,31 @@ function getSpecialGems(matches) {
     }); // end of match iteration
 } // end of getSpecialGems
 
+
+
+
 // function creates the special divs for bonus gems
 // parameters: the gems coordinates, 
 //             the name of the pattern, if we know the name
 //             the character on the board, in case we need to read it from board, we won't know it's name  
 function createspecialGemDiv(coord, name, char) {
     const specialDiv = document.createElement("div"),
-        convertSpecialToFruit = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
-    let patternName = name;
+        patternName = name;
 
     $(specialDiv).addClass(`bonus-sign ${patternName}-sign`);
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
 
+
+// this function recognises special characters
+// and return the fruit representation of it
+// eg: /u1149 - apple with vertical line -> apples sign is 1 on the board which is 49 in utf (1149 - 1100)
+//     /u1249 - apple with horizontal line -> char - 1200 
+// [1000 - 4O, 1100 - I4V, 1200 - I4H, 1300 - 5T, 1400 - ]
+function convertCharSpecialToFruit(char) {
+    // = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
+
+}
 
 /*
  
