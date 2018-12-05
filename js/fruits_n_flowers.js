@@ -744,7 +744,7 @@ function getSpecialGems(matches) {
             case "I4V": {
                 const specialCoord = match.coords[getRandomPos(match.coords)];
                 $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus-I4V");
-                createspecialGemDiv(specialCoord, "I4V-sign");
+                createspecialGemDiv(specialCoord, "I4V");
 
                 // leave one of the sample on the board
                 app.board[specialCoord[0]][specialCoord[1]] = match.sample;
@@ -754,11 +754,16 @@ function getSpecialGems(matches) {
     }); // end of match iteration
 } // end of getSpecialGems
 
+// function creates the special divs for bonus gems
+// parameters: the gems coordinates, 
+//             the name of the pattern, if we know the name
+//             the character on the board, in case we need to read it from board, we won't know it's name  
+function createspecialGemDiv(coord, name, char) {
+    const specialDiv = document.createElement("div"),
+        convertSpecialToFruit = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
+    let patternName = name;
 
-function createspecialGemDiv(coord, name) {
-    const specialDiv = document.createElement("div");
-
-    $(specialDiv).addClass("bonus-sign I4V-sign");
+    $(specialDiv).addClass(`bonus-sign ${patternName}-sign`);
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
 
@@ -783,7 +788,7 @@ function createspecialGemDiv(coord, name) {
  *         - "*"       : diamonds 
  *         - "a" - "z" :lower case letters are kept for special characters like explosions and time stopers
  *     - fruitVariationNumber : determine the number of the possible randomly
- *         created fruits [5 - 9]
+ *         created fruits [5 - 9] 
  */
 
 var levels = [
@@ -792,7 +797,7 @@ var levels = [
         "blueprint": [
             "A245U321B",
             "#6214423#",
-            "#2454532#",
+            "#242\u1049532#",
             "#2212332#",
             "#5454123#",
             "#2315452#",
@@ -933,25 +938,36 @@ function displayBoard() {
         "U": app.images.basket,
         "*": app.images.diamond,
     }; // end of imgMap
-
+    const convertSpecialToFruit = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
             const idName = `#r${r}c${c}-pic`;
+            let char = app.board[r][c]; // holds the character
+
+            // find special gem characters, and translate them into flowers
+            // special gems are ascii chars 100, 110, ... 170 above their 
+            // corrisponding fruits. eg.: 141
+
+            // SPECIAL GEMS
+            if (char.charCodeAt(0) > 140) {
+                char = convertSpecialToFruit(app.board[r][c]);
+                console.log("Special", app.board, char.length);
+
+            }
 
             // set wall sizes bigger
-            if (app.board[r][c] === "#") {
+            if (char === "#") {
                 $(idName).addClass("wall-size");
             } // end of if it's a wall 
             else {
                 $(idName).removeClass("wall-size");
             } // end of if not a wall
 
-            // SPECIAL GEMS
 
 
             // spin flowers and diamonds
-            if (["A", "B", "C", "D", "E", "*"].find(cell => cell === app.board[r][c])) {
+            if (["A", "B", "C", "D", "E", "*"].find(cell => cell === char)) {
                 $(idName).addClass("spin-pic");
             } // end of if cell is spinning
             else {
@@ -960,10 +976,11 @@ function displayBoard() {
 
             // Bonus horizontal
 
-            if (app.board[r][c] === "X") {
+            if (char === "X") {
                 $(idName).css("background-image", "none");
             } else {
-                $(idName).css("background-image", `url(${imgMap[app.board[r][c]].src}`);
+                console.log("CHAR", char);
+                $(idName).css("background-image", `url(${imgMap[char].src}`);
             } // end of if board value is not "0"
         } // end of cell iteration
     } // end of row iteration
