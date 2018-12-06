@@ -595,15 +595,29 @@ function gravity() {
         // check if is there any special gems above the gap
         const specialGemCoords = col.slice(firstGap + 1)
             .reverse()  // in order to have the right row index
-            .map((cell, cellInd) => $(`#r${cellInd}c${colNum}-pic`)[0])
-            .filter(div => $(div).hasClass("bonus"));
+            .map((_, cellInd) => $(`#r${cellInd}c${colNum}-pic`)[0])
+            .filter(div => $(div).hasClass("bonus"))
+            .reverse();
 
         // check the first available non wall stone or basket position under the special gems
         specialGemCoords.forEach(spGem => {
-            //col.slice(firstGap)
+            const gemRow = Number(spGem.id.match(/\d+/)[0]),
+                moveRange = col.slice(firstGap)
+                    .reverse()
+                    .slice(gemRow + 1),
+                moveTo = moveRange.findIndex(el => [..."123456789X"].find(ch => ch === el)),
+                hey = [..."#SMLU"];
+
+            console.log("HEY", moveRange, moveTo);
+
+            // append child div to its new cell
+
+            const clone = $(spGem).children();
+            // remove class from old one
+            $(spGem).removeClass("bonus");
+            $(`#r${gemRow + moveTo + 1}c${colNum}-pic`).addClass("bonus").append(clone);
+            //console.log("     GEM GRAVITY SLICE", moveRange.join(""), "GEM ON", gemRow, "NEXT PLACE", moveTo);
         }); // end of specialGemCoordsd iteration
-        console.log("SpecialGem colnum", colNum, "firstGAP", firstGap, col.join(""));
-        console.log(specialGemCoords);
     } // end of gravitiseColumnBonusGems
 
 
@@ -647,7 +661,6 @@ function gravity() {
                 let column = board.map(row => row[colNum]).reverse();
 
                 if (!updateColumnGravityDone(column, colNum)) {
-                    // move specials according to its gravity
                     gravitiseColumnBonusGems(colNum, column);
                     column = gravitiseColumn(column);
                     // modify the board
@@ -779,7 +792,7 @@ function getSpecialGems(matches) {
         switch (match.patternName) {
             case "I4V": {
                 const specialCoord = match.coords[getRandomPos(match.coords)];
-                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`);
+                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
 
                 createspecialGemDiv(specialCoord, "I4V");
 
@@ -851,12 +864,12 @@ var levels = [
     {
         "blueprint": [
             "A245U321B",
-            "#6214433#",
+            "#3214433#",
             "#242A532#",
             "#2212353#",
-            "#5454123#",
+            "##554123#",
             "#23E5452#",
-            "#12A5566#",
+            "#12A6566#",
             "#25DB434#",
             "#21C9511#",
             "#4E556D2#",
