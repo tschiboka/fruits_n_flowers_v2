@@ -580,7 +580,7 @@ function gravity() {
 
         // check if the first gap has any mobile element above (any fruit or flower, rest are immobile) 
         const firstGap = col.indexOf("X"),
-            restOfCol = col.slice(firstGap + 1, col.length - 1);
+            restOfCol = col.slice(firstGap + 1, col.length);
 
 
         return !(/[A-E1-9]/g.test(restOfCol.join("")));
@@ -770,16 +770,6 @@ function createspecialGemDiv(coord, name, char) {
 } // end of createSpecialGemDiv
 
 
-// this function recognises special characters
-// and return the fruit representation of it
-// eg: /u1149 - apple with vertical line -> apples sign is 1 on the board which is 49 in utf (1149 - 1100)
-//     /u1249 - apple with horizontal line -> char - 1200 
-// [1000 - 4O, 1100 - I4V, 1200 - I4H, 1300 - 5T, 1400 - ]
-function convertCharSpecialToFruit(char) {
-    // = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
-
-}
-
 /*
  
         LEVELS
@@ -808,15 +798,15 @@ var levels = [
     {
         "blueprint": [
             "A245U321B",
-            "#6214423#",
-            "#242\u1049532#",
-            "#2212332#",
+            "#6314433#",
+            "#242A532#",
+            "#2212353#",
             "#5454123#",
             "#2315452#",
             "#1215566#",
             "#254B434#",
             "#2159511#",
-            "#455C622#",
+            "#4551622#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
@@ -950,23 +940,12 @@ function displayBoard() {
         "U": app.images.basket,
         "*": app.images.diamond,
     }; // end of imgMap
-    const convertSpecialToFruit = ch => String.fromCharCode((ch).charCodeAt(0).toString(16) - 1000, 10)[0];
+
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
             const idName = `#r${r}c${c}-pic`;
             let char = app.board[r][c]; // holds the character
-
-            // find special gem characters, and translate them into flowers
-            // special gems are ascii chars 100, 110, ... 170 above their 
-            // corrisponding fruits. eg.: 141
-
-            // SPECIAL GEMS
-            if (char.charCodeAt(0) > 140) {
-                char = convertSpecialToFruit(app.board[r][c]);
-                console.log("Special", app.board, char.length);
-
-            }
 
             // set wall sizes bigger
             if (char === "#") {
@@ -986,12 +965,10 @@ function displayBoard() {
                 $(idName).removeClass("spin-pic");
             }
 
-            // Bonus horizontal
 
             if (char === "X") {
                 $(idName).css("background-image", "none");
             } else {
-                console.log("CHAR", char);
                 $(idName).css("background-image", `url(${imgMap[char].src}`);
             } // end of if board value is not "0"
         } // end of cell iteration
