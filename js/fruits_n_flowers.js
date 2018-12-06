@@ -770,13 +770,29 @@ function getSpecialGems(matches) {
 
 // function creates the special divs for bonus gems
 // parameters: the gems coordinates, 
-//             the name of the pattern, if we know the name
-//             the character on the board, in case we need to read it from board, we won't know it's name  
-function createspecialGemDiv(coord, name, char) {
+//             the name of the pattern
+function createspecialGemDiv(coord, name) {
+
+    // function append a div with className to specialDiv
+    function addDivToBonusDiv(className) {
+        const div = document.createElement("div");
+
+        $(div).addClass(className);
+        $(specialDiv).append(div);
+    } // end of addDiv
+
+
     const specialDiv = document.createElement("div"),
         patternName = name;
 
+
     $(specialDiv).addClass(`bonus-sign ${patternName}-sign`);
+    switch (name) {
+        case "I4V": {
+            addDivToBonusDiv("bonus-vertical-line");
+            break;
+        } // end of case I4V
+    } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
 

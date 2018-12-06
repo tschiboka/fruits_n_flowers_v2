@@ -1,25 +1,28 @@
 .bonus-sign {
-    position: absolute;
-    background: $main-text-color;
-    opacity: 1;
-}
-
-.I4V-sign {
-    width: 26%;
+    position: relative;
+    width: 100%;
     height: 100%;
-    margin-left: 37%;
-    clip-path: polygon(
-        50% 0,
-        100% 15%,
-        100% 85%,
-        50% 100%,
-        0 85%,
-        0 15%
-    );
-    animation: I4V-anim 1.5s linear infinite;
+    opacity: 1;
+    
+    .bonus-vertical-line {
+        width: 26%;
+        height: 100%;
+        margin-left: 37%;
+        background: $main-text-color;
+        clip-path: polygon(
+            50% 0,
+            100% 15%,
+            100% 85%,
+            50% 100%,
+            0 85%,
+            0 15%
+        );
+        animation: bonus-vertical-line-anim 1.5s linear infinite;
+    }
 }
 
-@keyframes I4V-anim {
+
+@keyframes bonus-vertical-line-anim {
     0% {
         margin-top: 0;
         height: 100%;
