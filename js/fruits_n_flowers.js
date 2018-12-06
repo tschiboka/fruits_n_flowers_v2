@@ -367,7 +367,7 @@ function swipeCharacters(swipeArgs) {
 
     const [R1, C1, R2, C2, dir] = [...swipeArgs];  // destruct args
 
-    // check if origin ar destination is a flower and swipe them if they are
+    // check if orientation is horizontal and if it is a flower and swipe them if they are
     const flowerAndHorizontal = () => {
         const flowerChars = ["A", "B", "C", "D", "E"],
             isFlower = (r, c) => flowerChars.find(fl => fl === app.board[r][c]);
@@ -382,7 +382,6 @@ function swipeCharacters(swipeArgs) {
     const matches = checkMatches();
     console.log(JSON.stringify(matches));
     if (!matches) {
-        // 
         if (!flowerAndHorizontal()) {
             app.game_interaction_enabled = false;
 
@@ -714,6 +713,9 @@ function checkFlowersOverBasket() {
         // skip basket on row 0, it gets Error, flower on row -1 is impossible
         if (basket[0] !== 0) {
             if (isFlower(basket[0] - 1, basket[1])) {
+                // add flower to the app
+                app.flowers++;
+                // remove flower
                 app.board[basket[0] - 1][basket[1]] = "X";
                 // add animation
                 $(`#r${basket[0] - 1}c${basket[1]}-pic`)
@@ -724,12 +726,21 @@ function checkFlowersOverBasket() {
                 const flowerTimer = setTimeout(() => {
                     $(`#r${basket[0] - 1}c${basket[1]}-pic`).removeClass("flower-disappear");
 
+                    // check newly created board
+                    console.log("FLOWERS", app.flowers);
+                    gravity();
+                    // check if the changed board has any matches
+                    const matches = checkMatches();
+                    if (matches) {
+                        animateExplosions(matches);
+                    }
+                    displayBoard();
+
                     clearTimeout(flowerTimer);
-                }, 4500); // end of delayed class removal
+                }, 450); // end of delayed class removal
             } // if flower
         } // end of if row > 0
-    });
-    displayBoard();
+    }); // end of basket iteration
 } // end of checkFloversOverBasket
 
 
@@ -802,11 +813,11 @@ var levels = [
             "#242A532#",
             "#2212353#",
             "#5454123#",
-            "#2315452#",
-            "#1215566#",
-            "#254B434#",
-            "#2159511#",
-            "#4551622#",
+            "#23E5452#",
+            "#12A5566#",
+            "#25DB434#",
+            "#21C9511#",
+            "#4E5C6D2#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
