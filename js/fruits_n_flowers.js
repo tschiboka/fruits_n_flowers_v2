@@ -605,18 +605,14 @@ function gravity() {
                 moveRange = col.slice(firstGap)
                     .reverse()
                     .slice(gemRow + 1),
-                moveTo = moveRange.findIndex(el => [..."123456789X"].find(ch => ch === el)),
-                hey = [..."#SMLU"];
+                moveTo = moveRange.findIndex(el => [..."123456789X"].find(ch => ch === el));
 
-            console.log("HEY", moveRange, moveTo);
-
-            // append child div to its new cell
-
+            // append child div to its new cell, remove class from old one
             const clone = $(spGem).children();
-            // remove class from old one
             $(spGem).removeClass("bonus");
-            $(`#r${gemRow + moveTo + 1}c${colNum}-pic`).addClass("bonus").append(clone);
-            //console.log("     GEM GRAVITY SLICE", moveRange.join(""), "GEM ON", gemRow, "NEXT PLACE", moveTo);
+            $(`#r${gemRow + moveTo + 1}c${colNum}-pic`)
+                .addClass("bonus")
+                .append(clone);
         }); // end of specialGemCoordsd iteration
     } // end of gravitiseColumnBonusGems
 
@@ -724,6 +720,7 @@ function fillBoardWithNewFruits() {
 
 function cicleMatches() {
     const matches = checkMatches();
+    displayBoard();
     if (matches) {
         animateExplosions(matches);
         checkFlowersOverBasket();
@@ -786,21 +783,14 @@ function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
     console.log("GEMS");
     matches.forEach(match => {
-        console.log(match.patternName);
         // get one of the position randomly and put the special class 
-        // bonus + patternName on it
-        switch (match.patternName) {
-            case "I4V": {
-                const specialCoord = match.coords[getRandomPos(match.coords)];
-                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
+        const specialCoord = match.coords[getRandomPos(match.coords)];
+        $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
 
-                createspecialGemDiv(specialCoord, "I4V");
+        createspecialGemDiv(specialCoord, match.patternName);
 
-                // leave one of the sample on the board
-                app.board[specialCoord[0]][specialCoord[1]] = match.sample;
-                break;
-            } // end of case I4V
-        } // end of pattern switch
+        // leave one of the sample on the board
+        app.board[specialCoord[0]][specialCoord[1]] = match.sample;
     }); // end of match iteration
 } // end of getSpecialGems
 
