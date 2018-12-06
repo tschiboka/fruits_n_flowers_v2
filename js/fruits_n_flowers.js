@@ -585,6 +585,29 @@ function gravity() {
         return !(/[A-E1-9]/g.test(restOfCol.join("")));
     } // end of checkColumnGravity
 
+
+
+    // function gives the special classes its own gravity
+    function gravitiseColumnBonusGems(colNum, col) {
+        // find the first gap
+        const firstGap = col.indexOf("X");
+
+        // check if is there any special gems above the gap
+        const specialGemCoords = col.slice(firstGap + 1)
+            .reverse()  // in order to have the right row index
+            .map((cell, cellInd) => $(`#r${cellInd}c${colNum}-pic`)[0])
+            .filter(div => $(div).hasClass("bonus"));
+
+        // check the first available non wall stone or basket position under the special gems
+        specialGemCoords.forEach(spGem => {
+            //col.slice(firstGap)
+        }); // end of specialGemCoordsd iteration
+        console.log("SpecialGem colnum", colNum, "firstGAP", firstGap, col.join(""));
+        console.log(specialGemCoords);
+    } // end of gravitiseColumnBonusGems
+
+
+
     // Function applies gravity on column recieved as its parameter.
     function gravitiseColumn(col) {
         // take off fixed positioned elements from column
@@ -624,6 +647,8 @@ function gravity() {
                 let column = board.map(row => row[colNum]).reverse();
 
                 if (!updateColumnGravityDone(column, colNum)) {
+                    // move specials according to its gravity
+                    gravitiseColumnBonusGems(colNum, column);
                     column = gravitiseColumn(column);
                     // modify the board
                     let gem = 0; // column counter for row iteration
@@ -754,7 +779,8 @@ function getSpecialGems(matches) {
         switch (match.patternName) {
             case "I4V": {
                 const specialCoord = match.coords[getRandomPos(match.coords)];
-                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus-I4V");
+                $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`);
+
                 createspecialGemDiv(specialCoord, "I4V");
 
                 // leave one of the sample on the board
@@ -825,7 +851,7 @@ var levels = [
     {
         "blueprint": [
             "A245U321B",
-            "#6314433#",
+            "#6214433#",
             "#242A532#",
             "#2212353#",
             "#5454123#",
@@ -833,7 +859,7 @@ var levels = [
             "#12A5566#",
             "#25DB434#",
             "#21C9511#",
-            "#4E5C6D2#",
+            "#4E556D2#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
