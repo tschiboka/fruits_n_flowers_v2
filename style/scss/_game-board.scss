@@ -202,7 +202,7 @@
 
             .explosion {
                 background-color: transparent;
-                animation: explosion-anim 1s ease-out;
+                animation: explosion-anim 0.5s ease-out;
             }
         }
     }
@@ -236,9 +236,11 @@
 
 @keyframes explosion-anim {
     0% {
-        background-color: #ff203c;
+        background-color: #ff203e98;
+        transform: scale(1);
     }
     100% {
-        background-color: transparent;
+        background-color: #ff203c;
+        transform: scale(0.7);
     }
 }

@@ -1171,7 +1171,7 @@ function displayBoard() {
             const explosionDelay = setTimeout(() => {
                 $(idName).removeClass("explosion");
                 clearTimeout(explosionDelay);
-            }, 1000); // end of delay
+            }, 500); // end of delay
 
             if (char === "X") {
                 $(idName).css("background-image", "none");
