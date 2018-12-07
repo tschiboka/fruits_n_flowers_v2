@@ -382,7 +382,6 @@ function swipeCharacters(swipeArgs) {
         const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
             tempElemClone = $(elem1).children();
 
-        console.log("BEFORE", elem1, elem2);
         $(elem1)
             .removeClass("bonus")
             .addClass($(elem2).hasClass("bonus") ? "bonus" : "")
@@ -395,7 +394,6 @@ function swipeCharacters(swipeArgs) {
             .addClass(tempElemClass)
             .empty()
             .append(tempElemClone);
-        console.log("AFTER", elem1, elem2);
     } // end of swapBonusClasses
 
 
@@ -529,6 +527,8 @@ function checkMatches() {
             ids.forEach(id => app.board[id[0]][id[1]] = "X");
         } // end of its matching 
     } // end of general match function
+    // check if any of the matches has bonus
+    checkBonuses();
 
     // get special gems, function modifies the board!!! in order to leave
     // one fruit with the special sign, avoiding destroying it
@@ -900,6 +900,33 @@ function createspecialGemDiv(coord, name) {
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
+
+
+// function check if any gaps created by a match or a bonus explosion has bonuses
+function checkBonuses() {
+    app.board.forEach((row, rowInd) => {
+        row.forEach((cell, cellInd) => {
+            if (cell === "X" && $(`#r${rowInd}c${cellInd}-pic`).hasClass("bonus")) {
+                // remove bonus
+                $(`#r${rowInd}c${cellInd}-pic`)
+                    .removeClass("bonus")
+                    .empty();
+
+                bonusExplode();
+            } // end of if gap and Bonus
+        }); // end of cell foreach
+    }); // end of row foreach
+} // end of checkBonuses
+
+
+
+
+
+function bonusExplode() {
+
+} // end of bonusExplode
+
+
 
 
 /*
