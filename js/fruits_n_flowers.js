@@ -388,7 +388,6 @@ function swipeCharacters(swipeArgs) {
             // delay to see the unmatching swipe
             const swapDelay = () => setTimeout(() => {
                 swapCharacters(R1, C1, R2, C2);
-                console.log("SWAP Delay Up");
                 clearTimeout(swapDelay);
                 app.game_interaction_enabled = true; // set interaction back
             }, 150); // end of swapDelay 
@@ -441,10 +440,10 @@ function checkMatches() {
         match("T6", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [1, 1], [1, 2]);
         match("I5", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4]);
         match("I5", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [4, 0]);
-        match("L5", [r, c], [0, 0], [0, 1], [0, 2], [1, 0], [2, 0]);
-        match("L5", [r, c], [0, 0], [0, 1], [0, 2], [1, 2], [2, 2]);
-        match("L5", [r, c], [0, 0], [1, 0], [2, 0], [2, 1], [2, 2]);
-        match("L5", [r, c], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2]);
+        match("L51", [r, c], [0, 0], [0, 1], [0, 2], [1, 2], [2, 2]);
+        match("L51", [r, c], [0, 0], [1, 0], [2, 0], [2, 1], [2, 2]);
+        match("L52", [r, c], [0, 0], [0, 1], [0, 2], [1, 0], [2, 0]);
+        match("L52", [r, c], [2, 0], [2, 1], [2, 2], [1, 2], [0, 2]);
         match("T5", [r, c], [0, 0], [0, 1], [0, 2], [1, 1], [2, 1]);
         match("T5", [r, c], [1, 0], [1, 1], [1, 2], [0, 2], [2, 2]);
         match("T5", [r, c], [2, 0], [2, 1], [2, 2], [0, 1], [1, 1]);
@@ -764,7 +763,6 @@ function checkFlowersOverBasket() {
                     $(`#r${basket[0] - 1}c${basket[1]}-pic`).removeClass("flower-disappear");
 
                     // check newly created board
-                    console.log("FLOWERS", app.flowers);
                     gravity();
                     // check if the changed board has any matches
                     const matches = checkMatches();
@@ -831,15 +829,34 @@ function createspecialGemDiv(coord, name) {
             break;
         } // end of case I4H
         case "T5": {
-            addDivToBonusDiv("bonus-vertical-line");
-            addDivToBonusDiv("bonus-horizontal-line");
+            addDivToBonusDiv("bonus-square");
             break;
         } // end of case T5
-        case "L5": {
+        case "L51": {
             addDivToBonusDiv("bonus-diagonal1-line");
+            break;
+        } // end of case L51
+        case "L52": {
             addDivToBonusDiv("bonus-diagonal2-line");
             break;
-        } // end of case L5
+        } // end of case L52
+        case "I5": {
+            // I5 match is randomly + or X
+            if (!!Math.floor(Math.random() * 2)) {
+                addDivToBonusDiv("bonus-diagonal1-line");
+                addDivToBonusDiv("bonus-diagonal2-line");
+            }
+            else {
+                addDivToBonusDiv("bonus-vertical-line");
+                addDivToBonusDiv("bonus-horizontal-line");
+            } // end of if random false or true
+        } // end of case T6
+        case "T6": {
+            addDivToBonusDiv("bonus-diagonal1-line");
+            addDivToBonusDiv("bonus-diagonal2-line");
+            addDivToBonusDiv("bonus-vertical-line");
+            addDivToBonusDiv("bonus-horizontal-line");
+        } // end of case T6
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
@@ -872,12 +889,12 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A245U321B",
+            "A2453321B",
             "#3224433#",
-            "#142A532#",
-            "#2212353#",
-            "##514123#",
-            "#23E5452#",
+            "#162A532#",
+            "#6232653#",
+            "#1524123#",
+            "#2325452#",
             "#12A6566#",
             "#25DB434#",
             "#21C9511#",
