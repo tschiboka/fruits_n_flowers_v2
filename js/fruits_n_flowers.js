@@ -609,7 +609,9 @@ function gravity() {
 
             // append child div to its new cell, remove class from old one
             const clone = $(spGem).children();
-            $(spGem).removeClass("bonus");
+            $(spGem)
+                .removeClass("bonus")
+                .empty();
             $(`#r${gemRow + moveTo + 1}c${colNum}-pic`)
                 .addClass("bonus")
                 .append(clone);
@@ -825,6 +827,11 @@ function createspecialGemDiv(coord, name) {
             addDivToBonusDiv("bonus-horizontal-line");
             break;
         } // end of case I4H
+        case "T5": {
+            addDivToBonusDiv("bonus-vertical-line");
+            addDivToBonusDiv("bonus-horizontal-line");
+            break;
+        } // end of case T5
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
@@ -861,7 +868,7 @@ var levels = [
             "#3214433#",
             "#142A532#",
             "#2212353#",
-            "##554123#",
+            "##524123#",
             "#23E5452#",
             "#12A6566#",
             "#25DB434#",
