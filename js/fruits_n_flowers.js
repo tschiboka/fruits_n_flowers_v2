@@ -493,12 +493,13 @@ function checkMatches() {
             // make matched patterns 0, so they won't be matched in other pattern searchres
             // resulting faster code running
             ids.forEach(id => app.board[id[0]][id[1]] = "X");
-
-            // get special gems, function modifies the board!!! in order to leave
-            // one fruit with the special sign, avoiding destroying it
-            getSpecialGems(matches);
         } // end of its matching 
     } // end of general match function
+
+    // get special gems, function modifies the board!!! in order to leave
+    // one fruit with the special sign, avoiding destroying it
+    getSpecialGems(matches);
+
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -783,6 +784,7 @@ function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
 
     matches.forEach(match => {
+        console.log(matches, match);
         const specialCoord = match.coords[getRandomPos(match.coords)];
         // ignore matches like I3 or diamond T7
         if (match.patternName !== "I3" && match.patternName !== "T7" && match.patternName !== "O4") {
@@ -792,6 +794,7 @@ function getSpecialGems(matches) {
             // leave one of the sample on the board
             app.board[specialCoord[0]][specialCoord[1]] = match.sample;
         } // end of if not I3 T7
+
         // T7 creates a diamond
         if (match.patternName === "T7") {
             app.board[specialCoord[0]][specialCoord[1]] = "*";
@@ -895,7 +898,7 @@ var levels = [
             "A2453321B",
             "#6224433#",
             "#162A532#",
-            "#6232253#",
+            "#4132334#",
             "#1524123#",
             "#2325452#",
             "#12A6566#",
