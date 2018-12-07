@@ -942,11 +942,12 @@ function bonusExplode(bonusType, rowInd, cellInd) {
     function explose(r, c) {
         const fruits = [..."123456789"],
             char = app.board[r][c];
+
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             console.log("EXPLOSE", r, c);
 
-        }
+        } // end of if char is fruit
     } // end of explode 
 
     console.log("EXPLOSION", bonusType);
@@ -956,7 +957,14 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             // get all row X
             app.board[rowInd].forEach((_, ci) => explose(rowInd, ci));
         } // end of case I4H
+        case "I4V": {
+            // get all row X
+            app.board.forEach((_, ri) => explose(ri, cellInd));
+        } // end of case I4H
     } // end of swith
+
+    // recursively check bonuses, if they triggered more explosions
+    checkBonuses();
 } // end of bonusExplode
 
 
@@ -989,16 +997,16 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2453321B",
-            "#6214433#",
-            "#1111532#",
-            "#4133332#",
-            "#5555221#",
-            "#2335452#",
-            "#12A6666#",
-            "#25DB434#",
-            "#21C1111#",
-            "#4E556D2#",
+            "A2111121B",
+            "#2243433#",
+            "#2143432#",
+            "#2143432#",
+            "#5165431#",
+            "#5365462#",
+            "#5265166#",
+            "#5265164#",
+            "#22C1161#",
+            "#4255554#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
