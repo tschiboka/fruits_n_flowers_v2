@@ -199,6 +199,11 @@
             .flower-disappear {
                 animation: flower-disappear-anim 0.3s linear;
             }
+
+            .explosion {
+                background-color: transparent;
+                animation: explosion-anim 1s ease-out;
+            }
         }
     }
 }
@@ -226,5 +231,14 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes explosion-anim {
+    0% {
+        background-color: #ff203c;
+    }
+    100% {
+        background-color: transparent;
     }
 }

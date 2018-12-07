@@ -524,7 +524,12 @@ function checkMatches() {
 
             // make matched patterns 0, so they won't be matched in other pattern searchres
             // resulting faster code running
-            ids.forEach(id => app.board[id[0]][id[1]] = "X");
+            // and make 2xplosion background
+            ids.forEach(id => {
+                app.board[id[0]][id[1]] = "X";
+                $(`#r${id[0]}c${id[1]}-pic`).addClass("explosion");
+            }); // end of ids iteration
+
         } // end of its matching 
     } // end of general match function
     // check if any of the matches has bonus
@@ -945,12 +950,9 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
-            console.log("EXPLOSE", r, c);
-
+            $(`#r${r}c${c}-pic`).addClass("explosion");
         } // end of if char is fruit
     } // end of explode 
-
-    console.log("EXPLOSION", bonusType);
 
     switch (bonusType) {
         case "I4H": {
@@ -1165,6 +1167,11 @@ function displayBoard() {
                 $(idName).removeClass("spin-pic");
             }
 
+            // remove explosion class with delay
+            const explosionDelay = setTimeout(() => {
+                $(idName).removeClass("explosion");
+                clearTimeout(explosionDelay);
+            }, 1000); // end of delay
 
             if (char === "X") {
                 $(idName).css("background-image", "none");
