@@ -781,7 +781,7 @@ function checkFlowersOverBasket() {
 
 function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
-    console.log("GEMS");
+
     matches.forEach(match => {
         // get one of the position randomly and put the special class 
         const specialCoord = match.coords[getRandomPos(match.coords)];
@@ -821,6 +821,10 @@ function createspecialGemDiv(coord, name) {
             addDivToBonusDiv("bonus-vertical-line");
             break;
         } // end of case I4V
+        case "I4H": {
+            addDivToBonusDiv("bonus-horizontal-line");
+            break;
+        } // end of case I4H
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
@@ -855,7 +859,7 @@ var levels = [
         "blueprint": [
             "A245U321B",
             "#3214433#",
-            "#242A532#",
+            "#142A532#",
             "#2212353#",
             "##554123#",
             "#23E5452#",
