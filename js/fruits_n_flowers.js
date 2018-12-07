@@ -858,26 +858,30 @@ function createspecialGemDiv(coord, name) {
         patternName = name;
 
 
-    $(specialDiv).addClass(`bonus-sign ${patternName}-sign`);
     switch (name) {
         case "I4V": {
             addDivToBonusDiv("bonus-vertical-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-I4V`);
             break;
         } // end of case I4V
         case "I4H": {
             addDivToBonusDiv("bonus-horizontal-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-I4H`);
             break;
         } // end of case I4H
         case "T5": {
             addDivToBonusDiv("bonus-square");
+            $(specialDiv).addClass(`bonus-sign SIGN-T5`);
             break;
         } // end of case T5
         case "L51": {
             addDivToBonusDiv("bonus-diagonal1-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-L51`);
             break;
         } // end of case L51
         case "L52": {
             addDivToBonusDiv("bonus-diagonal2-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-L52`);
             break;
         } // end of case L52
         case "I5": {
@@ -885,17 +889,22 @@ function createspecialGemDiv(coord, name) {
             if (!!Math.floor(Math.random() * 2)) {
                 addDivToBonusDiv("bonus-diagonal1-line");
                 addDivToBonusDiv("bonus-diagonal2-line");
+                $(specialDiv).addClass(`bonus-sign SIGN-I5X`);
             }
             else {
                 addDivToBonusDiv("bonus-vertical-line");
                 addDivToBonusDiv("bonus-horizontal-line");
+                $(specialDiv).addClass(`bonus-sign SIGN-I5CR`);
             } // end of if random false or true
+            break;
         } // end of case T6
         case "T6": {
             addDivToBonusDiv("bonus-diagonal1-line");
             addDivToBonusDiv("bonus-diagonal2-line");
             addDivToBonusDiv("bonus-vertical-line");
             addDivToBonusDiv("bonus-horizontal-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-T6`);
+            break;
         } // end of case T6
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
@@ -906,13 +915,20 @@ function createspecialGemDiv(coord, name) {
 function checkBonuses() {
     app.board.forEach((row, rowInd) => {
         row.forEach((cell, cellInd) => {
-            if (cell === "X" && $(`#r${rowInd}c${cellInd}-pic`).hasClass("bonus")) {
+            const elem = $(`#r${rowInd}c${cellInd}-pic`);
+            if (cell === "X" && elem.hasClass("bonus")) {
+                // extract the bonus type from childrens class
+                const bonusType = elem
+                    .children()
+                    .attr("class")
+                    .split("SIGN")[1];
+
                 // remove bonus
-                $(`#r${rowInd}c${cellInd}-pic`)
+                $(elem)
                     .removeClass("bonus")
                     .empty();
 
-                bonusExplode();
+                bonusExplode(bonusType);
             } // end of if gap and Bonus
         }); // end of cell foreach
     }); // end of row foreach
