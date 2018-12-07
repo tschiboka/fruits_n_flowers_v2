@@ -785,14 +785,17 @@ function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
 
     matches.forEach(match => {
+        // ignore matches like I3 or diamond T7
+        if (match.patternName !== "I3" && match.patternName !== "T7") {
+            const specialCoord = match.coords[getRandomPos(match.coords)];
+
+            $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
+            createspecialGemDiv(specialCoord, match.patternName);
+
+            // leave one of the sample on the board
+            app.board[specialCoord[0]][specialCoord[1]] = match.sample;
+        } // end of if not I3 T7
         // get one of the position randomly and put the special class 
-        const specialCoord = match.coords[getRandomPos(match.coords)];
-        $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
-
-        createspecialGemDiv(specialCoord, match.patternName);
-
-        // leave one of the sample on the board
-        app.board[specialCoord[0]][specialCoord[1]] = match.sample;
     }); // end of match iteration
 } // end of getSpecialGems
 
@@ -832,6 +835,11 @@ function createspecialGemDiv(coord, name) {
             addDivToBonusDiv("bonus-horizontal-line");
             break;
         } // end of case T5
+        case "L5": {
+            addDivToBonusDiv("bonus-diagonal1-line");
+            addDivToBonusDiv("bonus-diagonal2-line");
+            break;
+        } // end of case L5
     } // end of switch patternNames
     $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
 } // end of createSpecialGemDiv
@@ -865,10 +873,10 @@ var levels = [
     {
         "blueprint": [
             "A245U321B",
-            "#3214433#",
+            "#3224433#",
             "#142A532#",
             "#2212353#",
-            "##524123#",
+            "##514123#",
             "#23E5452#",
             "#12A6566#",
             "#25DB434#",
