@@ -921,14 +921,14 @@ function checkBonuses() {
                 const bonusType = elem
                     .children()
                     .attr("class")
-                    .split("SIGN")[1];
+                    .split("SIGN-")[1];
 
                 // remove bonus
                 $(elem)
                     .removeClass("bonus")
                     .empty();
 
-                bonusExplode(bonusType);
+                bonusExplode(bonusType, rowInd, cellInd);
             } // end of if gap and Bonus
         }); // end of cell foreach
     }); // end of row foreach
@@ -937,9 +937,26 @@ function checkBonuses() {
 
 
 
+// explose bonuses in different patterns according to bonusType
+function bonusExplode(bonusType, rowInd, cellInd) {
+    function explose(r, c) {
+        const fruits = [..."123456789"],
+            char = app.board[r][c];
+        if (fruits.some(fr => fr === char)) {
+            app.board[r][c] = "X";
+            console.log("EXPLOSE", r, c);
 
-function bonusExplode() {
+        }
+    } // end of explode 
 
+    console.log("EXPLOSION", bonusType);
+
+    switch (bonusType) {
+        case "I4H": {
+            // get all row X
+            app.board[rowInd].forEach((_, ci) => explose(rowInd, ci));
+        } // end of case I4H
+    } // end of swith
 } // end of bonusExplode
 
 
@@ -973,14 +990,14 @@ var levels = [
     {
         "blueprint": [
             "A2453321B",
-            "#6224433#",
-            "#162A532#",
-            "#4132334#",
-            "#1524123#",
-            "#2325452#",
-            "#12A6566#",
+            "#6214433#",
+            "#1111532#",
+            "#4133332#",
+            "#5555221#",
+            "#2335452#",
+            "#12A6666#",
             "#25DB434#",
-            "#21C9511#",
+            "#21C1111#",
             "#4E556D2#",
             "###UUU###",
         ],
