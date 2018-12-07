@@ -783,16 +783,19 @@ function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
 
     matches.forEach(match => {
+        const specialCoord = match.coords[getRandomPos(match.coords)];
         // ignore matches like I3 or diamond T7
-        if (match.patternName !== "I3" && match.patternName !== "T7") {
-            const specialCoord = match.coords[getRandomPos(match.coords)];
-
+        if (match.patternName !== "I3" && match.patternName !== "T7" && match.patternName !== "O4") {
             $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
             createspecialGemDiv(specialCoord, match.patternName);
 
             // leave one of the sample on the board
             app.board[specialCoord[0]][specialCoord[1]] = match.sample;
         } // end of if not I3 T7
+        // T7 creates a diamond
+        if (match.patternName === "T7") {
+            app.board[specialCoord[0]][specialCoord[1]] = "*";
+        } // end of if T7
         // get one of the position randomly and put the special class 
     }); // end of match iteration
 } // end of getSpecialGems
@@ -890,9 +893,9 @@ var levels = [
     {
         "blueprint": [
             "A2453321B",
-            "#3224433#",
+            "#6224433#",
             "#162A532#",
-            "#6232653#",
+            "#6232253#",
             "#1524123#",
             "#2325452#",
             "#12A6566#",
