@@ -362,7 +362,41 @@ function swipeCharacters(swipeArgs) {
         app.board[r1][c1] = app.board[r2][c2];
         app.board[r2][c2] = temp;
         displayBoard(); // show the new board when swap is done
+
+        // special case for charaters with bonus classes (special gems)
+        swapBonusClasses(r1, c1, r2, c2);
     } // end of swipeCharacters
+
+
+    // function checks if any or both characters being swapped
+    // are bonus and swaps their classes
+    function swapBonusClasses(r1, c1, r2, c2) {
+        const elem1 = $(`#r${r1}c${c1}-pic`),
+            elem2 = $(`#r${r2}c${c2}-pic`),
+            elemHasBonus = (el) => el.hasClass("bonus");
+
+        // get out of function if none has bonus
+        if (!elemHasBonus(elem1) && !elemHasBonus(elem2)) return void (0);
+
+        // get first elements childs clone
+        const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
+            tempElemClone = $(elem1).children();
+
+        console.log("BEFORE", elem1, elem2);
+        $(elem1)
+            .removeClass("bonus")
+            .addClass($(elem2).hasClass("bonus") ? "bonus" : "")
+            .empty()
+            .append($(elem2)
+                .children());
+
+        $(elem2)
+            .removeClass("bonus")
+            .addClass(tempElemClass)
+            .empty()
+            .append(tempElemClone);
+        console.log("AFTER", elem1, elem2);
+    } // end of swapBonusClasses
 
 
     const [R1, C1, R2, C2, dir] = [...swipeArgs];  // destruct args
@@ -784,10 +818,11 @@ function getSpecialGems(matches) {
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
 
     matches.forEach(match => {
-        console.log(matches, match);
         const specialCoord = match.coords[getRandomPos(match.coords)];
+
         // ignore matches like I3 or diamond T7
         if (match.patternName !== "I3" && match.patternName !== "T7" && match.patternName !== "O4") {
+            // get one of the position randomly and put the special class 
             $(`#r${specialCoord[0]}c${specialCoord[1]}-pic`).addClass("bonus");
             createspecialGemDiv(specialCoord, match.patternName);
 
@@ -799,7 +834,6 @@ function getSpecialGems(matches) {
         if (match.patternName === "T7") {
             app.board[specialCoord[0]][specialCoord[1]] = "*";
         } // end of if T7
-        // get one of the position randomly and put the special class 
     }); // end of match iteration
 } // end of getSpecialGems
 
