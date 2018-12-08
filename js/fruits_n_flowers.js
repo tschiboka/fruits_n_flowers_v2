@@ -1001,6 +1001,18 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             exploseDiagonal(1, -1);
             break;
         } // end of case L51 ( \ ) diag from NW to SE
+        case "I5CR": {
+            app.board.forEach((_, ri) => explose(ri, cellInd));
+            app.board[rowInd].forEach((_, ci) => explose(rowInd, ci));
+            break;
+        } // end of case I5CR
+        case "I5X": {
+            exploseDiagonal(-1, -1);
+            exploseDiagonal(1, 1);
+            exploseDiagonal(-1, 1);
+            exploseDiagonal(1, -1);
+            break;
+        } // end of case I5X
     } // end of swith
 
     displayBoard();
@@ -1041,11 +1053,11 @@ var levels = [
             "A2113121B",
             "#2333313#",
             "#2223432#",
-            "#1143432#",
-            "#5145551#",
-            "#5344452#",
-            "#5265156#",
-            "#5265164#",
+            "#1163432#",
+            "#5163451#",
+            "#5163452#",
+            "#5163456#",
+            "#5163464#",
             "#22C1161#",
             "#4255554#",
             "###UUU###",
