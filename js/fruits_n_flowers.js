@@ -945,12 +945,16 @@ function checkBonuses() {
 // explose bonuses in different patterns according to bonusType
 function bonusExplode(bonusType, rowInd, cellInd) {
     function explose(r, c) {
+        // prevent any invalid value to cause error
+        if (r < 0 || r > 10 || c < 0 || c > 8) return void (0);
+
         const fruits = [..."123456789"],
             char = app.board[r][c];
 
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             $(`#r${r}c${c}-pic`).addClass("explosion");
+            console.log("EXPLOSION ON", r, c);
         } // end of if char is fruit
     } // end of explode 
 
@@ -958,13 +962,31 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         case "I4H": {
             // get all row X
             app.board[rowInd].forEach((_, ci) => explose(rowInd, ci));
+            break;
         } // end of case I4H
         case "I4V": {
-            // get all row X
+            // get all cell Y
             app.board.forEach((_, ri) => explose(ri, cellInd));
+            break;
         } // end of case I4H
+        case "T5": {
+            let r = rowInd,
+                c = cellInd;
+
+            const explosionPath = [
+                [r - 2, c],                                             //      *
+                [r - 1, c - 1], [r - 1, c], [r - 1, c + 1],             //    * * *
+                [r, c - 2], [r, c - 1], [r, c], [r, c + 1], [r, c + 2], //  * * * * *
+                [r + 1, c - 1], [r + 1, c], [r + 1, c + 1],             //    * * *
+                [r + 2, c]                                              //      *
+            ];
+
+            explosionPath.forEach(xy => explose(xy[0], xy[1]));
+            break;
+        } // end of case T5
     } // end of swith
 
+    displayBoard();
     // recursively check bonuses, if they triggered more explosions
     checkBonuses();
 } // end of bonusExplode
@@ -999,8 +1021,8 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2111121B",
-            "#2243433#",
+            "A2113121B",
+            "#2231313#",
             "#2143432#",
             "#2143432#",
             "#5165431#",
