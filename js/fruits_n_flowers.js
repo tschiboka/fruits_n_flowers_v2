@@ -958,6 +958,13 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         } // end of if char is fruit
     } // end of explode 
 
+    // set the direction like dirR = -1 so it will check the negative direction
+    const exploseDiagonal = (r, c, dirR, dirC) => [...Array(8).keys()]
+        .forEach(dist => console.log("R", r + dist * dirR, "C", c + dist * dirC));
+
+    console.log(exploseDiagonal(5, 5, 1, 1));
+    console.log(exploseDiagonal(5, 5, -1, 1));
+
     switch (bonusType) {
         case "I4H": {
             // get all row X
