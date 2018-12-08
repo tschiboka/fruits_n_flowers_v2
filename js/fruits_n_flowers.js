@@ -1013,6 +1013,14 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             exploseDiagonal(1, -1);
             break;
         } // end of case I5X
+        case "T6": {
+            app.board.forEach((_, ri) => explose(ri, cellInd));
+            app.board[rowInd].forEach((_, ci) => explose(rowInd, ci));
+            exploseDiagonal(-1, -1);
+            exploseDiagonal(1, 1);
+            exploseDiagonal(-1, 1);
+            exploseDiagonal(1, -1);
+        } // end of case T6
     } // end of swith
 
     displayBoard();
@@ -1050,16 +1058,16 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2113121B",
-            "#2333313#",
-            "#2223432#",
+            "A2211112B",
+            "#2323176#",
+            "#2223132#",
             "#1163432#",
-            "#5163451#",
-            "#5163452#",
-            "#5163456#",
-            "#5163464#",
-            "#22C1161#",
-            "#4255554#",
+            "#5453451#",
+            "#4163452#",
+            "#5313456#",
+            "#2163564#",
+            "#22C1561#",
+            "#4255555#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
