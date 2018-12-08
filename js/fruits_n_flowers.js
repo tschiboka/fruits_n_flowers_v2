@@ -958,12 +958,12 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         } // end of if char is fruit
     } // end of explode 
 
-    // set the direction like dirR = -1 so it will check the negative direction
-    const exploseDiagonal = (r, c, dirR, dirC) => [...Array(8).keys()]
-        .forEach(dist => console.log("R", r + dist * dirR, "C", c + dist * dirC));
 
-    console.log(exploseDiagonal(5, 5, 1, 1));
-    console.log(exploseDiagonal(5, 5, -1, 1));
+    // set the direction like dirR = -1 so it will check the negative direction
+    // quick 101 on dirR dirC: NE: -1 1, SE: 1 1, SW: 1 -1, NW: -1 -1
+    const exploseDiagonal = (dirR, dirC) => [...Array(8).keys()]
+        .forEach(dist => explose(rowInd + dist * dirR, cellInd + dist * dirC));
+
 
     switch (bonusType) {
         case "I4H": {
@@ -991,6 +991,16 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             explosionPath.forEach(xy => explose(xy[0], xy[1]));
             break;
         } // end of case T5
+        case "L51": {
+            exploseDiagonal(-1, -1);
+            exploseDiagonal(1, 1);
+            break;
+        } // end of case L51 ( \ ) diag from NW to SE
+        case "L52": {
+            exploseDiagonal(-1, 1);
+            exploseDiagonal(1, -1);
+            break;
+        } // end of case L51 ( \ ) diag from NW to SE
     } // end of swith
 
     displayBoard();
@@ -1029,12 +1039,12 @@ var levels = [
     {
         "blueprint": [
             "A2113121B",
-            "#2231313#",
-            "#2143432#",
-            "#2143432#",
-            "#5165431#",
-            "#5365462#",
-            "#5265166#",
+            "#2333313#",
+            "#2223432#",
+            "#1143432#",
+            "#5145551#",
+            "#5344452#",
+            "#5265156#",
             "#5265164#",
             "#22C1161#",
             "#4255554#",
