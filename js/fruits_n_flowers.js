@@ -375,10 +375,42 @@ function swipeCharacters(swipeArgs) {
             elem2 = $(`#r${r2}c${c2}-pic`),
             elemHasBonus = (el) => el.hasClass("bonus");
 
-        // get out of function if none has bonus
+        // BOTH DIAMONDS
+        // two diamonds clear all the fruits, and get extreme points 
+        //(havent figured it out yet how much)
+        if (app.board[r1][c1] === "*" && app.board[r2][c2] === "*") {
+            const matches = [];
+            console.log("2 DIAMONDS");
+            app.board.map((row, rowInd) => {
+                row.forEach((cell, cellInd) => {
+                    // clear cell if fruit
+                    if ("123456789".split("").some(fr => fr === cell)) {
+                        // fill up matches with all the fruits available on board
+                        matches.push(
+                            {
+                                "patternName": "none",
+                                "sample": app.board[rowInd][cellInd],
+                                "coords": [[rowInd, cellInd]]
+                            } // end of match obj
+                        ); // end of push
+
+                        app.board[rowInd][cellInd] = "X";
+                        $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
+                    } // end of if cell is fruit
+                }); // end of cell iteration
+            }); // end of forEach row
+
+            // distroy diamonds
+            app.board[r1][c1] = app.board[r2][c2] = "X";
+
+            animateExplosions(matches);
+        } // end of if both diamonds
+
+
+        // get out of function if NONE has BONUS
         if (!elemHasBonus(elem1) && !elemHasBonus(elem2)) return void (0);
 
-        // get first elements childs clone
+        // if one has bonus swap its classes an children
         const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
             tempElemClone = $(elem1).children();
 
@@ -394,6 +426,8 @@ function swipeCharacters(swipeArgs) {
             .addClass(tempElemClass)
             .empty()
             .append(tempElemClone);
+
+        // BOTH HAVE BONUS
     } // end of swapBonusClasses
 
 
@@ -524,7 +558,7 @@ function checkMatches() {
 
             // make matched patterns 0, so they won't be matched in other pattern searchres
             // resulting faster code running
-            // and make 2xplosion background
+            // and make explosion background
             ids.forEach(id => {
                 app.board[id[0]][id[1]] = "X";
                 $(`#r${id[0]}c${id[1]}-pic`).addClass("explosion");
@@ -546,7 +580,7 @@ function checkMatches() {
 
 function animateExplosions(matches) {
     // disable interaction with the gameboard while animation is going 
-    // and new characters are on the table
+    // until new characters are on the board
     app.game_interaction_enabled = false;
 
     // parentXY is necessary for calculating the shards relative xy
@@ -1067,7 +1101,7 @@ var levels = [
             "#5313456#",
             "#2163564#",
             "#22C1561#",
-            "#4255555#",
+            "#42**555#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
