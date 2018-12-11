@@ -501,7 +501,6 @@ function swipeCharacters(swipeArgs) {
         // otherwise the execution is already out of this function
 
         swapElementsAndClasses(elem1, elem2);
-
     } // end of swapBonusClasses
 
 
@@ -630,22 +629,25 @@ function checkMatches() {
                 "coords": [...ids]
             });
 
-            // make matched patterns 0, so they won't be matched in other pattern searchres
+            // make matched patterns X, so they won't be matched in other pattern searches
             // resulting faster code running
             // and make explosion background
             ids.forEach(id => {
                 app.board[id[0]][id[1]] = "X";
                 $(`#r${id[0]}c${id[1]}-pic`).addClass("explosion");
             }); // end of ids iteration
-
         } // end of its matching 
     } // end of general match function
+
     // check if any of the matches has bonus
     checkBonuses();
 
     // get special gems, function modifies the board!!! in order to leave
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
+
+    // seacrh for stones and crumble them if appropriate
+    destroyStones();
 
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
@@ -1137,6 +1139,36 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 
 
 
+// function check if any gap created by an explosion or match has any stones around
+// Large stones become medium, medium small, small becomes a gap
+function destroyStones() {
+    // function returns M, S, or X according to it's original state
+    function reductStoneOn(r, c) {
+
+    } // end of reductStoneOn
+
+
+    app.board.forEach((row, rowInd) => {
+        row.forEach((cell, cellInd) => {
+            // check if the cell is a gap
+            if (cell === "X") {
+                // check if any of the cells around is stone [North, South, West, East]
+                const cellsAroundHaveStone = [
+                    [app.board[rowInd - 1] || []][cellInd],  // avoid array out of range error
+                    [app.board[rowInd + 1] || []][cellInd],
+                    app.board[rowInd][cellInd - 1],
+                    app.board[rowInd][cellInd + 1]
+                ].filter(ceAr => ceAr === "L" || ceAr === "M" || ceAr === "S")
+                    .length > 0; // end of callsAround
+
+                console.log(`CELLS AROUND [${rowInd}][${cellInd}]`, cellsAroundHaveStone);
+
+                //if ()
+
+            } // end of if cell is a gap
+        }); // end of cell iteration 
+    }); // end of row iteration
+} // end of destroyStones
 
 /*
  
@@ -1166,16 +1198,16 @@ var levels = [
     {
         "blueprint": [
             "A2211112B",
-            "#2323176#",
-            "#2223132#",
-            "#1163432#",
-            "#5453451#",
-            "#4163452#",
-            "#5313456#",
-            "#2163564#",
-            "#22C1561#",
-            "#42**555#",
-            "###UUU###",
+            "L2323176L",
+            "L2223132L",
+            "L1163432L",
+            "L5453451L",
+            "L4163452L",
+            "L5313456L",
+            "L2163564L",
+            "L22C1561L",
+            "L42**555L",
+            "LLLUUULLL",
         ],
         "fruitVariationNumber": 6,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
