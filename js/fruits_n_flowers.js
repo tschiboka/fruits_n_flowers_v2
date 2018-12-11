@@ -449,6 +449,30 @@ function swipeCharacters(swipeArgs) {
             else return void (0);
         } // end of if one is diamond
 
+
+        // if BOTH has BONUS, do both elements' explosion
+        if (elemHasBonus(elem1) && elemHasBonus(elem2)) {
+            // fill matches with the two elements being swapped
+            const matches = [
+                {
+                    "patternName": "none",
+                    "sample": app.board[r1][c1],
+                    "coords": [[r1, c1]]
+                }, // end of match obj1
+                {
+                    "patternName": "none",
+                    "sample": app.board[r2][c2],
+                    "coords": [[r2, c2]]
+                } // end of match obj2
+            ]; // end of matches
+
+            app.board[r1][c1] = app.board[r2][c2] = "X";
+
+            animateExplosions(matches);
+            return void (0); // escape out of function
+        } // end of both bonus
+
+
         // if ONE has BONUS swap its classes an children
         const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
             tempElemClone = $(elem1).children();
