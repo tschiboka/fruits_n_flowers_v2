@@ -371,6 +371,27 @@ function swipeCharacters(swipeArgs) {
     // function checks if any or both characters being swapped
     // are bonus and swaps their classes
     function swapBonusClasses(r1, c1, r2, c2) {
+
+        // the actual swapping function, do the code gets DRYer
+        function swapElementsAndClasses(e1, e2) {
+            const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
+                tempElemClone = $(elem1).children();
+
+            $(elem1)
+                .removeClass("bonus")
+                .addClass($(elem2).hasClass("bonus") ? "bonus" : "")
+                .empty()
+                .append($(elem2)
+                    .children());
+
+            $(elem2)
+                .removeClass("bonus")
+                .addClass(tempElemClass)
+                .empty()
+                .append(tempElemClone);
+
+        } // end of swapElementsAndClasses
+
         const elem1 = $(`#r${r1}c${c1}-pic`),
             elem2 = $(`#r${r2}c${c2}-pic`),
             elemHasBonus = (el) => el.hasClass("bonus");
@@ -452,6 +473,8 @@ function swipeCharacters(swipeArgs) {
 
         // if BOTH has BONUS, do both elements' explosion
         if (elemHasBonus(elem1) && elemHasBonus(elem2)) {
+            swapElementsAndClasses(elem1, elem2);
+
             // fill matches with the two elements being swapped
             const matches = [
                 {
@@ -467,30 +490,18 @@ function swipeCharacters(swipeArgs) {
             ]; // end of matches
 
             app.board[r1][c1] = app.board[r2][c2] = "X";
-
+            $(`#r${r1}c${c1}-pic`).addClass("explosion");
+            $(`#r${r2}c${c2}-pic`).addClass("explosion");
             animateExplosions(matches);
             return void (0); // escape out of function
         } // end of both bonus
 
 
-        // if ONE has BONUS swap its classes an children
-        const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
-            tempElemClone = $(elem1).children();
+        // the remaining option is, if ONE has BONUS swap its classes an children
+        // otherwise the execution is already out of this function
 
-        $(elem1)
-            .removeClass("bonus")
-            .addClass($(elem2).hasClass("bonus") ? "bonus" : "")
-            .empty()
-            .append($(elem2)
-                .children());
+        swapElementsAndClasses(elem1, elem2);
 
-        $(elem2)
-            .removeClass("bonus")
-            .addClass(tempElemClass)
-            .empty()
-            .append(tempElemClone);
-
-        // BOTH HAVE BONUS
     } // end of swapBonusClasses
 
 
@@ -1051,7 +1062,6 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             $(`#r${r}c${c}-pic`).addClass("explosion");
-            console.log("EXPLOSION ON", r, c);
         } // end of if char is fruit
     } // end of explode 
 
