@@ -375,6 +375,11 @@ function swipeCharacters(swipeArgs) {
             elem2 = $(`#r${r2}c${c2}-pic`),
             elemHasBonus = (el) => el.hasClass("bonus");
 
+        // get out of function if NONE has BONUS or DIAMOND
+        if (!elemHasBonus(elem1) && !elemHasBonus(elem2) &&
+            app.board[r1][c1] !== "*" && app.board[r2][c2] !== "*") return void (0);
+
+
         // BOTH DIAMONDS
         // two diamonds clear all the fruits, and get extreme points 
         //(havent figured it out yet how much)
@@ -404,13 +409,47 @@ function swipeCharacters(swipeArgs) {
             app.board[r1][c1] = app.board[r2][c2] = "X";
 
             animateExplosions(matches);
+            return void (0); // escape out of function
         } // end of if both diamonds
 
+        // if ONE is DIAMOND
+        // explose all fruits the same type it was swapped with
+        if (app.board[r1][c1] === "*" || app.board[r2][c2] === "*") {
+            // get the type of the fruit, which of the two is unknown though
+            const fruit = app.board[r1][c1] === "*" ? app.board[r2][c2] : app.board[r1][c1],
+                matches = [];
 
-        // get out of function if NONE has BONUS
-        if (!elemHasBonus(elem1) && !elemHasBonus(elem2)) return void (0);
 
-        // if one has bonus swap its classes an children
+            console.log("FRUITS TO DESTROY", fruit);
+            // if the element being swapped with diamond is a fruit explose, else return
+            if ("123456789".split("").some(fr => fr === fruit)) {
+                app.board.forEach((row, rowInd) => {
+                    row.forEach((cell, cellInd) => {
+                        if (cell === fruit) {
+                            // fill up the matches with the corrisponding fruit
+                            matches.push(
+                                {
+                                    "patternName": "none",
+                                    "sample": app.board[rowInd][cellInd],
+                                    "coords": [[rowInd, cellInd]]
+                                } // end of match obj
+                            ); // end of matches push
+
+                            app.board[rowInd][cellInd] = "X";
+                            $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
+                        } // end of if cell the fruit to be destroyed
+                    }); // end of cell iteration
+                }); // end of row iteration
+
+                // destroy the diamond, we don't know which one is diamond
+                app.board[r1][c1] === "*" ? app.board[r1][c1] = "X" : app.board[r2][c2] = "X";
+                animateExplosions(matches);
+                return void (0); // escape out of function
+            } // end of if the one being swapped is a fruit
+            else return void (0);
+        } // end of if one is diamond
+
+        // if ONE has BONUS swap its classes an children
         const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
             tempElemClone = $(elem1).children();
 
