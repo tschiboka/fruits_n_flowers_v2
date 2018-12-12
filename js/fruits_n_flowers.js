@@ -611,7 +611,7 @@ function checkMatches() {
         const fruits = ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
             isFruit = (r, c) => fruits.find(fr => fr === app.board[r][c]),
             // if any coords in range and is fruit
-            validId = (ca => ca[0] < 10 && ca[1] < 8 && isFruit(ca[0], ca[1]));
+            validId = (ca => ca[0] < 11 && ca[1] < 9 && isFruit(ca[0], ca[1]));
 
         // if any of the ids are invalid, return, making the search faster if we certainly know
         // the pattern can not be matched
@@ -646,6 +646,7 @@ function checkMatches() {
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
 
+    console.log("MATCHES", matches);
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -879,7 +880,12 @@ function cicleMatches() {
         checkFlowersOverBasket();
     } // if there are further matches
     else {
-        app.game_interaction_enabled = true;
+        console.log("Possible Moves", possibleMoves());
+        if (!possibleMoves()) {
+        } // end of there are no more moves on board
+        else {
+            app.game_interaction_enabled = true;
+        }
     } // give interaction back to player
     checkFlowersOverBasket();
 } // end of cicleMatches
@@ -1163,20 +1169,18 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 function destroyStones(coordsArr) {
     coordsArr.forEach(coords => {
         coords.forEach(coord => {
-            const [rowInd, cellInd] = [...coord];
-
             // check if any of the cells around is stone [North, South, West, East]
-            const cellsAroundHaveStone = [
-                (app.board[rowInd - 1] || [])[cellInd],  // avoid array out of range error
-                (app.board[rowInd + 1] || [])[cellInd],
-                app.board[rowInd][cellInd - 1],
-                app.board[rowInd][cellInd + 1]
-            ];
-            console.log(`CELLS AROUND [${rowInd}][${cellInd}]`, cellsAroundHaveStone);
+            const [rowInd, cellInd] = [...coord],
+                cellsAroundHaveStone = [
+                    (app.board[rowInd - 1] || [])[cellInd],  // avoid array out of range error
+                    (app.board[rowInd + 1] || [])[cellInd],
+                    app.board[rowInd][cellInd - 1],
+                    app.board[rowInd][cellInd + 1]
+                ]; // end of cellsAroundHaveStones declaration
 
             cellsAroundHaveStone.forEach((cellAround, ind) => {
-
                 const direction = [[-1, 0], [1, 0], [0, -1], [0, 1]][ind]; // returns the index the stone is on
+
                 switch (cellAround) {
                     case "L": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "M";
@@ -1188,17 +1192,32 @@ function destroyStones(coordsArr) {
                     } // end of case large stone
                     case "S": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "X";
-                        console.log("DESTROYED", rowInd + direction[0], cellInd + direction[1]);
                         $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
                         break;
                     } // end of case large stone
-                }  // end of switch cellAround
+                } // end of switch cellAround
             }); // end of iterate cellsAroundHaveStone
-
         }); // end of coord iteration
     }); // end of coordsArr iteration
-
 } // end of destroyStones
+
+
+// function returns possible matches, or null if none left
+// possibleMoves doesn't consider moves involving two bonus characters
+function possibleMoves() {
+    const moves = [];
+
+    app.board.forEach((row, rowInd) =>
+        row.forEach((cell, cellInd) => {
+            // if cell is fruit or flower
+            if ("123456789ABCDE".split("").some(fr => fr === cell)) {
+
+            } // end of if cell is fruit
+        })); // end of row end cell iteration
+    return moves;
+} // end of possible moves
+
+
 
 /*
  
@@ -1227,17 +1246,17 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2211112B",
-            "L2323176L",
+            "A2222212B",
+            "L2323126L",
             "L2223132L",
             "L1163432L",
             "L5453451L",
-            "L4163452L",
-            "L5313456L",
-            "L2163564L",
-            "L22C1561L",
-            "L42**555L",
-            "LLLUUULLL",
+            "L1234543L",
+            "LLLLLLLLL",
+            "LLLLLLLLL",
+            "LLLLLLLLL",
+            "LLLLLLLLL",
+            "###UUU###",
         ],
         "fruitVariationNumber": 6,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
