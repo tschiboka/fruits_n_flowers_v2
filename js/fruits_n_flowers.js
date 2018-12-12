@@ -646,9 +646,6 @@ function checkMatches() {
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
 
-    // seacrh for stones and crumble them if appropriate
-    destroyStones();
-
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -664,42 +661,45 @@ function animateExplosions(matches) {
 
     // iterate matches
     matches.map(match => {
-        // iterate id coordinates
-        for (i = 0; i < match.coords.length; i++) {
-            const coord = match.coords[i];
+        console.log("SAMPLE", match.sample);
+        if (match.sample !== "X") {
+            // iterate id coordinates
+            for (i = 0; i < match.coords.length; i++) {
+                const coord = match.coords[i];
 
-            // get id XY position
-            const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
+                // get id XY position
+                const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
 
-            // create 5 shards for each id
-            for (sh = 0; sh < 5; sh++) {
-                // create a shard
-                shard = document.createElement("div");
-                shard.id = `shard_r${coord[0]}c${coord[1]}`;
-                $(shard).addClass("shard");
+                // create 5 shards for each id
+                for (sh = 0; sh < 5; sh++) {
+                    // create a shard
+                    shard = document.createElement("div");
+                    shard.id = `shard_r${coord[0]}c${coord[1]}`;
+                    $(shard).addClass("shard");
 
-                // set x y relative to gameboard and its own piece position
-                const diffX = [18, 18, 10, 2, 0], // each piece is placed a bit differently
-                    diffY = [0, 14, 17, 14, 0];
+                    // set x y relative to gameboard and its own piece position
+                    const diffX = [18, 18, 10, 2, 0], // each piece is placed a bit differently
+                        diffY = [0, 14, 17, 14, 0];
 
-                $(shard).css({ top: idXY.y - parentXY.y + diffY[sh], left: idXY.x - parentXY.x + diffX[sh] });
+                    $(shard).css({ top: idXY.y - parentXY.y + diffY[sh], left: idXY.x - parentXY.x + diffX[sh] });
 
-                // set background image according to the fruit type
-                // 0 is reserved for transparent so array should start from 1
-                const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
-                    imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
-                    imgURL = `url(${app.images[imgName].src})`;
+                    // set background image according to the fruit type
+                    // 0 is reserved for transparent so array should start from 1
+                    const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
+                        imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
+                        imgURL = `url(${app.images[imgName].src})`;
 
-                $(shard).css(`backgroundImage`, imgURL);
-                $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
+                    $(shard).css(`backgroundImage`, imgURL);
+                    $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
 
-                // delay explosion on pieces randomly
-                const randomDelay = ((Math.random() * 1.5) / 10).toFixed(2) + "s";
-                $(shard)[0].style.animationDelay = randomDelay;
-                $(shard)[0].style.WebkitAnimationDelay = randomDelay;
-                $(".game-board").append(shard);
-            } // end of creating five shards
-        }; // end of iteration id times
+                    // delay explosion on pieces randomly
+                    const randomDelay = ((Math.random() * 1.5) / 10).toFixed(2) + "s";
+                    $(shard)[0].style.animationDelay = randomDelay;
+                    $(shard)[0].style.WebkitAnimationDelay = randomDelay;
+                    $(".game-board").append(shard);
+                } // end of creating five shards
+            }; // end of iteration id times
+        } // end if sample is not none
     }); //end of match iteration
 
     // remove elements with 0.45s delay, giving time for animation
@@ -710,14 +710,16 @@ function animateExplosions(matches) {
         gravity();  // make elements fill the created gaps
         clearTimeout(removeShardsDelay);
     }, 450);
+
+    destroyStones(matches.map(match => match.coords));
 } // end of animateExplosions
 
 
 function gravity() {
+    console.log("gravity", app.board);
     let currentBoard = app.board;
     // each column need to be tested against column gravity
     const columnGravityDone = Array(9).fill(false);
-    let testCol = ["1", "3", "9", "X", "L", "A", "M", "S", "#", "X", "U"];
 
     // function returns if the column has any element that is against gravity
     // Consider: walls, stones, baskets have fixed position on the board,
@@ -842,7 +844,7 @@ function fillBoardWithNewFruits() {
     const idsToFill = [];
 
     for (r = 10; r >= 0; r--) {
-        for (c = 0; c < 8; c++) {
+        for (c = 0; c <= 8; c++) {
             if (app.board[r][c] === "X") {
                 idsToFill.push([[r], [c]]);
             } // end of if cell is empty
@@ -1065,6 +1067,23 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             app.board[r][c] = "X";
             $(`#r${r}c${c}-pic`).addClass("explosion");
         } // end of if char is fruit
+
+        // take care of stones
+        switch (app.board[r][c]) {
+            case "L": {
+                app.board[r][c] = "M";
+                break;
+            } // end of case large
+            case "M": {
+                app.board[r][c] = "S";
+                break;
+            } // end of case large
+            case "S": {
+                app.board[r][c] = "X";
+                $(`#r${r}c${c}-pic`).addClass("explosion");
+            } // end of case large
+        } // end of switch stone
+
     } // end of explode 
 
 
@@ -1141,33 +1160,44 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 
 // function check if any gap created by an explosion or match has any stones around
 // Large stones become medium, medium small, small becomes a gap
-function destroyStones() {
-    // function returns M, S, or X according to it's original state
-    function reductStoneOn(r, c) {
+function destroyStones(coordsArr) {
+    coordsArr.forEach(coords => {
+        coords.forEach(coord => {
+            const [rowInd, cellInd] = [...coord];
 
-    } // end of reductStoneOn
+            // check if any of the cells around is stone [North, South, West, East]
+            const cellsAroundHaveStone = [
+                (app.board[rowInd - 1] || [])[cellInd],  // avoid array out of range error
+                (app.board[rowInd + 1] || [])[cellInd],
+                app.board[rowInd][cellInd - 1],
+                app.board[rowInd][cellInd + 1]
+            ];
+            console.log(`CELLS AROUND [${rowInd}][${cellInd}]`, cellsAroundHaveStone);
 
+            cellsAroundHaveStone.forEach((cellAround, ind) => {
 
-    app.board.forEach((row, rowInd) => {
-        row.forEach((cell, cellInd) => {
-            // check if the cell is a gap
-            if (cell === "X") {
-                // check if any of the cells around is stone [North, South, West, East]
-                const cellsAroundHaveStone = [
-                    [app.board[rowInd - 1] || []][cellInd],  // avoid array out of range error
-                    [app.board[rowInd + 1] || []][cellInd],
-                    app.board[rowInd][cellInd - 1],
-                    app.board[rowInd][cellInd + 1]
-                ].filter(ceAr => ceAr === "L" || ceAr === "M" || ceAr === "S")
-                    .length > 0; // end of callsAround
+                const direction = [[-1, 0], [1, 0], [0, -1], [0, 1]][ind]; // returns the index the stone is on
+                switch (cellAround) {
+                    case "L": {
+                        app.board[rowInd + direction[0]][cellInd + direction[1]] = "M";
+                        break;
+                    } // end of case large stone
+                    case "M": {
+                        app.board[rowInd + direction[0]][cellInd + direction[1]] = "S";
+                        break;
+                    } // end of case large stone
+                    case "S": {
+                        app.board[rowInd + direction[0]][cellInd + direction[1]] = "X";
+                        console.log("DESTROYED", rowInd + direction[0], cellInd + direction[1]);
+                        $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
+                        break;
+                    } // end of case large stone
+                }  // end of switch cellAround
+            }); // end of iterate cellsAroundHaveStone
 
-                console.log(`CELLS AROUND [${rowInd}][${cellInd}]`, cellsAroundHaveStone);
+        }); // end of coord iteration
+    }); // end of coordsArr iteration
 
-                //if ()
-
-            } // end of if cell is a gap
-        }); // end of cell iteration 
-    }); // end of row iteration
 } // end of destroyStones
 
 /*
