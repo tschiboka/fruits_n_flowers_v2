@@ -406,7 +406,6 @@ function swipeCharacters(swipeArgs) {
         //(havent figured it out yet how much)
         if (app.board[r1][c1] === "*" && app.board[r2][c2] === "*") {
             const matches = [];
-            console.log("2 DIAMONDS");
             app.board.map((row, rowInd) => {
                 row.forEach((cell, cellInd) => {
                     // clear cell if fruit
@@ -440,8 +439,6 @@ function swipeCharacters(swipeArgs) {
             const fruit = app.board[r1][c1] === "*" ? app.board[r2][c2] : app.board[r1][c1],
                 matches = [];
 
-
-            console.log("FRUITS TO DESTROY", fruit);
             // if the element being swapped with diamond is a fruit explose, else return
             if ("123456789".split("").some(fr => fr === fruit)) {
                 app.board.forEach((row, rowInd) => {
@@ -519,7 +516,7 @@ function swipeCharacters(swipeArgs) {
 
     swapCharacters(R1, C1, R2, C2);
     const matches = checkMatches();
-    console.log(JSON.stringify(matches));
+
     if (!matches) {
         if (!flowerAndHorizontal()) {
             app.game_interaction_enabled = false;
@@ -646,7 +643,6 @@ function checkMatches() {
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
 
-    console.log("MATCHES", matches);
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -662,7 +658,6 @@ function animateExplosions(matches) {
 
     // iterate matches
     matches.map(match => {
-        console.log("SAMPLE", match.sample);
         if (match.sample !== "X") {
             // iterate id coordinates
             for (i = 0; i < match.coords.length; i++) {
@@ -717,7 +712,6 @@ function animateExplosions(matches) {
 
 
 function gravity() {
-    console.log("gravity", app.board);
     let currentBoard = app.board;
     // each column need to be tested against column gravity
     const columnGravityDone = Array(9).fill(false);
@@ -881,7 +875,7 @@ function cicleMatches() {
     } // if there are further matches
     else {
         console.log("Possible Moves", possibleMoves());
-        if (!possibleMoves()) {
+        if (false) {
         } // end of there are no more moves on board
         else {
             app.game_interaction_enabled = true;
@@ -1203,16 +1197,39 @@ function destroyStones(coordsArr) {
 
 
 // function returns possible matches, or null if none left
-// possibleMoves doesn't consider moves involving two bonus characters
 function possibleMoves() {
+    function checkPattern(patternName, indices, r, c) {
+        const valsOnIndex = [];
+        console.log("CHECK", r, c);
+        // return false if any of the indices are out of boards range
+        // or the val is not matching the first instance of the val array
+        for (i = 0; i < indices.length; i++) {
+            const val = (app.board[indices[i][0] + r] || [])[indices[i][1] + c];
+
+            if (!val) return false;
+
+            valsOnIndex.push(val);
+
+            if (val !== valsOnIndex[0]) return false;
+        } // end of indices iteration
+
+        moves.push({
+            "patternName": patternName,
+            "coords": indices.map(index => [index[0] + r, index[1] + c])
+        }); // end of push moves
+    } // end of check patterns
+
     const moves = [];
+    const isMobileChar = (cell) => "123456789ABCDE".split("").some(fr => fr === cell);
 
     app.board.forEach((row, rowInd) =>
         row.forEach((cell, cellInd) => {
-            // if cell is fruit or flower
-            if ("123456789ABCDE".split("").some(fr => fr === cell)) {
-
-            } // end of if cell is fruit
+            if (isMobileChar(cell)) {
+                // SWIPE RIGHT
+                if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
+                    checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd);
+                } // end of if swipe in range and second char is mobile
+            } // end of if cell is mobile
         })); // end of row end cell iteration
     return moves;
 } // end of possible moves
@@ -1246,16 +1263,16 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2222212B",
+            "A2122112B",
             "L2323126L",
-            "L2223132L",
+            "L2223432L",
             "L1163432L",
-            "L5453451L",
-            "L1234543L",
+            "L5454344L",
+            "L1233433L",
+            "L2345454L",
             "LLLLLLLLL",
-            "LLLLLLLLL",
-            "LLLLLLLLL",
-            "LLLLLLLLL",
+            "#LLLLLLL#",
+            "#LLLLLLL#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
