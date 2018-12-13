@@ -1198,25 +1198,36 @@ function destroyStones(coordsArr) {
 
 // function returns possible matches, or null if none left
 function possibleMoves() {
-    function checkPattern(patternName, indices, r, c) {
+    function checkPattern(patternName, indices, r, c, r1, c1) {
         const valsOnIndex = [];
-        console.log("CHECK", r, c);
         // return false if any of the indices are out of boards range
         // or the val is not matching the first instance of the val array
+        // making the iteration as efficient as possible
         for (i = 0; i < indices.length; i++) {
             const val = (app.board[indices[i][0] + r] || [])[indices[i][1] + c];
 
+            // if value out of range, spare some computation cost
             if (!val) return false;
 
+            // build values
             valsOnIndex.push(val);
 
+            // if any of the values are different than the first one,
+            // escape; no further search will fulfill the requirement of a match
             if (val !== valsOnIndex[0]) return false;
         } // end of indices iteration
 
+        console.log("CHECK", r, c, r1, c1);
         moves.push({
             "patternName": patternName,
+            "swap": [[r, c], [r1, c1]],
             "coords": indices.map(index => [index[0] + r, index[1] + c])
         }); // end of push moves
+
+        console.log("EAT", moves[moves.length - 1]);
+        moves[moves.length - 1].coords.forEach(co => $(`#r${co[0]}c${co[1]}-pic`).addClass("hint"));
+        // temporary piece of code
+        return true;
     } // end of check patterns
 
     const moves = [];
@@ -1227,10 +1238,20 @@ function possibleMoves() {
             if (isMobileChar(cell)) {
                 // SWIPE RIGHT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
-                    checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd);
+                    checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd + 1);
+                    checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd + 1);
                 } // end of if swipe in range and second char is mobile
-            } // end of if cell is mobile
+
+                // SWIPE LEFT
+                if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd - 1])) {
+                    console.log(rowInd, cellInd);
+                    checkPattern("T7", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd - 1);
+                    console.log(checkPattern("T6", [[-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd - 1), rowInd, cellInd, rowInd, cellInd - 1);
+                } // end of if swipe in range and second char is mobile
+            } // end of if cell is mobil
         })); // end of row end cell iteration
+
+    // reduce moves to show the highest possible moves on a swap
     return moves;
 } // end of possible moves
 
@@ -1264,12 +1285,12 @@ var levels = [
     {
         "blueprint": [
             "A2122112B",
-            "L2323126L",
-            "L2223432L",
-            "L1163432L",
-            "L5454344L",
-            "L1233433L",
-            "L2345454L",
+            "L2321126L",
+            "L4523412L",
+            "L1163412L",
+            "L5334344L",
+            "L1233421L",
+            "L2343454L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "#LLLLLLL#",
