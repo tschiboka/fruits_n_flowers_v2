@@ -1256,35 +1256,33 @@ function possibleMoves() {
     // reduce moves: if a swipe results in two matches combine them
     // thus we can see the best possible move
 
-    // filter the ones where swaps are identical, just reverse direction
-    // and combine them into one
-    const identicals = moves
-        .map(mov1 => moves
-            .filter(mov2 => {
-                if (mov1.swap[0][0] === mov2.swap[1][0] &&
-                    mov1.swap[0][1] === mov2.swap[1][1] &&
-                    mov1.swap[1][0] === mov2.swap[0][0] &&
-                    mov1.swap[1][1] === mov2.swap[0][1]) {
-                } return ({
-                    "patternName": `${mov1.patternName} ${mov2.patternName}`,
-                    "swap": [
-                        [mov1.swap[0][0], mov1.swap[0][1]],
-                        [mov1.swap[1][0], mov1.swap[1][1]]
-                    ],
-                    "coords": ""
-                });
-            })); // end of filter identicals
+    const combined = [];
 
-    // take identicals out of moves
-    moves = moves
-        .filter(mov => identicals
-            .find(ident => ident === mov)
-        ); // end of clear identicals
+    for (ind1 = 0; ind1 < moves.length; ind1++) {
+        for (ind2 = 0; ind2 < moves.length; ind2++) {
+            // extract swaps
+            const swap0 = moves[0].swap.join("").replace(/,/g, "").match(/\d{2}/g),
+                swap1 = moves[1].swap.join("").replace(/,/g, "").match(/\d{2}/g);
 
-    console.log("MOVES", moves, identicals);
+            // if swaps are the same just from the reverse direction
+            if (swap0[0] === swap1[1] && swap0[1] === swap1[0]) {
+                // combine the two
+                combined.push({
+                    "patternName": moves[0].patternName + " " + moves[1].patternName,
+                    "swap": moves[0].swap,
+                    "coords": moves[0].coords.concat(moves[1].coords)
+                }); // end of push combined
 
-
-    return moves;
+                // delete the two 
+                moves.splice(ind1, 1);
+                moves.splice(ind2, 1);
+            } // end of if swaps are same
+        } // end of inner for
+    } // end of outer for
+    // add combined to the moves and sort it by element length
+    return moves
+        .concat(combined)
+        .sort((movA, movB) => movA.coord.length > movB.coord.length);
 } // end of possible moves
 
 
