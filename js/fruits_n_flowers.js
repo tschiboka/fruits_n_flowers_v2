@@ -1224,7 +1224,6 @@ function possibleMoves() {
             "coords": indices.map(index => [index[0] + r, index[1] + c])
         }); // end of push moves
 
-        console.log("EAT", moves[moves.length - 1]);
         moves[moves.length - 1].coords.forEach(co => $(`#r${co[0]}c${co[1]}-pic`).addClass("hint"));
         // temporary piece of code
         return true;
@@ -1238,19 +1237,20 @@ function possibleMoves() {
             if (isMobileChar(cell)) {
                 // SWIPE RIGHT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
-                    checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd + 1);
-                    checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd + 1);
+                    if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                 } // end of if swipe in range and second char is mobile
 
                 // SWIPE LEFT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd - 1])) {
-                    console.log(rowInd, cellInd);
-                    checkPattern("T7", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd - 1);
-                    console.log(checkPattern("T6", [[-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd - 1), rowInd, cellInd, rowInd, cellInd - 1);
+
+                    if (checkPattern("T7", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                    if (checkPattern("T6", [[-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                 } // end of if swipe in range and second char is mobile
             } // end of if cell is mobil
         })); // end of row end cell iteration
 
+    console.log("MOVES", moves);
     // reduce moves to show the highest possible moves on a swap
     return moves;
 } // end of possible moves
