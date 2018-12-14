@@ -1229,12 +1229,16 @@ function possibleMoves() {
         return true;
     } // end of check patterns
 
-    const moves = [];
+    let moves = [];
     const isMobileChar = (cell) => "123456789ABCDE".split("").some(fr => fr === cell);
 
     app.board.forEach((row, rowInd) =>
         row.forEach((cell, cellInd) => {
+            // ignore immobile characters, swipe would be impossible anyway
             if (isMobileChar(cell)) {
+                // if any match is found return, no more search is required, 
+                // so always the highest valued match is gonna be in moves obj
+
                 // SWIPE RIGHT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
                     if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
@@ -1243,15 +1247,43 @@ function possibleMoves() {
 
                 // SWIPE LEFT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd - 1])) {
-
                     if (checkPattern("T7", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                     if (checkPattern("T6", [[-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                 } // end of if swipe in range and second char is mobile
             } // end of if cell is mobil
         })); // end of row end cell iteration
 
-    console.log("MOVES", moves);
-    // reduce moves to show the highest possible moves on a swap
+    // reduce moves: if a swipe results in two matches combine them
+    // thus we can see the best possible move
+
+    // filter the ones where swaps are identical, just reverse direction
+    // and combine them into one
+    const identicals = moves
+        .map(mov1 => moves
+            .filter(mov2 => {
+                if (mov1.swap[0][0] === mov2.swap[1][0] &&
+                    mov1.swap[0][1] === mov2.swap[1][1] &&
+                    mov1.swap[1][0] === mov2.swap[0][0] &&
+                    mov1.swap[1][1] === mov2.swap[0][1]) {
+                } return ({
+                    "patternName": `${mov1.patternName} ${mov2.patternName}`,
+                    "swap": [
+                        [mov1.swap[0][0], mov1.swap[0][1]],
+                        [mov1.swap[1][0], mov1.swap[1][1]]
+                    ],
+                    "coords": ""
+                });
+            })); // end of filter identicals
+
+    // take identicals out of moves
+    moves = moves
+        .filter(mov => identicals
+            .find(ident => ident === mov)
+        ); // end of clear identicals
+
+    console.log("MOVES", moves, identicals);
+
+
     return moves;
 } // end of possible moves
 
