@@ -1217,7 +1217,6 @@ function possibleMoves() {
             if (val !== valsOnIndex[0]) return false;
         } // end of indices iteration
 
-        console.log("CHECK", r, c, r1, c1);
         moves.push({
             "patternName": patternName,
             "swap": [[r, c], [r1, c1]],
@@ -1243,6 +1242,8 @@ function possibleMoves() {
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
                     if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                     if (checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("T5", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                 } // end of if swipe in range and second char is mobile
 
                 // SWIPE LEFT
@@ -1258,31 +1259,31 @@ function possibleMoves() {
 
     const combined = [];
 
-    for (ind1 = 0; ind1 < moves.length; ind1++) {
-        for (ind2 = 0; ind2 < moves.length; ind2++) {
+    for (ind0 = 0; ind0 < moves.length; ind0++) {
+        for (ind1 = 0; ind1 < moves.length; ind1++) {
             // extract swaps
-            const swap0 = moves[0].swap.join("").replace(/,/g, "").match(/\d{2}/g),
-                swap1 = moves[1].swap.join("").replace(/,/g, "").match(/\d{2}/g);
+            const swap0 = moves[ind0].swap.join("").replace(/,/g, "").match(/\d{2}/g),
+                swap1 = moves[ind1].swap.join("").replace(/,/g, "").match(/\d{2}/g);
 
             // if swaps are the same just from the reverse direction
             if (swap0[0] === swap1[1] && swap0[1] === swap1[0]) {
                 // combine the two
                 combined.push({
-                    "patternName": moves[0].patternName + " " + moves[1].patternName,
-                    "swap": moves[0].swap,
-                    "coords": moves[0].coords.concat(moves[1].coords)
+                    "patternName": moves[ind0].patternName + " " + moves[ind1].patternName,
+                    "swap": moves[ind0].swap,
+                    "coords": moves[ind0].coords.concat(moves[ind1].coords)
                 }); // end of push combined
-
                 // delete the two 
                 moves.splice(ind1, 1);
-                moves.splice(ind2, 1);
+                moves.splice(ind0, 1);
             } // end of if swaps are same
         } // end of inner for
     } // end of outer for
+
     // add combined to the moves and sort it by element length
     return moves
         .concat(combined)
-        .sort((movA, movB) => movA.coord.length > movB.coord.length);
+        .sort((movA, movB) => movA.coords.length + movB.coords.length);
 } // end of possible moves
 
 
@@ -1318,9 +1319,9 @@ var levels = [
             "L2321126L",
             "L4523412L",
             "L1163412L",
-            "L5334344L",
+            "L5134344L",
             "L1233421L",
-            "L2343454L",
+            "L2343854L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "#LLLLLLL#",
