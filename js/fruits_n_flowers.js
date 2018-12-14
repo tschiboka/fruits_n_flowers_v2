@@ -1240,10 +1240,21 @@ function possibleMoves() {
 
                 // SWIPE RIGHT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
+                    console.log("check", $(`#r${rowInd}c${cellInd}-pic`)[0]);
                     if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                     if (checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                     if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
-                    if (checkPattern("T5", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I5", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I4", [[-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I4", [[-2, 0], [-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("O4", [[0, -1], [0, 1], [1, 0], [1, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("O4", [[0, 0], [0, 1], [1, -1], [1, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I3", [[0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I3", [[-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                    if (checkPattern("I3", [[-2, 0], [-1, 0], [0, -1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+
                 } // end of if swipe in range and second char is mobile
 
                 // SWIPE LEFT
@@ -1315,16 +1326,16 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2122112B",
+            "A2312112B",
             "L2321126L",
-            "L4523412L",
-            "L1163412L",
-            "L5134344L",
-            "L1233421L",
-            "L2343854L",
+            "L4523212L",
+            "L1163112L",
+            "L5154351L",
+            "L1211231L",
+            "L2349134L",
             "LLLLLLLLL",
             "#LLLLLLL#",
-            "#LLLLLLL#",
+            "LLLLLLLL#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
