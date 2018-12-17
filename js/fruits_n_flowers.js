@@ -1269,6 +1269,7 @@ function possibleMoves() {
                         if (checkPattern("I5", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("L5", [[0, -2], [0, -1], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("T5", [[0, -2], [0, -1], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I4", [[-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I4", [[-2, 0], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("O4", [[0, -1], [0, 1], [1, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
@@ -1280,6 +1281,15 @@ function possibleMoves() {
 
                     checkLeftSwipe();
                 } // end of swipe LEFT
+
+                // SWIPE UP
+                if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
+                    function checkUpSwipe() {
+
+                    } // end of checkLeftSwipe
+
+                    checkUpSwipe();
+                } // end of swipe UP
             } // end of if cell is mobil
         })); // end of row end cell iteration
 
@@ -1347,10 +1357,10 @@ var levels = [
         "blueprint": [
             "A2332112B",
             "L2321521L",
-            "L4543212L",
+            "L4513212L",
             "L1543512L",
-            "L1634651L",
-            "L2513171L",
+            "L4434651L",
+            "L2543171L",
             "L2313242L",
             "LLLLLLLLL",
             "#LLLLLLL#",
