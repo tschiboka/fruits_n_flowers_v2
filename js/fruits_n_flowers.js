@@ -874,7 +874,6 @@ function cicleMatches() {
         checkFlowersOverBasket();
     } // if there are further matches
     else {
-        console.log("Possible Moves", possibleMoves());
         if (false) {
         } // end of there are no more moves on board
         else {
@@ -1247,10 +1246,12 @@ function possibleMoves() {
                         if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I5", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("L5", [[2, 0], [1, 0], [0, -1], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("T5", [[0, -1], [-1, 0], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I4", [[-1, 0], [0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I4", [[-2, 0], [-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("O4", [[0, -1], [0, 1], [1, 0], [1, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
-                        if (checkPattern("O4", [[0, 0], [0, 1], [1, -1], [1, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("O4", [[0, -1], [0, 1], [-1, 0], [-1, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I3", [[0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I3", [[-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I3", [[-2, 0], [-1, 0], [0, -1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
@@ -1265,8 +1266,12 @@ function possibleMoves() {
                         if (checkPattern("T7", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("T6", [[-1, 0], [0, 1], [1, 0], [2, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
-                        if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
-                        if (checkPattern("I5", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("I5", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I4", [[-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I4", [[-2, 0], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("O4", [[0, 0], [0, 2], [1, 0], [1, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("O4", [[0, 0], [0, 1], [1, 0], [1, 2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
 
                     } // end of checkLeftSwipe
 
@@ -1337,13 +1342,13 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2312112B",
-            "L2321126L",
-            "L4523212L",
-            "L1163112L",
-            "L5334351L",
-            "L1213231L",
-            "L2349134L",
+            "A2332112B",
+            "L2321521L",
+            "L4543212L",
+            "L1143512L",
+            "L4434651L",
+            "L2241171L",
+            "L2312242L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "LLLLLLLL#",
@@ -1394,6 +1399,7 @@ function startLevel(level) {
     createBoardArray(level - 1);
     displayBoard();
     addGameBoardEvents();
+    console.log("Possible Moves", possibleMoves());
 } // end of startLevel
 
 
