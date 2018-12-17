@@ -1268,11 +1268,14 @@ function possibleMoves() {
                         if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I5", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("L5", [[0, -2], [0, -1], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I4", [[-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I4", [[-2, 0], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
-                        if (checkPattern("O4", [[0, 0], [0, 2], [1, 0], [1, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
-                        if (checkPattern("O4", [[0, 0], [0, 1], [1, 0], [1, 2]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
-
+                        if (checkPattern("O4", [[0, -1], [0, 1], [1, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("O4", [[-1, -1], [-1, 0], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I3", [[0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I3", [[-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I3", [[-2, 0], [-1, 0], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                     } // end of checkLeftSwipe
 
                     checkLeftSwipe();
@@ -1345,10 +1348,10 @@ var levels = [
             "A2332112B",
             "L2321521L",
             "L4543212L",
-            "L1143512L",
-            "L4434651L",
-            "L2241171L",
-            "L2312242L",
+            "L1543512L",
+            "L1634651L",
+            "L2513171L",
+            "L2313242L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "LLLLLLLL#",
