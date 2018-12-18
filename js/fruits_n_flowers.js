@@ -1282,15 +1282,28 @@ function possibleMoves() {
                     checkLeftSwipe();
                 } // end of swipe LEFT
 
-                // SWIPE UP
-                if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd + 1])) {
-                    function checkUpSwipe() {
+                // SWIPE DOWN
+                if (cellInd < 8 && isMobileChar((app.board[rowInd - 1] || [])[cellInd])) {
+                    function checkDownSwipe() {
+                        if (checkPattern("T7", [[-1, 0], [0, -2], [0, -1], [0, 1], [0, 2], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("T6", [[-1, 0], [0, -1], [0, 1], [0, 2], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("T6", [[-1, 0], [0, -2], [0, -1], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I5", [[0, -2], [0, -1], [-1, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("L5", [[-1, 0], [0, 1], [0, 2], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("L5", [[-1, 0], [0, -1], [0, -2], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("T5", [[-1, 0], [0, -1], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I4", [[-1, 0], [0, -1], [0, 1], [0, 2]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I4", [[-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("O4", [[-1, 0], [0, 1], [1, 0], [1, 1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("O4", [[-1, 0], [0, -1], [1, -1], [1, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[-1, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[-1, 0], [0, -1], [0, 1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[-1, 0], [0, -2], [0, -1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                    } // end of checkDownSwipe
 
-                    } // end of checkLeftSwipe
-
-                    checkUpSwipe();
-                } // end of swipe UP
-            } // end of if cell is mobil
+                    checkDownSwipe();
+                } // end of swipe DOWN
+            } // end of if cell is mobile
         })); // end of row end cell iteration
 
     // reduce moves: if a swipe results in two matches combine them
@@ -1355,11 +1368,11 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A2332112B",
-            "L2321521L",
-            "L4513212L",
-            "L1543512L",
-            "L4434651L",
+            "A3412512B",
+            "L1165621L",
+            "L4343212L",
+            "L2563512L",
+            "L1223651L",
             "L2543171L",
             "L2313242L",
             "LLLLLLLLL",
