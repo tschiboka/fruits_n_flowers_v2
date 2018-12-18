@@ -1394,11 +1394,31 @@ function giveHint() {
         } // end of if besthint is off
         console.log("HINT", hint);
 
-        hint.swap.forEach(coord => {
-            $(`#r${coord[0]}c${coord[1]}-pic`).addClass("hint");
+        // determine if swap is horizontal
+        const hintOrientation = hint.swap[0][0] === hint.swap[1][0] ? "horizontal" : "vertical";
+        let hintPosition = [];
+        if (hintOrientation === "horizontal") {
+            if (hint.swap[0][1] < hint.swap[1][1]) {
+                hintPosition.push("left", "right");
+            } else {
+                hintPosition.push("right", "left");
+            }
+        } // end of if horizontal
+        else {
+            if (hint.swap[0][0] > hint.swap[1][0]) {
+                hintPosition.push("upper", "lower");
+            } else {
+                hintPosition.push("lower", "upper");
+            }
+        } // end of if vertical
+        hint.swap.forEach((coord, coordInd) => {
+            let hintMovementClassName = "hint-" + hintOrientation + "-" + hintPosition[coordInd];
+            console.log(hintMovementClassName);
+
+            $(`#r${coord[0]}c${coord[1]}-pic`).addClass(hintMovementClassName);
 
             const hintRemoveDelay = setTimeout(() => {
-                $(`#r${coord[0]}c${coord[1]}-pic`).removeClass("hint");
+                $(`#r${coord[0]}c${coord[1]}-pic`).removeClass(hintMovementClassName);
                 clearTimeout(hintRemoveDelay);
             }, 1400); // end of remove delay
         }); // end of coords iteration
@@ -1472,7 +1492,7 @@ var app = {
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_is_on": false,
     "game_is_paused": false,
-    "game_give_hint_at": 5, // the num of secs a hint is given after no moves
+    "game_give_hint_at": 3, // the num of secs a hint is given after no moves
     "game_best_hint": false,
     "game_time_from_last_hint": 0,
     "images": [],         // the preloaded pictures
