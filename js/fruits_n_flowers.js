@@ -1355,9 +1355,25 @@ function possibleMoves() {
     } // end of outer for
 
     // add combined to the moves and sort it by element length
-    return moves
+    moves = moves
         .concat(combined)
         .sort((movA, movB) => movB.coords.length - movA.coords.length);
+
+    // Reorder moves (already sorted descending), to have I3 I3 moves after T4 and before I3
+    // Reason: even though I3 I3 moves make more matches, they don't result in getting bonus 
+    // characters, rendering them less valuable in the long run.
+
+    // Take out I3 I3 moves
+    const i3I3s = moves.filter(mov => mov.patternName === "I3 I3");
+    moves = moves.filter(mov => mov.patternName !== "I3 I3");
+
+    // check the first I3 index
+    const i3Ind = moves.findIndex(mov => mov.patternName === "I3");
+
+    // push them back to moves
+    i3I3s.forEach(i3I3 => { moves.splice(i3Ind, 0, i3I3); });
+    console.log("I3 I3-s: ", i3I3s, i3Ind);
+    return moves;
 } // end of possible moves
 
 
@@ -1389,10 +1405,10 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A3412512B",
-            "L2365621L",
-            "L4343212L",
-            "L2523512L",
+            "A3225321B",
+            "L2335321L",
+            "L4343512L",
+            "L2521512L",
             "L4543651L",
             "L1132471L",
             "L3313342L",
