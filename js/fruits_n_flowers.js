@@ -284,6 +284,8 @@ function addGameBoardEvents() {
         if (app.game_interaction_enabled) {
             if (swapIds[0]) {
                 event.preventDefault();
+                app.game_time_from_last_hint = 0; // cancel hints if user swipes
+
                 swapIds[1] = extractRowCol(event.target);
 
                 // check for mobility (walls, stones...)
@@ -302,6 +304,7 @@ function addGameBoardEvents() {
         if (app.game_interaction_enabled) {
             if (swapIds[0]) {
                 event.preventDefault();
+                app.game_time_from_last_hint = 0; // cancel hints if user swipes
 
                 // Touchend returns the start position as a target by default
                 // So we extract the end element by identifying which element
@@ -876,7 +879,7 @@ function cicleMatches() {
     else {
         const possibleMatches = possibleMoves();
         console.log("Possible Moves", possibleMatches);
-        if (possibleMatches.length < 0) {
+        if (possibleMatches.length === 0) {
             alert("No More Moves!");
         } // end of there are no more moves on board
         else {
@@ -1372,11 +1375,27 @@ function possibleMoves() {
 
     // push them back to moves
     i3I3s.forEach(i3I3 => { moves.splice(i3Ind, 0, i3I3); });
-    console.log("I3 I3-s: ", i3I3s, i3Ind);
+
     return moves;
 } // end of possible moves
 
 
+function giveHint() {
+    const hints = possibleMoves();
+    if (hints.length > 0) {
+        let hint;
+        // if besthint is earned or bought give the highest value hint
+        if (app.game_best_hint) {
+            hint = hints[0];
+        } // end of if besthint is on
+        // if besthint is off give one hint randomly
+        else {
+            console.log(Math.floor(Math.random() * hints.length - 1));
+            hint = hints[Math.floor(Math.random() * hints.length)];
+        } // end of if besthint is off
+        console.log("HINT", hint);
+    } // end of if there is a hint available
+} // end of giveHint
 
 /*
  
@@ -1440,11 +1459,16 @@ var levels = [
 
 var app = {
     "board": [],          // the current game gems position
-    "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
-    "images": [],         // the preloaded pictures
-    "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "currentLevel": 1,
     "flowers": 0,         // the players collected flowers on the actual level
+    "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
+    "game_is_on": false,
+    "game_is_paused": false,
+    "game_give_hint_at": 5, // the num of secs a hint is given after no moves
+    "game_best_hint": false,
+    "game_time_from_last_hint": 0,
+    "images": [],         // the preloaded pictures
+    "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
 
@@ -1462,6 +1486,22 @@ function startLevel(level) {
     createBoardArray(level - 1);
     displayBoard();
     addGameBoardEvents();
+
+    // start setup values and counters
+    app.game_is_on = true;
+    app.game_is_paused = false;
+    const hintTimer = setInterval(() => {
+        if (app.game_is_on && !app.game_is_paused) {
+            if (app.game_time_from_last_hint === app.game_give_hint_at) {
+                app.game_time_from_last_hint = 0;
+                giveHint();
+            } else {
+                app.game_time_from_last_hint++;
+            }
+            console.log(app.game_time_from_last_hint);
+        } // end of if game is on and not paused
+        if (app.game_is_paused) clearInterval(hintTimer);
+    }, 1000); // end of hintTimer
     console.log("Possible Moves", possibleMoves());
 } // end of startLevel
 
