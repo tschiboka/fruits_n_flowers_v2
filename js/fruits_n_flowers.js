@@ -523,12 +523,14 @@ function swipeCharacters(swipeArgs) {
     if (!matches) {
         if (!flowerAndHorizontal()) {
             app.game_interaction_enabled = false;
+            app.game_hint_is_paused = true; // hints stops
 
             // delay to see the unmatching swipe
             const swapDelay = () => setTimeout(() => {
                 swapCharacters(R1, C1, R2, C2);
                 clearTimeout(swapDelay);
                 app.game_interaction_enabled = true; // set interaction back
+                app.game_hint_is_paused = false; // hint can count time again
             }, 150); // end of swapDelay 
 
             // delay and stop user interaction while showing unmatched swap
@@ -655,6 +657,7 @@ function animateExplosions(matches) {
     // disable interaction with the gameboard while animation is going 
     // until new characters are on the board
     app.game_interaction_enabled = false;
+    app.game_hint_is_paused = false; // hint stops counting time, so it won't disrupt animation
 
     // parentXY is necessary for calculating the shards relative xy
     const parentXY = $(".game-board")[0].getBoundingClientRect();
@@ -880,10 +883,11 @@ function cicleMatches() {
         const possibleMatches = possibleMoves();
         console.log("Possible Moves", possibleMatches);
         if (possibleMatches.length === 0) {
-            alert("No More Moves!");
+            noMoreMovesMessage();
         } // end of there are no more moves on board
         else {
             app.game_interaction_enabled = true; // give interaction back to player
+            app.game_hint_is_paused = false; // hint can count time again
         } // end of if there are possible matches
     } // end of if there are no further matches
     checkFlowersOverBasket();
@@ -1258,6 +1262,7 @@ function possibleMoves() {
                         if (checkPattern("I3", [[0, -1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I3", [[-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("I3", [[-2, 0], [-1, 0], [0, -1]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("I3", [[0, -1], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                     } // end of checkRightSwipe
 
                     checkRightSwipe();
@@ -1280,6 +1285,7 @@ function possibleMoves() {
                         if (checkPattern("I3", [[0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I3", [[-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I3", [[-2, 0], [-1, 0], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
+                        if (checkPattern("I3", [[0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                     } // end of checkLeftSwipe
 
                     checkLeftSwipe();
@@ -1302,6 +1308,7 @@ function possibleMoves() {
                         if (checkPattern("I3", [[-1, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
                         if (checkPattern("I3", [[-1, 0], [0, -1], [0, 1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
                         if (checkPattern("I3", [[-1, 0], [0, -2], [0, -1]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[-1, 0], [1, 0], [2, 0]], rowInd, cellInd, rowInd - 1, cellInd)) return void (0);
                     } // end of checkDownSwipe
 
                     checkDownSwipe();
@@ -1324,6 +1331,7 @@ function possibleMoves() {
                         if (checkPattern("I3", [[0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
                         if (checkPattern("I3", [[0, 1], [0, -1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
                         if (checkPattern("I3", [[0, -2], [0, -1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[-2, 0], [-1, 0], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
                     } // end of checkUpSwipe
 
                     checkUpSwipe();
@@ -1392,7 +1400,6 @@ function giveHint() {
         else {
             hint = hints[Math.floor(Math.random() * hints.length)];
         } // end of if besthint is off
-        console.log("HINT", hint);
 
         // determine if swap is horizontal
         const hintOrientation = hint.swap[0][0] === hint.swap[1][0] ? "horizontal" : "vertical";
@@ -1413,7 +1420,6 @@ function giveHint() {
         } // end of if vertical
         hint.swap.forEach((coord, coordInd) => {
             let hintMovementClassName = "hint-" + hintOrientation + "-" + hintPosition[coordInd];
-            console.log(hintMovementClassName);
 
             $(`#r${coord[0]}c${coord[1]}-pic`).addClass(hintMovementClassName);
 
@@ -1424,6 +1430,56 @@ function giveHint() {
         }); // end of coords iteration
     } // end of if there is a hint available
 } // end of giveHint
+
+
+// puts a message out when there are no more moves found on the gameboard
+function noMoreMovesMessage() {
+    const msgDiv = document.createElement("div");
+
+    $(msgDiv)
+        .attr("id", "no-more-moves-msg-div")
+        .addClass("board__message")
+        .html("No More Moves")
+        .fadeIn(1000);
+
+    createFreshBoard(msgDiv);
+    $(".game-board").append(msgDiv);
+} // end of noMoreMovesMessage
+
+
+// put randomly new fruits on board, but they can not match 
+function createFreshBoard(msgDiv) {
+    fruits = [...Array(levels[app.currentLevel - 1].fruitVariationNumber).keys()].map(el => ++el);
+
+    app.board.map((row, rowInd) => row.map((cell, cellInd) => {
+        let availableFruits = fruits.slice(); // don't copy reference
+
+        // if cell is fruit
+        if (availableFruits.some(fr => fr == cell)) {
+            // if the above two cells are already matching
+            if ((app.board[rowInd - 1] || [])[cellInd] === (app.board[rowInd - 2] || [])[cellInd]) {
+                // take them out from the pool of choices
+                availableFruits = availableFruits.filter(fr => fr != (app.board[rowInd - 1] || [])[cellInd]);
+            }
+            // if the two cells on the left are already matching
+            if ((app.board[rowInd] || [])[cellInd - 1] === (app.board[rowInd] || [])[cellInd - 2]) {
+                // take them out from the pool of choices
+                availableFruits = availableFruits.filter(fr => fr != (app.board[rowInd] || [])[cellInd - 1]);
+            }
+            app.board[rowInd][cellInd] = availableFruits[Math.floor(Math.random() * availableFruits.length)] + "";
+        } // end of if cell is fruit
+
+    })); // end of row iteration
+    if (possibleMoves().length < 1) createFreshBoard(); // recursive if new fruits has no matches
+
+    if (msgDiv) $(msgDiv).fadeOut(2500);
+
+    displayBoard();
+
+    app.game_interaction_enabled = true; // give interaction back to player
+    app.game_hint_is_paused = false; // hint can count time again
+} // end of createFreshBoard
+
 
 /*
  
@@ -1452,13 +1508,13 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A3225321B",
-            "L2335321L",
-            "L4343512L",
-            "L2521512L",
-            "L4543651L",
-            "L1132471L",
-            "L3313342L",
+            "A3255115B",
+            "L2939321L",
+            "L9381565L",
+            "L2521982L",
+            "L4543687L",
+            "L8132471L",
+            "L3918342L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "LLLLLLLL#",
@@ -1492,9 +1548,10 @@ var app = {
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_is_on": false,
     "game_is_paused": false,
-    "game_give_hint_at": 3, // the num of secs a hint is given after no moves
-    "game_best_hint": false,
+    "game_give_hint_at": 2, // the num of secs a hint is given after no moves
+    "game_best_hint": true,
     "game_time_from_last_hint": 0,
+    "game_hint_is_paused": false,
     "images": [],         // the preloaded pictures
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
@@ -1519,14 +1576,14 @@ function startLevel(level) {
     app.game_is_on = true;
     app.game_is_paused = false;
     const hintTimer = setInterval(() => {
-        if (app.game_is_on && !app.game_is_paused) {
+        if (app.game_is_on && !app.game_is_paused && !app.game_hint_is_paused) {
             if (app.game_time_from_last_hint === app.game_give_hint_at) {
                 app.game_time_from_last_hint = 0;
                 giveHint();
             } else {
                 app.game_time_from_last_hint++;
             }
-        } // end of if game is on and not paused
+        } // end of if game is on and not paused and hint counter is enabled
         if (app.game_is_paused) clearInterval(hintTimer);
     }, 1000); // end of hintTimer
 } // end of startLevel
