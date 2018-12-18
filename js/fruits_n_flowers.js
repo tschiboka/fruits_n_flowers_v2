@@ -874,12 +874,15 @@ function cicleMatches() {
         checkFlowersOverBasket();
     } // if there are further matches
     else {
-        if (false) {
+        const possibleMatches = possibleMoves();
+        console.log("Possible Moves", possibleMatches);
+        if (possibleMatches.length < 0) {
+            alert("No More Moves!");
         } // end of there are no more moves on board
         else {
-            app.game_interaction_enabled = true;
-        }
-    } // give interaction back to player
+            app.game_interaction_enabled = true; // give interaction back to player
+        } // end of if there are possible matches
+    } // end of if there are no further matches
     checkFlowersOverBasket();
 } // end of cicleMatches
 
@@ -1222,8 +1225,6 @@ function possibleMoves() {
             "coords": indices.map(index => [index[0] + r, index[1] + c])
         }); // end of push moves
 
-        moves[moves.length - 1].coords.forEach(co => $(`#r${co[0]}c${co[1]}-pic`).addClass("hint"));
-        // temporary piece of code
         return true;
     } // end of check patterns
 
@@ -1239,7 +1240,6 @@ function possibleMoves() {
 
                 // SWIPE RIGHT
                 if (cellInd < 8 && isMobileChar(app.board[rowInd][cellInd - 1])) {
-                    console.log("CHECK", rowInd, cellInd);
                     function checkRightSwipe() { //direction functions are created so I can escape them separately
                         if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
                         if (checkPattern("T6", [[-1, 0], [0, -1], [1, 0], [2, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
@@ -1269,7 +1269,7 @@ function possibleMoves() {
                         if (checkPattern("I5", [[-2, 0], [-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("L5", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("L5", [[0, -2], [0, -1], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
-                        if (checkPattern("T5", [[0, -2], [0, -1], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd - 1)) return void (0);
+                        if (checkPattern("T5", [[0, -2], [0, -1], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I4", [[-1, 0], [0, 1], [1, 0], [2, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("I4", [[-2, 0], [-1, 0], [0, 1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
                         if (checkPattern("O4", [[0, -1], [0, 1], [1, -1], [1, 0]], rowInd, cellInd, rowInd, cellInd + 1)) return void (0);
@@ -1303,6 +1303,28 @@ function possibleMoves() {
 
                     checkDownSwipe();
                 } // end of swipe DOWN
+
+                // SWIPE UP
+                if (cellInd < 8 && isMobileChar((app.board[rowInd + 1] || [])[cellInd])) {
+                    function checkUpSwipe() {
+                        if (checkPattern("T7", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("T6", [[-2, 0], [-1, 0], [0, -2], [0, -1], [0, 1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I5", [[0, -2], [0, -1], [0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("L5", [[-2, 0], [-1, 0], [1, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("L5", [[-2, 0], [-1, 0], [1, 0], [0, -1], [0, -2]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("T5", [[-2, 0], [-1, 0], [1, 0], [0, -1], [0, 1]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I4", [[0, -1], [1, 0], [0, 1], [0, 2]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I4", [[0, -2], [0, -1], [1, 0], [0, 1]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("O4", [[-1, 0], [-1, 1], [0, 1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("O4", [[-1, -1], [-1, 0], [0, -1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[0, 1], [0, 2], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[0, 1], [0, -1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                        if (checkPattern("I3", [[0, -2], [0, -1], [1, 0]], rowInd, cellInd, rowInd + 1, cellInd)) return void (0);
+                    } // end of checkUpSwipe
+
+                    checkUpSwipe();
+                } // end of swipe UP
             } // end of if cell is mobile
         })); // end of row end cell iteration
 
@@ -1332,7 +1354,6 @@ function possibleMoves() {
         } // end of inner for
     } // end of outer for
 
-    console.log(moves.map(mov => mov.coords.map(xy => app.board[xy[0]][xy[1]])).join(""));
     // add combined to the moves and sort it by element length
     return moves
         .concat(combined)
@@ -1369,12 +1390,12 @@ var levels = [
     {
         "blueprint": [
             "A3412512B",
-            "L1165621L",
+            "L2365621L",
             "L4343212L",
-            "L2563512L",
-            "L1223651L",
-            "L2543171L",
-            "L2313242L",
+            "L2523512L",
+            "L4543651L",
+            "L1132471L",
+            "L3313342L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "LLLLLLLL#",
