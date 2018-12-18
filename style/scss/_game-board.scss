@@ -246,5 +246,12 @@
 }
 
 .hint {
-    background: rgba(255, 255, 142, 0.651);
+    background-color: rgb(155, 255, 142);
+    animation: anim-hint-fade 1.5s ease-out;
+}
+
+@keyframes anim-hint-fade {
+    100% {
+        background-color: rgba(155, 255, 142, 0.5);
+    }
 }

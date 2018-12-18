@@ -1390,10 +1390,18 @@ function giveHint() {
         } // end of if besthint is on
         // if besthint is off give one hint randomly
         else {
-            console.log(Math.floor(Math.random() * hints.length - 1));
             hint = hints[Math.floor(Math.random() * hints.length)];
         } // end of if besthint is off
         console.log("HINT", hint);
+
+        hint.swap.forEach(coord => {
+            $(`#r${coord[0]}c${coord[1]}-pic`).addClass("hint");
+
+            const hintRemoveDelay = setTimeout(() => {
+                $(`#r${coord[0]}c${coord[1]}-pic`).removeClass("hint");
+                clearTimeout(hintRemoveDelay);
+            }, 1400); // end of remove delay
+        }); // end of coords iteration
     } // end of if there is a hint available
 } // end of giveHint
 
@@ -1498,11 +1506,9 @@ function startLevel(level) {
             } else {
                 app.game_time_from_last_hint++;
             }
-            console.log(app.game_time_from_last_hint);
         } // end of if game is on and not paused
         if (app.game_is_paused) clearInterval(hintTimer);
     }, 1000); // end of hintTimer
-    console.log("Possible Moves", possibleMoves());
 } // end of startLevel
 
 
