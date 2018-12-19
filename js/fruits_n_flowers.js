@@ -1394,7 +1394,10 @@ function giveHint() {
         let hint;
         // if besthint is earned or bought give the highest value hint
         if (app.game_best_hint) {
-            hint = hints[0];
+            // if only I3 matches are available, choose the last one
+            // it usually matches more when matches are taken from the bottom of the board
+            // else find the strongest match
+            hint = hints.every(h => h.patternName === "I3") ? hints[hints.length - 1] : hints[0];
         } // end of if besthint is on
         // if besthint is off give one hint randomly
         else {
