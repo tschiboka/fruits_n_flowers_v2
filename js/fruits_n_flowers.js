@@ -1511,7 +1511,7 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "A3255115B",
+            "F3255115F",
             "L2939321L",
             "L9381565L",
             "L2521982L",
@@ -1679,6 +1679,12 @@ function displayBoard() {
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
+            // make random flowers when encounters char "F"
+            if (app.board[r][c] === "F") {
+                app.board[r][c] = "ABCDE"[Math.floor(Math.random() * 5)];
+                console.log("BUU", app.board[r][c]);
+            } // end of if "F" random flower 
+
             const idName = `#r${r}c${c}-pic`;
             let char = app.board[r][c]; // holds the character
 
