@@ -1511,13 +1511,13 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "F3255115F",
-            "L2939321L",
-            "L9381565L",
-            "L2521982L",
-            "L4543687L",
-            "L8132471L",
-            "L3918342L",
+            "F.......F",
+            "L.......L",
+            "L.......L",
+            "L.......L",
+            "L.......L",
+            "L.......L",
+            "L.......L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "LLLLLLLL#",
@@ -1682,8 +1682,28 @@ function displayBoard() {
             // make random flowers when encounters char "F"
             if (app.board[r][c] === "F") {
                 app.board[r][c] = "ABCDE"[Math.floor(Math.random() * 5)];
-                console.log("BUU", app.board[r][c]);
             } // end of if "F" random flower 
+
+
+            // make random fruits when encounters char "."
+            if (app.board[r][c] === ".") {
+                let availableFruits = [...Array(levels[app.currentLevel - 1].fruitVariationNumber).keys()].map(el => ++el);
+
+                // if the above two cells are already matching
+                if ((app.board[r - 1] || [])[c] === (app.board[r - 2] || [])[c]) {
+                    // take them out from the pool of choices
+                    availableFruits = availableFruits.filter(fr => fr != (app.board[r - 1] || [])[c]);
+                }
+
+                // if the two cells on the left are already matching
+                if ((app.board[r] || [])[c - 1] === (app.board[r] || [])[c - 2]) {
+                    // take them out from the pool of choices
+                    availableFruits = availableFruits.filter(fr => fr != (app.board[r] || [])[c - 1]);
+                }
+
+                app.board[r][c] = availableFruits[Math.floor(Math.random() * availableFruits.length)] + "";
+            } // end of if random fruit
+
 
             const idName = `#r${r}c${c}-pic`;
             let char = app.board[r][c]; // holds the character
