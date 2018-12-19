@@ -1524,6 +1524,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -1551,9 +1552,10 @@ var app = {
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_is_on": false,
     "game_is_paused": false,
-    "game_give_hint_at": 2, // the num of secs a hint is given after no moves
+    "game_give_hint_at": 5, // the num of secs a hint is given after no moves
     "game_best_hint": true,
     "game_time_from_last_hint": 0,
+    "game_time_left": 0, // we'll set the remaining thime when level starts
     "game_hint_is_paused": false,
     "images": [],         // the preloaded pictures
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
@@ -1576,8 +1578,28 @@ function startLevel(level) {
     addGameBoardEvents();
 
     // start setup values and counters
+
     app.game_is_on = true;
     app.game_is_paused = false;
+    app.game_time_left = levels[app.currentLevel - 1].time;
+
+    // level timer
+    const levelTimer = setInterval(() => {
+        if (app.game_is_on && !app.game_is_paused) {
+            console.log("Time left: ", app.game_time_left);
+
+            // decrement time if it's greater than 0
+            if (app.game_time_left > 0) {
+                app.game_time_left--;
+            } // end of counting down
+
+            // finish level if time is up
+            // future code comes here
+        } // end of if game is on and not paused
+        if (!app.game_is_on) clearInterval(levelTimer);
+    }, 1000);
+
+    // hint timer
     const hintTimer = setInterval(() => {
         if (app.game_is_on && !app.game_is_paused && !app.game_hint_is_paused) {
             if (app.game_time_from_last_hint === app.game_give_hint_at) {
@@ -1587,7 +1609,7 @@ function startLevel(level) {
                 app.game_time_from_last_hint++;
             }
         } // end of if game is on and not paused and hint counter is enabled
-        if (app.game_is_paused) clearInterval(hintTimer);
+        if (!app.game_is_on) clearInterval(hintTimer);
     }, 1000); // end of hintTimer
 } // end of startLevel
 
