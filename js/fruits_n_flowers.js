@@ -1520,7 +1520,7 @@ var levels = [
             "L.......L",
             "LLLLLLLLL",
             "#LLLLLLL#",
-            "LLLLLLLL#",
+            "#LLLLLLL#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
@@ -1698,9 +1698,11 @@ function displayBoard() {
         "*": app.images.diamond,
     }; // end of imgMap
 
+
     // add the corrisponding icons to the board table
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
+
             // make random flowers when encounters char "F"
             if (app.board[r][c] === "F") {
                 app.board[r][c] = "ABCDE"[Math.floor(Math.random() * 5)];
@@ -1737,7 +1739,6 @@ function displayBoard() {
             else {
                 $(idName).removeClass("wall-size");
             } // end of if not a wall
-
 
 
             // spin flowers and diamonds

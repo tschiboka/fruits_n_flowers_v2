@@ -1,0 +1,62 @@
+.countback {
+    position: relative;
+    left: 5%;
+    top: 40%;
+    width: 90%;
+    height: 20%;
+}
+
+.countback__left {
+    position: absolute;
+    display: flex;
+    flex-direction: row;    
+    width: 40%;
+    height: 100%;
+    left: 0;
+    top: 0;
+
+    .countback-led {
+        width: 19%;
+        height: 100%;
+        margin-right: 2%;
+        background: green;
+
+        &:first-child {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+    }
+}
+
+.countback__right {
+    position: absolute;
+    display: flex;
+    flex-direction: row;    
+    width: 40%;
+    height: 100%;
+    right: 0;
+    top: 0;
+
+    .countback-led {
+        width: 19%;
+        height: 100%;
+        margin-left: 2%;
+        background: yellow;
+
+        &:last-child {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+    }
+}
+
+#counter {
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    top: 0;
+    left: 40%;
+    font-size: 3vh;
+    text-align: center;
+    color: $main-text-color;
+}
