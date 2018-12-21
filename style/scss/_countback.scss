@@ -19,6 +19,7 @@
         width: 19%;
         height: 100%;
         margin-right: 2%;
+        border: black solid 1px;
         background: green;
 
         &:first-child {
@@ -41,6 +42,7 @@
         width: 19%;
         height: 100%;
         margin-left: 2%;
+        border: black solid 1px;
         background: yellow;
 
         &:last-child {
@@ -63,4 +65,44 @@
     font-size: 3.3vh;
     text-align: center;
     color: $main-text-color;
+}
+
+#countback-led10 {
+    background: #58E8F3;
+}
+
+#countback-led9 {
+    background: #42EED0;
+}
+
+#countback-led8 {
+    background: #2CF4AD;
+}
+
+#countback-led7 {
+    background: #16F989;
+}
+
+#countback-led6 {
+    background: #00FF66;
+}
+
+#countback-led5 {
+    background: #FFCC66;
+}
+
+#countback-led4 {
+    background: #FFB380;
+}
+
+#countback-led3 {
+    background: #FF9999;
+}
+
+#countback-led2 {
+    background: #FF80B3;
+}
+
+#countback-led1 {
+    background: #FF66CC;
 }

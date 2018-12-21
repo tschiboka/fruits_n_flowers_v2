@@ -1601,16 +1601,16 @@ function startLevel(level) {
 
     const levelTimer = setInterval(() => {
         if (app.game_is_on && !app.game_is_paused) {
-            console.log("Time left: ", app.game_time_left);
-
             // decrement time if it's greater than 0
             if (app.game_time_left > 0) {
                 app.game_time_left--;
                 displayTime(app.game_time_left);
             } // end of counting down
-
-            // finish level if time is up
-            // future code comes here
+            else {
+                clearInterval(levelTimer);
+                // finish level if time is up
+                // future code comes here
+            }
         } // end of if game is on and not paused
         if (!app.game_is_on) clearInterval(levelTimer);
     }, 1000);
