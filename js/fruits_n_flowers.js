@@ -1484,6 +1484,13 @@ function createFreshBoard(msgDiv) {
 } // end of createFreshBoard
 
 
+function displayTime(time) {
+    const clock = $("#counter");
+
+    clock.html(time);
+}
+
+
 /*
  
         LEVELS
@@ -1584,6 +1591,8 @@ function startLevel(level) {
     app.game_time_left = levels[app.currentLevel - 1].time;
 
     // level timer
+    displayTime(app.game_time_left); // prime timer
+
     const levelTimer = setInterval(() => {
         if (app.game_is_on && !app.game_is_paused) {
             console.log("Time left: ", app.game_time_left);
@@ -1591,6 +1600,7 @@ function startLevel(level) {
             // decrement time if it's greater than 0
             if (app.game_time_left > 0) {
                 app.game_time_left--;
+                displayTime(app.game_time_left);
             } // end of counting down
 
             // finish level if time is up

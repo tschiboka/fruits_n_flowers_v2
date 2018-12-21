@@ -56,7 +56,11 @@
     height: 100%;
     top: 0;
     left: 40%;
-    font-size: 3vh;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.3vh;
     text-align: center;
     color: $main-text-color;
 }
