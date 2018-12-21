@@ -1494,6 +1494,19 @@ function displayTime(time) {
     // add leading 0 if necessary
     secs = secs <= 9 ? "0" + secs : secs;
     clock.html(mins + ":" + secs);
+
+    // switch off time progress leds if time is less than it's range
+    const range = levels[app.currentLevel - 1].time / 10;
+
+    let ledsOn = Math.ceil(time / range);
+
+    for (i = 1; i <= 10; i++) {
+        $(`#countback-led${i}`).addClass("led-off");
+        if (i <= ledsOn) {
+            $(`#countback-led${i}`).removeClass("led-off");
+        } // if led should be on
+    } // end of iterating leds
+    console.log(ledsOn, range);
 }
 
 
@@ -1537,7 +1550,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 180,
+        "time": 36,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
