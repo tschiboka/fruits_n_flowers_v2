@@ -1487,7 +1487,13 @@ function createFreshBoard(msgDiv) {
 function displayTime(time) {
     const clock = $("#counter");
 
-    clock.html(time);
+    // convert sec to min : sec
+    let mins = Math.floor(time / 60),
+        secs = time - mins * 60;
+
+    // add leading 0 if necessary
+    secs = secs <= 9 ? "0" + secs : secs;
+    clock.html(mins + ":" + secs);
 }
 
 
