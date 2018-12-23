@@ -956,6 +956,10 @@ function getSpecialGems(matches) {
             app.board[specialCoord[0]][specialCoord[1]] = match.sample;
         } // end of if not I3 T7
 
+        // O4 adds 10 sec extra time
+        if (match.patternName === "O4") {
+            app.game_time_left += 10;
+        } // end of if O4
         // T7 creates a diamond
         if (match.patternName === "T7") {
             app.board[specialCoord[0]][specialCoord[1]] = "*";
@@ -1506,7 +1510,6 @@ function displayTime(time) {
             $(`#countback-led${i}`).removeClass("led-off");
         } // if led should be on
     } // end of iterating leds
-    console.log(ledsOn, range);
 }
 
 
