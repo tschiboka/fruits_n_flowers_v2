@@ -969,8 +969,19 @@ function getSpecialGems(matches) {
             $(".game-board")[0].append(fiveSec);
 
             // detect match coordinates
-            let coords = match.coords.map(m => $(`#r${m[0]}c${m[1]}-box`)[0].getBoundingClientRect());
-            console.log(coords);
+            let coordsMatch = $(`#r${match.coords[0][0]}c${match.coords[0][1]}-box`)[0]
+                .getBoundingClientRect();
+
+            // detect game-board coordinates
+            let coordsBoard = $(".game-board")[0].getBoundingClientRect();
+
+            // set the style according the calculated attributes
+            fiveSec.style.left = (coordsMatch.x - coordsBoard.x) + "px";
+            fiveSec.style.top = (coordsMatch.y - coordsBoard.y + coordsMatch.height / 2) + "px";
+            fiveSec.style.width = coordsMatch.width * 2 + "px";
+            fiveSec.style.height = coordsMatch.height + "px";
+
+            console.log(coordsBoard, coordsMatch);
         } // end of if O4
 
         // T7 creates a diamond

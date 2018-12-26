@@ -26,9 +26,9 @@
 
 #five-sec {
     position: absolute;
-    width: 5%;
-    height: 5%;
-    top: 0;
-    left: 0;
+    width: 0; // calculated when element is created
+    height: 0; // calculated when element is created
+    top: 0; // calculated when element is created
+    left: 0; // calculated when element is created
     background: red;
 }
