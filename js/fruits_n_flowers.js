@@ -986,7 +986,11 @@ function getSpecialGems(matches) {
             fiveSec.style.fontSize = coordsMatch.height / 2 + "px";
             fiveSec.style.lineHeight = coordsMatch.height + "px";
 
-            console.log(coordsBoard, coordsMatch);
+            // remove element with delay
+            const fivesecDelay = setTimeout(() => {
+                $(".game-board")[0].removeChild(fiveSec);
+                clearTimeout(fivesecDelay);
+            }, 550);
         } // end of if O4
 
         // T7 creates a diamond
