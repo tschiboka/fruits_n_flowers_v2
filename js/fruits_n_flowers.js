@@ -963,7 +963,10 @@ function getSpecialGems(matches) {
             // animate the five sec to go into the time display
             // create element
             const fiveSec = document.createElement("div");
-            $(fiveSec).attr("id", "five-sec");
+
+            $(fiveSec)
+                .attr("id", "five-sec")
+                .html("+5 sec");
 
             // add it to the board
             $(".game-board")[0].append(fiveSec);
@@ -980,6 +983,8 @@ function getSpecialGems(matches) {
             fiveSec.style.top = (coordsMatch.y - coordsBoard.y + coordsMatch.height / 2) + "px";
             fiveSec.style.width = coordsMatch.width * 2 + "px";
             fiveSec.style.height = coordsMatch.height + "px";
+            fiveSec.style.fontSize = coordsMatch.height / 2 + "px";
+            fiveSec.style.lineHeight = coordsMatch.height + "px";
 
             console.log(coordsBoard, coordsMatch);
         } // end of if O4

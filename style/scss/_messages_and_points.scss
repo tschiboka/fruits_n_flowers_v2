@@ -30,5 +30,13 @@
     height: 0; // calculated when element is created
     top: 0; // calculated when element is created
     left: 0; // calculated when element is created
-    background: red;
+    font-size: 0;
+    font-family: "mario-style-font";
+    -webkit-text-stroke: 2px;
+    -webkit-text-stroke-color: #df00df;
+    text-align: center;
+    color: #ffb3ff;
 }
+
+
+
