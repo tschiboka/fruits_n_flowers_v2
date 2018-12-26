@@ -956,10 +956,23 @@ function getSpecialGems(matches) {
             app.board[specialCoord[0]][specialCoord[1]] = match.sample;
         } // end of if not I3 T7
 
-        // O4 adds 10 sec extra time
+        // O4 adds 5 sec extra time
         if (match.patternName === "O4") {
-            app.game_time_left += 10;
+            app.game_time_left += 5;
+
+            // animate the five sec to go into the time display
+            // create element
+            const fiveSec = document.createElement("div");
+            $(fiveSec).attr("id", "five-sec");
+
+            // add it to the board
+            $(".game-board")[0].append(fiveSec);
+
+            // detect match coordinates
+            let coords = match.coords.map(m => $(`#r${m[0]}c${m[1]}-box`)[0].getBoundingClientRect());
+            console.log(coords);
         } // end of if O4
+
         // T7 creates a diamond
         if (match.patternName === "T7") {
             app.board[specialCoord[0]][specialCoord[1]] = "*";
@@ -1540,8 +1553,8 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "F.......F",
-            "L.......L",
+            "F..22...F",
+            "L..22...L",
             "L.......L",
             "L.......L",
             "L.......L",
