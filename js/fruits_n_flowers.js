@@ -921,16 +921,32 @@ function displayLevelPoints() {
     }); // end of matches forEach
 
     // get the average xy
-    avgCoords = [
-        Math.round(X.reduce((a, b) => a + b, 0) / X.length),
-        Math.round(Y.reduce((a, b) => a + b, 0) / Y.length),
-    ]; // end of avgCoords
+    avgCoords = {
+        "x": Math.round(X.reduce((a, b) => a + b, 0) / X.length),
+        "y": Math.round(Y.reduce((a, b) => a + b, 0) / Y.length),
+    }; // end of avgCoords
 
-    console.log(avgCoords);
+    // greate a points on a turn element
+    const pointsOnTurn = document.createElement("div");
+
+    $(pointsOnTurn)
+        .attr("id", "points-on-turn")
+        .html(app.game_partial_points + "$");
+
+    $(".game-board")[0].append(pointsOnTurn);
+
+    pointsOnTurn.style.top = avgCoords.y - $(".game-board")[0].getBoundingClientRect().y + "px";
+    pointsOnTurn.style.left = avgCoords.x - $(".game-board")[0].getBoundingClientRect().x + "px";
+
     app.game_level_points += app.game_partial_points;
-    console.log(app.game_level_points, app.game_partial_points);
     app.game_partial_points = 0;
-} // end of displayLevelPpoints
+
+    // take element off the DOM with delay
+    const pointsDelay = setTimeout(() => {
+        $(".game-board")[0].removeChild(pointsOnTurn);
+        clearTimeout(pointsDelay);
+    }, 750);
+} // end of displayLevelPoints
 
 
 function checkFlowersOverBasket() {
