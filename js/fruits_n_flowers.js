@@ -907,6 +907,7 @@ function cicleMatches() {
 
 
 function displayLevelPoints() {
+    // display partial points
     // find the centre of the matches
     const X = [], Y = [];
 
@@ -938,14 +939,36 @@ function displayLevelPoints() {
     pointsOnTurn.style.top = avgCoords.y - $(".game-board")[0].getBoundingClientRect().y + "px";
     pointsOnTurn.style.left = avgCoords.x - $(".game-board")[0].getBoundingClientRect().x + "px";
 
-    app.game_level_points += app.game_partial_points;
-    app.game_partial_points = 0;
-
     // take element off the DOM with delay
     const pointsDelay = setTimeout(() => {
         $(".game-board")[0].removeChild(pointsOnTurn);
         clearTimeout(pointsDelay);
     }, 750);
+
+
+    // display level points
+    // points goes up with some animation eg 1350 1352 1357 1359 1363
+
+    if (app.game_partial_points < 6) {
+        let counter = app.game_partial_points;
+        const increasePointsDelay = setInterval(() => {
+            counter--;
+            let point = $(".game-board__level-points")
+                .html()
+                .match(/\d+/g)[0]; // extract points
+
+            $(".game-board__level-points").html(
+                $(".game-board__level-points")
+                    .html()
+                    .replace((/\[\d+/g), "[" + ++point)
+            );
+
+            if (!counter) clearTimeout(increasePointsDelay);
+        }, 100); // end of delay
+    } // end of if points less than 6
+    // clear points
+    app.game_level_points += app.game_partial_points;
+    app.game_partial_points = 0;
 } // end of displayLevelPoints
 
 
