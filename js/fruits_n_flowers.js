@@ -657,6 +657,7 @@ function checkMatches() {
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
 
+    app.game_matches = matches.length ? matches : false; // some functions have no scope on matches, so it's available on the app object
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -907,8 +908,25 @@ function cicleMatches() {
 
 function displayLevelPoints() {
     // find the centre of the matches
+    const X = [], Y = [];
 
+    // get the x and y coordinates
+    app.game_matches.forEach(match => {
+        match.coords.forEach(xy => {
+            const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
 
+            X.push(rect.x);
+            Y.push(rect.y);
+        }); // end of match foreach
+    }); // end of matches forEach
+
+    // get the average xy
+    avgCoords = [
+        Math.round(X.reduce((a, b) => a + b, 0) / X.length),
+        Math.round(Y.reduce((a, b) => a + b, 0) / Y.length),
+    ]; // end of avgCoords
+
+    console.log(avgCoords);
     app.game_level_points += app.game_partial_points;
     console.log(app.game_level_points, app.game_partial_points);
     app.game_partial_points = 0;
