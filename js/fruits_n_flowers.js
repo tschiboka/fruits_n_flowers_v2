@@ -641,6 +641,15 @@ function checkMatches() {
         } // end of its matching 
     } // end of general match function
 
+    // get points for the matches
+    matches.forEach(match => {
+        const points = { "I3": 3, "O4": 5, "I4": 5, "T5": 10, "L5": 10, "I5": 10, "T6": 25, "T7": 100 };
+        app.game_partial_points += points[match.patternName[0] + match.patternName[1]]; // the firts 2 letter of the patternName is enough to determine it's value
+
+        // multiple match double the points
+        if (matches.length > 1) app.game_partial_points *= 2;
+
+    }); // end of matches for adding points
     // check if any of the matches has bonus
     checkBonuses();
 
@@ -858,6 +867,8 @@ function fillBoardWithNewFruits() {
         displayBoard();
     } // end of fillEmptyCell
 
+    displayLevelPoints();
+
     let nextId = 0;
     const drippingDelay = setInterval(() => {
         if (nextId === idsToFill.length) {
@@ -892,6 +903,16 @@ function cicleMatches() {
     } // end of if there are no further matches
     checkFlowersOverBasket();
 } // end of cicleMatches
+
+
+function displayLevelPoints() {
+    // find the centre of the matches
+
+
+    app.game_level_points += app.game_partial_points;
+    console.log(app.game_level_points, app.game_partial_points);
+    app.game_partial_points = 0;
+} // end of displayLevelPpoints
 
 
 function checkFlowersOverBasket() {
@@ -1112,24 +1133,27 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             $(`#r${r}c${c}-pic`).addClass("explosion");
+            app.game_partial_points++;
         } // end of if char is fruit
 
         // take care of stones
         switch (app.board[r][c]) {
             case "L": {
                 app.board[r][c] = "M";
+                app.game_partial_points++;
                 break;
             } // end of case large
             case "M": {
                 app.board[r][c] = "S";
+                app.game_partial_points++;
                 break;
             } // end of case large
             case "S": {
                 app.board[r][c] = "X";
+                app.game_partial_points++;
                 $(`#r${r}c${c}-pic`).addClass("explosion");
             } // end of case large
         } // end of switch stone
-
     } // end of explode 
 
 
@@ -1224,15 +1248,18 @@ function destroyStones(coordsArr) {
                 switch (cellAround) {
                     case "L": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "M";
+                        app.game_partial_points++;
                         break;
                     } // end of case large stone
                     case "M": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "S";
+                        app.game_partial_points++;
                         break;
                     } // end of case large stone
                     case "S": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "X";
                         $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
+                        app.game_partial_points++;
                         break;
                     } // end of case large stone
                 } // end of switch cellAround
@@ -1573,8 +1600,8 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "F..22...F",
-            "L..22...L",
+            "F.......F",
+            "L.......L",
             "L.......L",
             "L.......L",
             "L.......L",
@@ -1608,18 +1635,22 @@ var levels = [
 */
 
 var app = {
-    "board": [],          // the current game gems position
+    "board": [],             // the current game gems position
     "currentLevel": 1,
-    "flowers": 0,         // the players collected flowers on the actual level
+    "flowers": 0,            // the players collected flowers on the actual level
+    "game_best_hint": true,
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
+    "game_give_hint_at": 5,  // the num of secs a hint is given after no moves
+    "game_hint_is_paused": false,
+    "game_level_points": 0,  // points on the actual level
+    "game_matches": [],     // some functions have no scope on matches so they reach the apps matches
     "game_is_on": false,
     "game_is_paused": false,
-    "game_give_hint_at": 5, // the num of secs a hint is given after no moves
-    "game_best_hint": true,
+    "game_partial_points": 0,// collects all points a turn makes, so it can be displayed together
+    "game_points": 0,        // total points
     "game_time_from_last_hint": 0,
-    "game_time_left": 0, // we'll set the remaining thime when level starts
-    "game_hint_is_paused": false,
-    "images": [],         // the preloaded pictures
+    "game_time_left": 0,     // we'll set the remaining thime when level starts
+    "images": [],            // the preloaded pictures
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
@@ -1639,11 +1670,11 @@ function startLevel(level) {
     displayBoard();
     addGameBoardEvents();
 
-    // start setup values and counters
-
+    // setup values and counters
     app.game_is_on = true;
     app.game_is_paused = false;
     app.game_time_left = levels[app.currentLevel - 1].time;
+    app.game_level_points = 0;
 
     // level timer
     displayTime(app.game_time_left); // prime timer
