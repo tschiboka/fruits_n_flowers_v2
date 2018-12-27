@@ -966,6 +966,40 @@ function displayLevelPoints() {
             if (!counter) clearTimeout(increasePointsDelay);
         }, 100); // end of delay
     } // end of if points less than 6
+    else {
+        let counter = 0,
+            point = $(".game-board__level-points")
+                .html()
+                .match(/\d+/g)[0]; // extract points
+
+        const points = [...Array(app.game_partial_points).keys()]
+            .map(p => Number(p) + Number(point));
+        let randomPoints = [];
+
+        // choose 4 values randomly
+        for (let i = 0; i < 4; i++) {
+            const ran = Math.floor(Math.random() * points.length);
+
+            randomPoints.push(points[ran]);
+            points.splice(ran, 1)
+        } // end of for 5
+
+        // the last value is the sum of partial and level points
+        randomPoints.push(Number(point) + app.game_partial_points);
+        randomPoints = randomPoints.sort((a, b) => a > b);
+
+        const increasePointsDelay = setInterval(() => {
+            $(".game-board__level-points").html(
+                $(".game-board__level-points")
+                    .html()
+                    .replace((/\[\d+/g), "[" + randomPoints[counter])
+            );
+
+            if (counter === 4) clearTimeout(increasePointsDelay);
+            counter++;
+        }, 100); // end of delay
+    } // end of if point is more than five
+
     // clear points
     app.game_level_points += app.game_partial_points;
     app.game_partial_points = 0;
