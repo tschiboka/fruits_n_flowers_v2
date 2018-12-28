@@ -275,6 +275,12 @@ function addGameBoardEvents() {
         event.preventDefault();
         if (app.game_interaction_enabled) {
             swapIds[0] = extractRowCol(event.target);
+
+            app.game_time_from_last_hint = 0; // cancel hints if user swipes
+
+            // stop animation playing when user interacts with the board
+            const hintClasses = ".hint-horizontal-left, .hint-horizontal-right, .hint-vertical-upper, .hint-vertical-lower";
+            $(hintClasses).css("-webkit-animation-play-state", "paused");
         } // interact only when it's allowed
     }); // end of game board mousedown
 
@@ -284,7 +290,6 @@ function addGameBoardEvents() {
         if (app.game_interaction_enabled) {
             if (swapIds[0]) {
                 event.preventDefault();
-                app.game_time_from_last_hint = 0; // cancel hints if user swipes
 
                 swapIds[1] = extractRowCol(event.target);
 
@@ -304,7 +309,6 @@ function addGameBoardEvents() {
         if (app.game_interaction_enabled) {
             if (swapIds[0]) {
                 event.preventDefault();
-                app.game_time_from_last_hint = 0; // cancel hints if user swipes
 
                 // Touchend returns the start position as a target by default
                 // So we extract the end element by identifying which element
@@ -1812,6 +1816,8 @@ function startLevel(level) {
             if (app.game_time_from_last_hint === app.game_give_hint_at) {
                 app.game_time_from_last_hint = 0;
                 giveHint();
+                const hintClasses = ".hint-horizontal-left, .hint-horizontal-right, .hint-vertical-upper, .hint-vertical-lower";
+                $(hintClasses).css("-webkit-animation-play-state", "running");
             } else {
                 app.game_time_from_last_hint++;
             }
