@@ -357,7 +357,7 @@ function checkswipeMobility(startId, dir) {
     } // end of if direction is valid
 } // end of select
 
-
+// function returns true if swipe had bonus matches 
 function swipeCharacters(swipeArgs) {
     function swapCharacters(r1, c1, r2, c2) {
         const temp = app.board[r1][c1];
@@ -367,14 +367,13 @@ function swipeCharacters(swipeArgs) {
         displayBoard(); // show the new board when swap is done
 
         // special case for charaters with bonus classes (special gems)
-        swapBonusClasses(r1, c1, r2, c2);
+        return swapBonusClasses(r1, c1, r2, c2);
     } // end of swipeCharacters
 
 
     // function checks if any or both characters being swapped
     // are bonus and swaps their classes
     function swapBonusClasses(r1, c1, r2, c2) {
-
         // the actual swapping function, do the code gets DRYer
         function swapElementsAndClasses(e1, e2) {
             const tempElemClass = $(elem1).hasClass("bonus") ? "bonus" : "",
@@ -406,7 +405,6 @@ function swipeCharacters(swipeArgs) {
 
         // BOTH DIAMONDS
         // two diamonds clear all the fruits, and get extreme points 
-        //(havent figured it out yet how much)
         if (app.board[r1][c1] === "*" && app.board[r2][c2] === "*") {
             const matches = [];
             app.board.map((row, rowInd) => {
@@ -416,12 +414,13 @@ function swipeCharacters(swipeArgs) {
                         // fill up matches with all the fruits available on board
                         matches.push(
                             {
-                                "patternName": "none",
+                                "patternName": "DD",
                                 "sample": app.board[rowInd][cellInd],
                                 "coords": [[rowInd, cellInd]]
                             } // end of match obj
                         ); // end of push
 
+                        app.game_matches = matches;
                         app.board[rowInd][cellInd] = "X";
                         $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
                     } // end of if cell is fruit
@@ -432,7 +431,7 @@ function swipeCharacters(swipeArgs) {
             app.board[r1][c1] = app.board[r2][c2] = "X";
 
             animateExplosions(matches);
-            return void (0); // escape out of function
+            return true; // escape out of function
         } // end of if both diamonds
 
         // if ONE is DIAMOND
@@ -450,12 +449,13 @@ function swipeCharacters(swipeArgs) {
                             // fill up the matches with the corrisponding fruit
                             matches.push(
                                 {
-                                    "patternName": "none",
+                                    "patternName": "D",
                                     "sample": app.board[rowInd][cellInd],
                                     "coords": [[rowInd, cellInd]]
                                 } // end of match obj
                             ); // end of matches push
 
+                            app.game_matches = matches;
                             app.board[rowInd][cellInd] = "X";
                             $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
                         } // end of if cell the fruit to be destroyed
@@ -465,7 +465,7 @@ function swipeCharacters(swipeArgs) {
                 // destroy the diamond, we don't know which one is diamond
                 app.board[r1][c1] === "*" ? app.board[r1][c1] = "X" : app.board[r2][c2] = "X";
                 animateExplosions(matches);
-                return void (0); // escape out of function
+                return true; // escape out of function
             } // end of if the one being swapped is a fruit
             else return void (0);
         } // end of if one is diamond
@@ -478,22 +478,23 @@ function swipeCharacters(swipeArgs) {
             // fill matches with the two elements being swapped
             const matches = [
                 {
-                    "patternName": "none",
+                    "patternName": "BB",
                     "sample": app.board[r1][c1],
                     "coords": [[r1, c1]]
                 }, // end of match obj1
                 {
-                    "patternName": "none",
+                    "patternName": "BB",
                     "sample": app.board[r2][c2],
                     "coords": [[r2, c2]]
                 } // end of match obj2
             ]; // end of matches
 
+            app.game_matches = matches;
             app.board[r1][c1] = app.board[r2][c2] = "X";
             $(`#r${r1}c${c1}-pic`).addClass("explosion");
             $(`#r${r2}c${c2}-pic`).addClass("explosion");
             animateExplosions(matches);
-            return void (0); // escape out of function
+            return true; // escape out of function
         } // end of both bonus
 
 
@@ -517,11 +518,11 @@ function swipeCharacters(swipeArgs) {
         return anyFlower && isHorizontal;
     };
 
-    swapCharacters(R1, C1, R2, C2);
+    const swapHasBonusMatch = swapCharacters(R1, C1, R2, C2); // if swap has bonus match don't swap back
     const matches = checkMatches();
 
     if (!matches) {
-        if (!flowerAndHorizontal()) {
+        if (!flowerAndHorizontal() && !swapHasBonusMatch) {
             app.game_interaction_enabled = false;
             app.game_hint_is_paused = true; // hints stops
 
@@ -641,15 +642,6 @@ function checkMatches() {
         } // end of its matching 
     } // end of general match function
 
-    // get points for the matches
-    matches.forEach(match => {
-        const points = { "I3": 3, "O4": 5, "I4": 5, "T5": 10, "L5": 10, "I5": 10, "T6": 25, "T7": 100 };
-        app.game_partial_points += points[match.patternName[0] + match.patternName[1]]; // the firts 2 letter of the patternName is enough to determine it's value
-
-        // multiple match double the points
-        if (matches.length > 1) app.game_partial_points *= 2;
-
-    }); // end of matches for adding points
     // check if any of the matches has bonus
     checkBonuses();
 
@@ -657,7 +649,24 @@ function checkMatches() {
     // one fruit with the special sign, avoiding destroying it
     getSpecialGems(matches);
 
-    app.game_matches = matches.length ? matches : false; // some functions have no scope on matches, so it's available on the app object
+    // app.matches might have already matches by bonus gems at this point of execution
+    // NOTE: app.game_matches and matches (in this lexical scope) therefore
+    // are not necessarily identical
+    if (matches.length) {
+        // app matches might have bonus matches at this point
+        // add them the regular fruit matches
+        app.game_matches = app.game_matches.concat(matches);
+    }
+
+    // get points for the matches
+    app.game_matches.forEach(match => {
+        const points = { "I3": 3, "O4": 5, "I4": 5, "T5": 10, "L5": 10, "I5": 10, "T6": 25, "T7": 100, "BB": 10, "D": 20, "DD": 25 };
+        app.game_partial_points += points[match.patternName[0] + (match.patternName[1] || "")]; // the firts 2 letter of the patternName is enough to determine it's value
+    }); // end of matches for adding points
+
+    // multiple match double the points
+    if (matches.length > 1) app.game_partial_points *= 2;
+
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -1003,6 +1012,7 @@ function displayLevelPoints() {
     // clear points
     app.game_level_points += app.game_partial_points;
     app.game_partial_points = 0;
+    app.game_matches = [];
 } // end of displayLevelPoints
 
 
@@ -1692,12 +1702,12 @@ var levels = [
     {
         "blueprint": [
             "F.......F",
+            "L..**...L",
             "L.......L",
-            "L.......L",
-            "L.......L",
-            "L.......L",
-            "L.......L",
-            "L.......L",
+            "L..12...L",
+            "L..12...L",
+            "L..12...L",
+            "L..12...L",
             "LLLLLLLLL",
             "#LLLLLLL#",
             "#LLLLLLL#",
