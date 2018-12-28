@@ -411,6 +411,9 @@ function swipeCharacters(swipeArgs) {
                 row.forEach((cell, cellInd) => {
                     // clear cell if fruit
                     if ("123456789".split("").some(fr => fr === cell)) {
+                        // add explosion animation to element
+                        $(`r${rowInd}c${cellInd}-pic`).addClass("explosion");
+
                         // fill up matches with all the fruits available on board
                         matches.push(
                             {
@@ -446,6 +449,9 @@ function swipeCharacters(swipeArgs) {
                 app.board.forEach((row, rowInd) => {
                     row.forEach((cell, cellInd) => {
                         if (cell === fruit) {
+                            // add explosion animation to element
+                            $(`r${rowInd}c${cellInd}-pic`).addClass("explosion");
+
                             // fill up the matches with the corrisponding fruit
                             matches.push(
                                 {
@@ -474,6 +480,9 @@ function swipeCharacters(swipeArgs) {
         // if BOTH has BONUS, do both elements' explosion
         if (elemHasBonus(elem1) && elemHasBonus(elem2)) {
             swapElementsAndClasses(elem1, elem2);
+            // add explosion animation to element
+            $(`r${r1}c${c1}-pic`).addClass("explosion");
+            $(`r${r2}c${c2}-pic`).addClass("explosion");
 
             // fill matches with the two elements being swapped
             const matches = [
@@ -972,6 +981,7 @@ function displayLevelPoints() {
                     .replace((/\[\d+/g), "[" + ++point)
             );
 
+            console.log(counter, point);
             if (!counter) clearTimeout(increasePointsDelay);
         }, 100); // end of delay
     } // end of if points less than 6
