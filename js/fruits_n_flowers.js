@@ -1247,10 +1247,10 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
-            $(`#r${r}c${c}-pic`).addClass("explosion");
             app.game_partial_points++;
         } // end of if char is fruit
 
+        $(`#r${r}c${c}-pic`).addClass("explosion");
         // take care of stones
         switch (app.board[r][c]) {
             case "L": {
@@ -1266,7 +1266,6 @@ function bonusExplode(bonusType, rowInd, cellInd) {
             case "S": {
                 app.board[r][c] = "X";
                 app.game_partial_points++;
-                $(`#r${r}c${c}-pic`).addClass("explosion");
             } // end of case large
         } // end of switch stone
     } // end of explode 
@@ -1363,11 +1362,13 @@ function destroyStones(coordsArr) {
                 switch (cellAround) {
                     case "L": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "M";
+                        $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
                         app.game_partial_points++;
                         break;
                     } // end of case large stone
                     case "M": {
                         app.board[rowInd + direction[0]][cellInd + direction[1]] = "S";
+                        $(`#r${rowInd}c${cellInd}-pic`).addClass("explosion");
                         app.game_partial_points++;
                         break;
                     } // end of case large stone
@@ -1688,6 +1689,12 @@ function displayTime(time) {
 }
 
 
+function closeLevel() {
+    console.log("LEVEL IS CLOSED");
+} // end of closeLevel
+
+
+
 /*
  
         LEVELS
@@ -1728,7 +1735,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 36,
+        "time": 10,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -1804,7 +1811,13 @@ function startLevel(level) {
             else {
                 clearInterval(levelTimer);
                 // finish level if time is up
-                // future code comes here
+                // wait until interaction is enabled, aka all animations and match cicles are done
+                const waitTilLevelIsDone = setInterval(() => {
+                    if (app.game_interaction_enabled) {
+                        clearInterval(waitTilLevelIsDone);
+                        closeLevel();
+                    } // end of if interaction to the board is enabled
+                }, 100); // end of wait for match cycles and animations
             }
         } // end of if game is on and not paused
         if (!app.game_is_on) clearInterval(levelTimer);
