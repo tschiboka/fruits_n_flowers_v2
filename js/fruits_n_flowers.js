@@ -1700,6 +1700,12 @@ function closeLevel() {
     $(".game-board").hide();
     $("header").addClass("header-in");
     $(".level-menu").show();
+
+    // set up variables
+    // setup values and counters
+    app.game_is_on = false;
+    app.game_is_paused = false;
+    app.game_interaction_enabled = false;
     console.log("LEVEL IS CLOSED");
 } // end of closeLevel
 
@@ -1807,6 +1813,7 @@ function startLevel(level) {
     app.game_is_paused = false;
     app.game_time_left = levels[app.currentLevel - 1].time;
     app.game_level_points = 0;
+    app.game_interaction_enabled = true;
 
     // level timer
     displayTime(app.game_time_left); // prime timer
