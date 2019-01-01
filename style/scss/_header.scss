@@ -42,6 +42,20 @@ header {
     padding: 1%;
 }
 
+.header-in {
+    animation: header-in-anim 0.2s ease-in;
+    opacity: 1;
+    padding-top: 20px;
+
+    @include breakpoint(sm) {
+        font-size: 7vw;
+    }
+
+    @include breakpoint(lg) {
+        font-size: 32px;
+    }
+}
+
 @keyframes header-n-txt {
     0% {
         transform: rotate(5deg);

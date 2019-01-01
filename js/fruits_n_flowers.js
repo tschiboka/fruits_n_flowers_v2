@@ -1690,6 +1690,16 @@ function displayTime(time) {
 
 
 function closeLevel() {
+    app.game_interaction_enabled = false; // user can not interact the board after this point
+
+    // there is an end game coming where all bonus gems are destoyed
+
+
+
+    // display levelboard again
+    $(".game-board").hide();
+    $("header").addClass("header-in");
+    $(".level-menu").show();
     console.log("LEVEL IS CLOSED");
 } // end of closeLevel
 
