@@ -1698,7 +1698,9 @@ function closeLevel() {
 
     // display levelboard again
     $(".game-board").hide();
-    $("header").addClass("header-in");
+    $("header")
+        .removeClass("header--hidden header-out")
+        .addClass("header--visible header-in");
     $(".level-menu").show();
 
     // set up variables
@@ -1798,7 +1800,9 @@ var app = {
 function startLevel(level) {
     // arrange new layout
     $(".level-menu").hide();
-    $("header").addClass("header-out");
+    $("header")
+        .removeClass("header--visible header-in")
+        .addClass("header--hidden header-out");
     $(".game-board").show();
     //toggleFullScreen();
 

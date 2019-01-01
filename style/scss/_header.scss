@@ -35,6 +35,14 @@ header {
     }
 }
 
+.header--hidden {
+    display: none;
+}
+
+.header--visible {
+    display: block;
+}
+
 .header-out {
     animation: header-out-anim 0.2s ease-in;
     opacity: 0;
