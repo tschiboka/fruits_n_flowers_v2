@@ -1692,10 +1692,16 @@ function displayTime(time) {
 function closeLevel() {
     app.game_interaction_enabled = false; // user can not interact the board after this point
 
-    // there is an end game coming where all bonus gems are destoyed
+    // an end game is coming where all bonus gems are destoyed
+    // display time is up label
+    const timeIsUp = document.createElement("div");
 
+    $(timeIsUp)
+        .html("TIME IS UP!")
+        .attr("id", "time-is-up");
 
-
+    $(".game-board").append(timeIsUp);
+    /*
     // remove game table and display levelboard again
     $(".game-board")[0]
         .removeChild($(".game-board__table")[0]);
@@ -1705,12 +1711,11 @@ function closeLevel() {
         .addClass("header--visible header-in");
     $(".level-menu").show();
 
+    */
     // set up variables
     // setup values and counters
     app.game_is_on = false;
     app.game_is_paused = false;
-    app.game_interaction_enabled = false;
-    console.log("LEVEL IS CLOSED");
 } // end of closeLevel
 
 
