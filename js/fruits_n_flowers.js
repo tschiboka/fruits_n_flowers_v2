@@ -1696,7 +1696,9 @@ function closeLevel() {
 
 
 
-    // display levelboard again
+    // remove game table and display levelboard again
+    $(".game-board")[0]
+        .removeChild($(".game-board__table")[0]);
     $(".game-board").hide();
     $("header")
         .removeClass("header--hidden header-out")
