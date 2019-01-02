@@ -573,12 +573,14 @@ function swipeCharacters(swipeArgs) {
 // Check all possible match patterns and return them in an array
 // Multiple matches return multiple arrays
 function checkMatches() {
+    // app is entering a turn
+    app.game_turn_is_over = false;
     const matches = [];
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
             checkPattern(r, c);
         } // end of cell iteration
-    } // end of row iteration
+    } // end of row iteration 
 
     function checkPattern(r, c) {
         match("T7", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 2], [2, 2]);
@@ -680,6 +682,7 @@ function checkMatches() {
     // multiple match double the points
     if (matches.length > 1) app.game_partial_points *= 2;
 
+    if (!matches.length) app.game_turn_is_over = true;
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -920,6 +923,8 @@ function cicleMatches() {
             noMoreMovesMessage();
         } // end of there are no more moves on board
         else {
+            // app is exiting a turn
+            app.game_turn_is_over = true;
             if (!app.game_interaction_locked) {
                 app.game_interaction_enabled = true; // give interaction back to player
                 app.game_hint_is_paused = false; // hint can count time again
@@ -1705,30 +1710,47 @@ function closeLevel() {
 
     $(".game-board").append(timeIsUp);
 
+    function endGameTurn() {
+        const bonuses = [...$(".bonus")].reverse();
+
+        if (bonuses.length) {
+            const lastBonusXY = bonuses[0].id.match(/\d+/g);
+            console.log(lastBonusXY);
+            app.board[lastBonusXY[0]][lastBonusXY[1]] = "X";
+            checkBonuses();
+            fillBoardWithNewFruits();
+        }
+        console.log(bonuses);
+        return bonuses.length
+    } // end of endGameTurn
+
+    let bonusesLeft;
+    const turnDelay = setInterval(() => {
+
+        // if no more bonus left get out of Interval
+        if (bonusesLeft === 0) {
+            // remove game table and display levelboard again
+            $(".game-board")[0]
+                .removeChild($(".game-board__table")[0]);
+            $(".game-board").hide();
+            $("header")
+                .removeClass("header--hidden header-out")
+                .addClass("header--visible header-in");
+            $(".level-menu").show();
+            clearInterval(turnDelay);
+        } // end of no more bonuses left
+
+        // when turn is over destroy next gem
+        if (app.game_turn_is_over) bonusesLeft = endGameTurn();
+
+        console.log(bonusesLeft);
+    }, 1000); // end of setInterval
     // destroy bonus gems from bottom to top
     // search for the last bonus gem
-    const bonuses = [...$(".bonus")].reverse();
 
-    const lastBonusXY = bonuses[0].id.match(/\d+/g);
-    console.log(lastBonusXY);
-    app.board[lastBonusXY[0]][lastBonusXY[1]] = "X";
-    checkBonuses();
-    fillBoardWithNewFruits();
+
     /*
-    while (bonuses.lenght) {
-        
-        console.log(bonuses);
-    } // until there is bonus
     
-    // remove game table and display levelboard again
-    $(".game-board")[0]
-        .removeChild($(".game-board__table")[0]);
-    $(".game-board").hide();
-    $("header")
-        .removeClass("header--hidden header-out")
-        .addClass("header--visible header-in");
-    $(".level-menu").show();
-
     */
     // set up variables
     // setup values and counters
@@ -1815,7 +1837,8 @@ var app = {
     "game_partial_points": 0,// collects all points a turn makes, so it can be displayed together
     "game_points": 0,        // total points
     "game_time_from_last_hint": 0,
-    "game_time_left": 0,     // we'll set the remaining thime when level starts
+    "game_time_left": 0,     // we'll set the remaining time when level starts
+    "game_turn_is_over": true, // game is in the middle of a match turn
     "images": [],            // the preloaded pictures
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
