@@ -920,8 +920,10 @@ function cicleMatches() {
             noMoreMovesMessage();
         } // end of there are no more moves on board
         else {
-            app.game_interaction_enabled = true; // give interaction back to player
-            app.game_hint_is_paused = false; // hint can count time again
+            if (!app.game_interaction_locked) {
+                app.game_interaction_enabled = true; // give interaction back to player
+                app.game_hint_is_paused = false; // hint can count time again
+            } // end of if onteraction is not locked because of the end-game
         } // end of if there are possible matches
     } // end of if there are no further matches
     checkFlowersOverBasket();
@@ -1691,6 +1693,7 @@ function displayTime(time) {
 
 function closeLevel() {
     app.game_interaction_enabled = false; // user can not interact the board after this point
+    app.game_interaction_locked = true; // don't let further functions set interaction back as a side effect
 
     // an end game is coming where all bonus gems are destoyed
     // display time is up label
@@ -1701,7 +1704,22 @@ function closeLevel() {
         .attr("id", "time-is-up");
 
     $(".game-board").append(timeIsUp);
+
+    // destroy bonus gems from bottom to top
+    // search for the last bonus gem
+    const bonuses = [...$(".bonus")].reverse();
+
+    const lastBonusXY = bonuses[0].id.match(/\d+/g);
+    console.log(lastBonusXY);
+    app.board[lastBonusXY[0]][lastBonusXY[1]] = "X";
+    checkBonuses();
+    fillBoardWithNewFruits();
     /*
+    while (bonuses.lenght) {
+        
+        console.log(bonuses);
+    } // until there is bonus
+    
     // remove game table and display levelboard again
     $(".game-board")[0]
         .removeChild($(".game-board__table")[0]);
@@ -1787,6 +1805,7 @@ var app = {
     "flowers": 0,            // the players collected flowers on the actual level
     "game_best_hint": true,
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
+    "game_interaction_locked": false, // keeps interaction locked while end-game is on
     "game_give_hint_at": 5,  // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
     "game_level_points": 0,  // points on the actual level
@@ -1824,6 +1843,7 @@ function startLevel(level) {
     app.game_is_paused = false;
     app.game_time_left = levels[app.currentLevel - 1].time;
     app.game_level_points = 0;
+    app.game_interaction_locked = false;
     app.game_interaction_enabled = true;
 
     // level timer
