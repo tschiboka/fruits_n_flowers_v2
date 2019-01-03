@@ -992,8 +992,8 @@ function displayLevelPoints() {
                     .replace((/\[\d+/g), "[" + ++point)
             );
 
-            console.log(counter, point);
-            if (!counter) clearTimeout(increasePointsDelay);
+            console.log("COUNTER, POINTS", counter, point);
+            if (counter < 1) clearTimeout(increasePointsDelay);
         }, 100); // end of delay
     } // end of if points less than 6
     else {
@@ -1710,6 +1710,9 @@ function closeLevel() {
 
     $(".game-board").append(timeIsUp);
 
+    // destroy bonus gems from bottom to top
+    // search for the last bonus gem
+
     function endGameTurn() {
         const bonuses = [...$(".bonus")].reverse();
 
@@ -1730,8 +1733,8 @@ function closeLevel() {
         // if no more bonus left get out of Interval
         if (bonusesLeft === 0) {
             // remove game table and display levelboard again
-            $(".game-board")[0]
-                .removeChild($(".game-board__table")[0]);
+            $(timeIsUp).remove();
+            $(".game-board")[0].removeChild($(".game-board__table")[0]);
             $(".game-board").hide();
             $("header")
                 .removeClass("header--hidden header-out")
@@ -1745,13 +1748,7 @@ function closeLevel() {
 
         console.log(bonusesLeft);
     }, 1000); // end of setInterval
-    // destroy bonus gems from bottom to top
-    // search for the last bonus gem
 
-
-    /*
-    
-    */
     // set up variables
     // setup values and counters
     app.game_is_on = false;
@@ -1800,7 +1797,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 10,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -1853,7 +1850,7 @@ function startLevel(level) {
         .removeClass("header--visible header-in")
         .addClass("header--hidden header-out");
     $(".game-board").show();
-    //toggleFullScreen();
+    toggleFullScreen();
 
     // create game environment
     createGameBoard();

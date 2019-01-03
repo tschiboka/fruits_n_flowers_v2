@@ -61,7 +61,7 @@
             border-right: 1px solid rgba(255, 255, 255, 0.2);
 
             @include breakpoint(sm) {
-                font-size: 0.9em;
+                font-size: 3.5vh;
             }
 
             @include breakpoint(lg) {
