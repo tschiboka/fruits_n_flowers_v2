@@ -779,7 +779,7 @@ function gravity() {
         // find the first gap
         const firstGap = col.indexOf("X");
 
-        // check if is there any special gems above the gap
+        // check if there is any special gems above the gap
         const specialGemCoords = col.slice(firstGap + 1)
             .reverse()  // in order to have the right row index
             .map((_, cellInd) => $(`#r${cellInd}c${colNum}-pic`)[0])
@@ -813,6 +813,7 @@ function gravity() {
         const fixedPosGem = ["S", "M", "L", "#", "U"],
             isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
             newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
+
         // find first gap ("X") and remove it from column and put it on the top (end)
         const firstGap = newCol.indexOf("X");
         newCol.splice(firstGap, 1);
@@ -846,8 +847,9 @@ function gravity() {
                 let column = board.map(row => row[colNum]).reverse();
 
                 if (!updateColumnGravityDone(column, colNum)) {
-                    gravitiseColumnBonusGems(colNum, column);
+
                     column = gravitiseColumn(column);
+                    gravitiseColumnBonusGems(colNum, column);
                     // modify the board
                     let gem = 0; // column counter for row iteration
                     for (r = currentBoard.length - 1; r >= 0; r--) {
@@ -1785,15 +1787,15 @@ var levels = [
     {
         "blueprint": [
             "F.......F",
-            "L..**...L",
+            "LF.**..FL",
             "L.......L",
             "L..12...L",
             "L..12...L",
-            "L..12...L",
-            "L..12...L",
-            "LLLLLLLLL",
+            "L..12.FFL",
+            "L.F12...L",
+            "LLLALLLLL",
             "#LLLLLLL#",
-            "#LLLLLLL#",
+            "#111LLLL#",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
