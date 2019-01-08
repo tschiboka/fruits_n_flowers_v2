@@ -9,6 +9,7 @@ $(document).ready(
 );
 
 function start() {
+    toggleFullScreen();
     $(".logo").hide();
     $("header, .level-menu, .menu").show();
 
@@ -19,6 +20,20 @@ function start() {
     addLevelEvents();
 } // end of start
 
+function toggleFullScreen() {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        requestFullScreen.call(docEl);
+    }
+    else {
+        cancelFullScreen.call(doc);
+    }
+} // end of toggleFullScreen
 
 function preloadPics() {
     path = [
@@ -575,18 +590,66 @@ function swipeCharacters(swipeArgs) {
 function checkMatches() {
     // app is entering a turn
     app.game_turn_is_over = false;
+
     const matches = [];
+    /* Patterns need to be divided by sections
+           Example: (O4 match which won't happen)
+           1        X               1
+           11  =>   X1  instead of  XX
+           11       X1              XX
+           The reason is that the match I3 is found before the loop gets to
+           the higher ranking O4 match 
+    */
+
+
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
-            checkPattern(r, c);
+            checkPattern7(r, c);
+        } // end of cell iteration
+    } // end of row iteration
+
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            checkPattern6(r, c);
         } // end of cell iteration
     } // end of row iteration 
 
-    function checkPattern(r, c) {
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            checkPattern5(r, c);
+        } // end of cell iteration
+    } // end of row iteration
+
+    // matches with explosion eg I4 has priority over O4 (wins time)
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            match("I4H", [r, c], [0, 0], [0, 1], [0, 2], [0, 3]);
+            match("I4V", [r, c], [0, 0], [1, 0], [2, 0], [3, 0]);
+        } // end of cell iteration
+    } // end of row iteration
+
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            match("O4", [r, c], [0, 0], [0, 1], [1, 0], [1, 1]);
+        } // end of cell iteration
+    } // end of row iteration
+
+    for (r = 0; r < 11; r++) {
+        for (c = 0; c < 9; c++) {
+            match("I3", [r, c], [0, 0], [0, 1], [0, 2]);
+            match("I3", [r, c], [0, 0], [1, 0], [2, 0]);
+        } // end of cell iteration
+    } // end of row iteration
+
+
+    function checkPattern7(r, c) {
         match("T7", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 2], [2, 2]);
         match("T7", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [2, 0], [2, 1]);
         match("T7", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [0, 2], [1, 2]);
         match("T7", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [2, 1], [2, 2]);
+    } // end of pattern 7   
+
+    function checkPattern6(r, c) {
         match("T6", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [1, 2], [2, 2]);
         match("T6", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [2, 0], [2, 1]);
         match("T6", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [0, 1], [1, 1]);
@@ -595,6 +658,9 @@ function checkMatches() {
         match("T6", [r, c], [0, 2], [1, 2], [2, 2], [3, 2], [1, 0], [1, 1]);
         match("T6", [r, c], [2, 0], [2, 1], [2, 2], [2, 3], [0, 2], [1, 2]);
         match("T6", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [1, 1], [1, 2]);
+    } // end of pattern 6
+
+    function checkPattern5(r, c) {
         match("I5", [r, c], [0, 0], [0, 1], [0, 2], [0, 3], [0, 4]);
         match("I5", [r, c], [0, 0], [1, 0], [2, 0], [3, 0], [4, 0]);
         match("L51", [r, c], [0, 0], [0, 1], [0, 2], [1, 2], [2, 2]);
@@ -605,12 +671,7 @@ function checkMatches() {
         match("T5", [r, c], [1, 0], [1, 1], [1, 2], [0, 2], [2, 2]);
         match("T5", [r, c], [2, 0], [2, 1], [2, 2], [0, 1], [1, 1]);
         match("T5", [r, c], [0, 0], [1, 0], [2, 0], [1, 1], [1, 2]);
-        match("I4H", [r, c], [0, 0], [0, 1], [0, 2], [0, 3]);
-        match("I4V", [r, c], [0, 0], [1, 0], [2, 0], [3, 0]);
-        match("O4", [r, c], [0, 0], [0, 1], [1, 0], [1, 1]);
-        match("I3", [r, c], [0, 0], [0, 1], [0, 2]);
-        match("I3", [r, c], [0, 0], [1, 0], [2, 0]);
-    } // end of checking matches
+    } // end of pattern 5
 
 
 
@@ -1852,7 +1913,6 @@ function startLevel(level) {
         .removeClass("header--visible header-in")
         .addClass("header--hidden header-out");
     $(".game-board").show();
-    toggleFullScreen();
 
     // create game environment
     createGameBoard();

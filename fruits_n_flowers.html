@@ -16,22 +16,6 @@
   <!-- Load jQuery from path if on-line is not available -->
   <script src='js/jquery.js'></script>
   <script src="js/fruits_n_flowers.js" type="text/javascript"></script>
-  <script>
-    function toggleFullScreen() {
-      var doc = window.document;
-      var docEl = doc.documentElement;
-
-      var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-      var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-      if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        requestFullScreen.call(docEl);
-      }
-      else {
-        cancelFullScreen.call(doc);
-      }
-    }
-  </script>
   <title>Fruits &apos;n Flowers</title>
 </head>
 
