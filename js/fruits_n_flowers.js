@@ -774,45 +774,34 @@ function gravity() {
 
 
 
-    // function gives the special classes its own gravity
-    function gravitiseColumnBonusGems(colNum, col) {
-        // find the first gap
-        const firstGap = col.indexOf("X");
-
-        // check if there is any special gems above the gap
-        const specialGemCoords = col.slice(firstGap + 1)
-            .reverse()  // in order to have the right row index
-            .map((_, cellInd) => $(`#r${cellInd}c${colNum}-pic`)[0])
-            .filter(div => $(div).hasClass("bonus"))
-            .reverse();
-
-        // check the first available non wall stone or basket position under the special gems
-        specialGemCoords.forEach(spGem => {
-            const gemRow = Number(spGem.id.match(/\d+/)[0]),
-                moveRange = col.slice(firstGap)
-                    .reverse()
-                    .slice(gemRow + 1),
-                moveTo = moveRange.findIndex(el => [..."123456789X"].find(ch => ch === el));
-
-            // append child div to its new cell, remove class from old one
-            const clone = $(spGem).children();
-            $(spGem)
-                .removeClass("bonus")
-                .empty();
-            $(`#r${gemRow + moveTo + 1}c${colNum}-pic`)
-                .addClass("bonus")
-                .append(clone);
-        }); // end of specialGemCoordsd iteration
-    } // end of gravitiseColumnBonusGems
-
-
-
     // Function applies gravity on column recieved as its parameter.
-    function gravitiseColumn(col) {
+    function gravitiseColumn(col, colNum) {
+        // temporaly name gems with bonuses like "1B0"
+        // where 1 means the fruit and B0 is the bonus type
+        // so we can make sure the bonus is moving with the gravity
+
+        const columnBonuses = [];
+
+        col = col.map((gem, ind) => {
+            const id = `#r${10 - ind}c${colNum}-pic`;
+            if ($(id).hasClass("bonus")) {
+                // save the bonus, and delete it
+                const clone = $(id).children();
+                $(id).removeClass("bonus").empty();
+                gem += `B${columnBonuses.length}`; // extend name
+                columnBonuses.push(clone); // save bonus here!
+                console.log("Bonus at ", ind, gem);
+                console.log(col);
+                console.log(columnBonuses);
+            } // end of if gem has bonus
+            return gem;
+        }); // end of map col
+
         // take off fixed positioned elements from column
         const fixedPosGem = ["S", "M", "L", "#", "U"],
-            isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem),
-            newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
+            isFixedPosGem = (gem) => fixedPosGem.find(el => el === gem);
+
+        let newCol = col.filter(gem => isFixedPosGem(gem) ? "" : gem);
 
         // find first gap ("X") and remove it from column and put it on the top (end)
         const firstGap = newCol.indexOf("X");
@@ -827,6 +816,18 @@ function gravity() {
             } // end of if gem is a fixedPos
         }); // end of original column iteration
 
+        // place bonuses back
+        newCol = newCol.map((gem, ind) => {
+            if (gem.length > 1) {
+                console.log("Bonus back at ", ind);
+                console.log(newCol);
+                const bonusNum = gem.replace(/.B/g, "");
+                $(`#r${10 - ind}c${colNum}-pic`)
+                    .addClass("bonus")
+                    .append(columnBonuses[bonusNum]);
+            } // end of if bonus
+            return gem[0]; // make sure only the first character is leaving the function
+        }); // end of col map
         return newCol;
     } // end of gravitiseColumn
 
@@ -848,8 +849,7 @@ function gravity() {
 
                 if (!updateColumnGravityDone(column, colNum)) {
 
-                    column = gravitiseColumn(column);
-                    gravitiseColumnBonusGems(colNum, column);
+                    column = gravitiseColumn(column, colNum);
                     // modify the board
                     let gem = 0; // column counter for row iteration
                     for (r = currentBoard.length - 1; r >= 0; r--) {
