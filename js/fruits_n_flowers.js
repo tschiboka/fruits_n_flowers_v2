@@ -1867,7 +1867,12 @@ function showLevelStats() {
                 .replace(/\d+/, "0");
 
             $(".game-board__level-points").html(lvlPts);
-            console.log(lvlPts);
+
+            // update total points
+            const totPts = $(".game-board__total-points")
+                .html()
+                .replace(/\d+/, tot); // the new total earned after a level completition
+            $(".game-board__total-points").html(totPts);
         } // escape anim
     }, 100); // end of animPointsDelay
 } // end of showLevelStats
