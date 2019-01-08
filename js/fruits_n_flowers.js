@@ -572,8 +572,6 @@ function swipeCharacters(swipeArgs) {
     checkFlowersOverBasket();
 } // end of swipeCharacters
 
-
-
 /*
  
 
@@ -1817,27 +1815,60 @@ function showLevelStats() {
     // Display new Total points
     $(".end-of-level-stat").show();
     const totEl = $("#level-stat__total-points"),
-        lvlEl = $("#level-stat__level-points"),
-        tot = app.game_total_points,
+        lvlEl = $("#level-stat__level-points");
+
+    // ok button not visible yet
+    $("#level-stat__ok-btn").hide();
+
+    let tot = app.game_total_points,
         lvl = app.game_level_points;
 
     totEl.html(tot);
     lvlEl.html(lvl);
 
     // animate tot points going up while level points down (2sec = 20 display)
-    let counter = 0,
+    let counter = 30,
         pointsDiff; // declared below
 
+    // try to distribute points as equally as possible
     if (lvl <= 20) {
         pointsDiff = Array(lvl).fill(1);
+        counter = lvl;
     } else {
         pointsDiff = Array(20).fill(Math.floor(lvl / 19));
         remainder = lvl - pointsDiff[0] * 19;
-        pointsDiff.unshift(remainder);
+        pointsDiff.push(remainder);
     } // end of if level point is greater than 20
-    console.log(pointsDiff);
-    const animPointsDelay = setInterval(() => {
 
+    // counter starts 30 because 1 sec is a delay
+    const animPointsDelay = setInterval(() => {
+        if (counter > 20) {
+            counter--; // just wait
+        }
+        if (counter > 0 && counter <= 20) {
+            tot += pointsDiff[counter];
+            lvl -= pointsDiff[counter];
+            totEl.html(tot);
+            lvlEl.html(lvl);
+            counter--;
+        } // while there are still points to increment / decrement
+        if (counter <= 0) {
+            clearInterval(animPointsDelay);
+            $("#level-stat__ok-btn")
+                .show()
+                .on("click", () => { $(".end-of-level-stat").hide(); });
+
+            app.game_total_points += app.game_level_points;
+            app.game_level_points = 0;
+
+            // reset level-points
+            const lvlPts = $(".game-board__level-points")
+                .html()
+                .replace(/\d+/, "0");
+
+            $(".game-board__level-points").html(lvlPts);
+            console.log(lvlPts);
+        } // escape anim
     }, 100); // end of animPointsDelay
 } // end of showLevelStats
 
