@@ -1918,7 +1918,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 18,
+        "time": 60,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -1959,6 +1959,7 @@ var app = {
     "game_time_left": 0,     // we'll set the remaining time when level starts
     "game_turn_is_over": true, // game is in the middle of a match turn
     "images": [],            // the preloaded pictures
+    "inventory": [],         // all the bonus items you buy in the game
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
