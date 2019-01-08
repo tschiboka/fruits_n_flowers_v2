@@ -1,0 +1,22 @@
+.end-of-level-stat {
+    position: absolute;
+    // size is adjusted to level menu page with js
+    background: rgba(19, 8, 22, 0.9);
+    color: $main-text-color;
+    text-align: center;
+    font-size: 3vh;
+}
+
+.level-stat-table {
+    width: 100%;
+    height: 100%;
+
+    tr td button{
+        width: 50%;
+        color: $main-text-color;
+        font-size: 4vh;
+        font-family: "main-game-font";
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid $main-text-color;
+    }
+}

@@ -9,7 +9,6 @@ $(document).ready(
 );
 
 function start() {
-    toggleFullScreen();
     $(".logo").hide();
     $("header, .level-menu, .menu").show();
 
@@ -851,9 +850,6 @@ function gravity() {
                 $(id).removeClass("bonus").empty();
                 gem += `B${columnBonuses.length}`; // extend name
                 columnBonuses.push(clone); // save bonus here!
-                console.log("Bonus at ", ind, gem);
-                console.log(col);
-                console.log(columnBonuses);
             } // end of if gem has bonus
             return gem;
         }); // end of map col
@@ -880,8 +876,6 @@ function gravity() {
         // place bonuses back
         newCol = newCol.map((gem, ind) => {
             if (gem.length > 1) {
-                console.log("Bonus back at ", ind);
-                console.log(newCol);
                 const bonusNum = gem.replace(/.B/g, "");
                 $(`#r${10 - ind}c${colNum}-pic`)
                     .addClass("bonus")
@@ -1055,7 +1049,6 @@ function displayLevelPoints() {
                     .replace((/\[\d+/g), "[" + ++point)
             );
 
-            console.log("COUNTER, POINTS", counter, point);
             if (counter < 1) clearTimeout(increasePointsDelay);
         }, 100); // end of delay
     } // end of if points less than 6
@@ -1781,12 +1774,12 @@ function closeLevel() {
 
         if (bonuses.length) {
             const lastBonusXY = bonuses[0].id.match(/\d+/g);
-            console.log(lastBonusXY);
+
             app.board[lastBonusXY[0]][lastBonusXY[1]] = "X";
             checkBonuses();
             fillBoardWithNewFruits();
-        }
-        console.log(bonuses);
+        } // end of if there are still bonuses left
+
         return bonuses.length
     } // end of endGameTurn
 
@@ -1809,13 +1802,14 @@ function closeLevel() {
         // when turn is over destroy next gem
         if (app.game_turn_is_over) bonusesLeft = endGameTurn();
 
-        console.log(bonusesLeft);
     }, 1000); // end of setInterval
 
     // set up variables
     // setup values and counters
     app.game_is_on = false;
     app.game_is_paused = false;
+
+    $("end-of-level-stat").show();
 } // end of closeLevel
 
 
@@ -1860,7 +1854,7 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 180,
+        "time": 18,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -1907,6 +1901,7 @@ var app = {
 
 // demo just to trigger game board
 function startLevel(level) {
+    toggleFullScreen();
     // arrange new layout
     $(".level-menu").hide();
     $("header")
