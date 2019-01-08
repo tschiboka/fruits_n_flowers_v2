@@ -1796,6 +1796,7 @@ function closeLevel() {
                 .removeClass("header--hidden header-out")
                 .addClass("header--visible header-in");
             $(".level-menu").show();
+            showLevelStats();
             clearInterval(turnDelay);
         } // end of no more bonuses left
 
@@ -1808,12 +1809,37 @@ function closeLevel() {
     // setup values and counters
     app.game_is_on = false;
     app.game_is_paused = false;
-
-    $(".end-of-level-stat").show();
-
 } // end of closeLevel
 
 
+
+function showLevelStats() {
+    // Display new Total points
+    $(".end-of-level-stat").show();
+    const totEl = $("#level-stat__total-points"),
+        lvlEl = $("#level-stat__level-points"),
+        tot = app.game_total_points,
+        lvl = app.game_level_points;
+
+    totEl.html(tot);
+    lvlEl.html(lvl);
+
+    // animate tot points going up while level points down (2sec = 20 display)
+    let counter = 0,
+        pointsDiff; // declared below
+
+    if (lvl <= 20) {
+        pointsDiff = Array(lvl).fill(1);
+    } else {
+        pointsDiff = Array(20).fill(Math.floor(lvl / 19));
+        remainder = lvl - pointsDiff[0] * 19;
+        pointsDiff.unshift(remainder);
+    } // end of if level point is greater than 20
+    console.log(pointsDiff);
+    const animPointsDelay = setInterval(() => {
+
+    }, 100); // end of animPointsDelay
+} // end of showLevelStats
 
 /*
  
@@ -1846,7 +1872,7 @@ var levels = [
             "LF.**..FL",
             "L.......L",
             "L..12...L",
-            "L..12...L",
+            "L.......L",
             "L..12.FFL",
             "L.F12...L",
             "LLLALLLLL",
@@ -1885,6 +1911,7 @@ var app = {
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
     "game_give_hint_at": 5,  // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
+    "game_total_points": 0, // points earned throughout the game
     "game_level_points": 0,  // points on the actual level
     "game_matches": [],     // some functions have no scope on matches so they reach the apps matches
     "game_is_on": false,
