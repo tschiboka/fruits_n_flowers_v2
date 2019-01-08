@@ -1,6 +1,11 @@
 .end-of-level-stat {
+    display: none;
     position: absolute;
-    // size is adjusted to level menu page with js
+    // size is adjusted to level menu page
+    top: 8%;
+    left: 8%;
+    width: 84%;
+    height: 84%;
     background: rgba(19, 8, 22, 0.9);
     color: $main-text-color;
     text-align: center;
@@ -18,5 +23,8 @@
         font-family: "main-game-font";
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid $main-text-color;
+        &:hover {
+            cursor: pointer;
+        }
     }
 }

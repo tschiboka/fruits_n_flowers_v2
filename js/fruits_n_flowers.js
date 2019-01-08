@@ -1809,7 +1809,8 @@ function closeLevel() {
     app.game_is_on = false;
     app.game_is_paused = false;
 
-    $("end-of-level-stat").show();
+    $(".end-of-level-stat").show();
+
 } // end of closeLevel
 
 
