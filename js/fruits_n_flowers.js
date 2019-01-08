@@ -1109,6 +1109,8 @@ function checkFlowersOverBasket() {
             if (isFlower(basket[0] - 1, basket[1])) {
                 // add flower to the app
                 app.flowers++;
+                // display flowers above the flower icon
+                $("#flower-counter").html(app.flowers);
                 // remove flower
                 app.board[basket[0] - 1][basket[1]] = "X";
                 // add animation
@@ -1988,6 +1990,10 @@ function startLevel(level) {
     app.game_level_points = 0;
     app.game_interaction_locked = false;
     app.game_interaction_enabled = true;
+    app.flowers = 0;
+
+    // reset flower counter
+    $("#flower-counter").html(app.flowers);
 
     // level timer
     displayTime(app.game_time_left); // prime timer
