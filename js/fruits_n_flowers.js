@@ -991,9 +991,6 @@ function cicleMatches() {
 
 
 function displayLevelPoints() {
-    // in case level is over and match is empty
-    if (!app.game_matches.length) return void (0);
-
     // display partial points
     // find the centre of the matches
     const X = [], Y = [];
@@ -1312,6 +1309,7 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             app.game_partial_points++;
+            console.log("HERES YOUR POINT");
         } // end of if char is fruit
 
         $(`#r${r}c${c}-pic`).addClass("explosion");
