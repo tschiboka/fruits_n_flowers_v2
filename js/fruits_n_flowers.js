@@ -945,6 +945,31 @@ function fillBoardWithNewFruits() {
     function fillEmptyCell(num) {
         const randFruit = Math.ceil(Math.random() * levels[app.currentLevel - 1].fruitVariationNumber) + "";
         app.board[idsToFill[num][0]][idsToFill[num][1]] = randFruit;
+
+        // check if there is enough flowers on the board
+        const currentFlowers = [
+            ...(app.board.join("")
+                .replace(/,/g, ""))]
+            .filter(el => /[ABCDE]/g.test(el))
+            .length;
+
+        // add a flower to the top if flowers are less than the minimal
+        if (currentFlowers < levels[app.currentLevel - 1].minimumFlowersOnBoard) {
+            // find empty the top most row id
+            const topmostRow = idsToFill[idsToFill.length - 1][0][0],
+                // get the cells on the topmost row that were gaps
+                cellIds = idsToFill
+                    .filter(id => id[0][0] === topmostRow)
+                    .map(id => id[1][0]),
+                // choose one randomly
+                randomColumnInd = cellIds[Math.floor(Math.random() * cellIds.length)];
+
+            // set it as a random flower
+            app.board[topmostRow][randomColumnInd] = "F";
+            console.log("TOPMOST", [topmostRow, randomColumnInd], cellIds);
+        } // end of currentflowers are less then minimal
+        console.log("CURRENTFLOWERS", currentFlowers, levels[app.currentLevel - 1].minimumFlowersOnBoard, idsToFill);
+
         displayBoard();
     } // end of fillEmptyCell
 
@@ -1920,7 +1945,9 @@ var levels = [
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "time": 60,
+        "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
+        "flowersToCompleteTheLevel": 7,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
