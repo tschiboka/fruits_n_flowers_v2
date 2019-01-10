@@ -733,7 +733,14 @@ function checkMatches() {
 
     // get points for the matches
     app.game_matches.forEach(match => {
-        const points = { "I3": 3, "O4": 5, "I4": 5, "T5": 10, "L5": 10, "I5": 10, "T6": 25, "T7": 100, "BB": 10, "D": 20, "DD": 25 };
+        const points = {
+            "I3": 3, "O4": 5, "I4": 5,
+            "T5": 10, "L5": 10, "I5": 10,
+            "T6": 25, "T7": 100,
+            "BB": 10, "D": 20, "DD": 25,
+            "A": 100, "B": 100, "C": 100, "D": 100, "E": 100
+        }; // end of patternName to points object declaration
+
         app.game_partial_points += points[match.patternName[0] + (match.patternName[1] || "")]; // the firts 2 letter of the patternName is enough to determine it's value
     }); // end of matches for adding points
 
@@ -1021,6 +1028,7 @@ function displayLevelPoints() {
     // get the x and y coordinates
     app.game_matches.forEach(match => {
         match.coords.forEach(xy => {
+            console.log(xy);
             const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
 
             X.push(rect.x);
@@ -1130,9 +1138,22 @@ function checkFlowersOverBasket() {
         // skip basket on row 0, it gets Error, flower on row -1 is impossible
         if (basket[0] !== 0) {
             if (isFlower(basket[0] - 1, basket[1])) {
-                // add flower to the app
+                // update flowers
                 app.flowers++;
+                app.game_partial_points += 100;
 
+                // update mathes so points on the turn can be displayed
+                // on the right coords if only a flower has gone down
+                // NOTE: in case the turn has only the flower disappearing
+                // it will show the points in the top left corner because
+                // coordinates are calculated from the matches object
+                const flower = app.board[basket[0] - 1][basket[1]];
+                console.log(flower, basket[0] - 1, basket[1]);
+                app.game_matches.push({
+                    "patternName": flower,
+                    "sample": "none",
+                    "coords": [[basket[0] - 1, basket[1]]]
+                }); // end of push matches
                 // display how many flowers has been left to complete level requirement
                 let flowersLeftToCompleteLevelReq = levels[app.currentLevel - 1].flowersToCompleteTheLevel - app.flowers;
                 $("#flower-counter")
