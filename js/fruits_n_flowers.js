@@ -964,11 +964,9 @@ function fillBoardWithNewFruits() {
                 // choose one randomly
                 randomColumnInd = cellIds[Math.floor(Math.random() * cellIds.length)];
 
-            // set it as a random flower
+            // set the chosen cell as a random flower (F will become a valid flower(ABCDE) in displayBoard func)
             app.board[topmostRow][randomColumnInd] = "F";
-            console.log("TOPMOST", [topmostRow, randomColumnInd], cellIds);
         } // end of currentflowers are less then minimal
-        console.log("CURRENTFLOWERS", currentFlowers, levels[app.currentLevel - 1].minimumFlowersOnBoard, idsToFill);
 
         displayBoard();
     } // end of fillEmptyCell
@@ -1134,11 +1132,16 @@ function checkFlowersOverBasket() {
             if (isFlower(basket[0] - 1, basket[1])) {
                 // add flower to the app
                 app.flowers++;
-                // display flowers above the flower icon
-                $("#flower-counter").html(app.flowers);
+
+                // display how many flowers has been left to complete level requirement
+                let flowersLeftToCompleteLevelReq = levels[app.currentLevel - 1].flowersToCompleteTheLevel - app.flowers;
+                $("#flower-counter")
+                    .html(flowersLeftToCompleteLevelReq > 0 ? flowersLeftToCompleteLevelReq : 0);
+
                 // remove flower
                 app.board[basket[0] - 1][basket[1]] = "X";
-                // add animation
+
+                // add animation, remove spin anim
                 $(`#r${basket[0] - 1}c${basket[1]}-pic`)
                     .removeClass("spin-pic")
                     .addClass("flower-disappear");
@@ -2020,7 +2023,7 @@ function startLevel(level) {
     app.flowers = 0;
 
     // reset flower counter
-    $("#flower-counter").html(app.flowers);
+    $("#flower-counter").html(levels[app.currentLevel - 1].flowersToCompleteTheLevel);
 
     // level timer
     displayTime(app.game_time_left); // prime timer
