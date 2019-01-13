@@ -1028,7 +1028,6 @@ function displayLevelPoints() {
     // get the x and y coordinates
     app.game_matches.forEach(match => {
         match.coords.forEach(xy => {
-            console.log(xy);
             const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
 
             X.push(rect.x);
@@ -1148,12 +1147,12 @@ function checkFlowersOverBasket() {
                 // it will show the points in the top left corner because
                 // coordinates are calculated from the matches object
                 const flower = app.board[basket[0] - 1][basket[1]];
-                console.log(flower, basket[0] - 1, basket[1]);
                 app.game_matches.push({
                     "patternName": flower,
                     "sample": "none",
                     "coords": [[basket[0] - 1, basket[1]]]
                 }); // end of push matches
+
                 // display how many flowers has been left to complete level requirement
                 let flowersLeftToCompleteLevelReq = levels[app.currentLevel - 1].flowersToCompleteTheLevel - app.flowers;
                 $("#flower-counter")
@@ -1173,11 +1172,13 @@ function checkFlowersOverBasket() {
 
                     // check newly created board
                     gravity();
+
                     // check if the changed board has any matches
                     const matches = checkMatches();
                     if (matches) {
                         animateExplosions(matches);
                     }
+
                     displayBoard();
 
                     clearTimeout(flowerTimer);
@@ -1252,9 +1253,10 @@ function getSpecialGems(matches) {
 
 
 // function creates the special divs for bonus gems
-// parameters: the gems coordinates, 
+// parameters: the gems coordinates, if null add spacial to divs to elementSelector 
 //             the name of the pattern
-function createspecialGemDiv(coord, name) {
+//             the elementSelector is used if coords are null
+function createspecialGemDiv(coord, name, elementSelector) {
 
     // function append a div with className to specialDiv
     function addDivToBonusDiv(className) {
@@ -1265,9 +1267,7 @@ function createspecialGemDiv(coord, name) {
     } // end of addDiv
 
 
-    const specialDiv = document.createElement("div"),
-        patternName = name;
-
+    const specialDiv = document.createElement("div");
 
     switch (name) {
         case "I4V": {
@@ -1318,7 +1318,14 @@ function createspecialGemDiv(coord, name) {
             break;
         } // end of case T6
     } // end of switch patternNames
-    $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
+
+    if (coord) {
+        $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
+    } // end of if coord parameter is true
+    else {
+        // otherwise add divs to elementId
+        $(elementSelector).append(specialDiv);
+    } // end of if coord is falsy
 } // end of createSpecialGemDiv
 
 
@@ -1360,7 +1367,6 @@ function bonusExplode(bonusType, rowInd, cellInd) {
         if (fruits.some(fr => fr === char)) {
             app.board[r][c] = "X";
             app.game_partial_points++;
-            console.log("HERES YOUR POINT");
         } // end of if char is fruit
 
         $(`#r${r}c${c}-pic`).addClass("explosion");
@@ -1993,26 +1999,27 @@ var levels = [
 */
 
 var app = {
-    "board": [],             // the current game gems position
+    "board": [],                 // the current game gems position
     "currentLevel": 1,
-    "flowers": 0,            // the players collected flowers on the actual level
+    "flowers": 0,                // the players collected flowers on the actual level
     "game_best_hint": true,
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
-    "game_give_hint_at": 5,  // the num of secs a hint is given after no moves
+    "game_give_hint_at": 5,      // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
-    "game_total_points": 0, // points earned throughout the game
-    "game_level_points": 0,  // points on the actual level
-    "game_matches": [],     // some functions have no scope on matches so they reach the apps matches
+    "game_total_points": 0,      // points earned throughout the game
+    "game_level_points": 0,      // points on the actual level
+    "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
     "game_is_on": false,
     "game_is_paused": false,
-    "game_partial_points": 0,// collects all points a turn makes, so it can be displayed together
-    "game_points": 0,        // total points
+    "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
+    "game_points": 0,            // total points
     "game_time_from_last_hint": 0,
-    "game_time_left": 0,     // we'll set the remaining time when level starts
-    "game_turn_is_over": true, // game is in the middle of a match turn
-    "images": [],            // the preloaded pictures
-    "inventory": [],         // all the bonus items you buy in the game
+    "game_time_left": 0,         // we'll set the remaining time when level starts
+    "game_turn_is_over": true,   // game is in the middle of a match turn
+    "images": [],                // the preloaded pictures
+    "inventory": ["1-I4H", "*", "5-I4V", "3-I5CR"],         // all the bonus items you buy in the game
+    "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
@@ -2085,8 +2092,51 @@ function startLevel(level) {
         } // end of if game is on and not paused and hint counter is enabled
         if (!app.game_is_on) clearInterval(hintTimer);
     }, 1000); // end of hintTimer
+
+    // fill up inventory
+    app.inventoryAt = 0;
+    displayInventoryItems();
 } // end of startLevel
 
+
+// function reads app.inventory and fill it up accordingly
+function displayInventoryItems() {
+    const items = app.inventory, // all the items from the inventory
+        inventoryAt = app.inventoryAt; // 
+
+    // check if the inventory elements are correctly represented and haven't been compromised by any side effect
+    if (!Array.isArray(items)) {
+        throw Error("Inventory is invalid! It supposed to be an array.");
+    } // end of if inventory is not an array
+    else {
+        items.forEach(i => {
+            // check every inventory item if they are the right format
+            // eg 1-I5CR where 1 is the fruit type and the rest is the bonus type
+            //     - fruits can be 1 - 9
+            //     - bounuses: I4H, I4V, T5, L51, L52, I5CR, I5X, T6, *
+
+            console.log("ITEM", i);
+            if (i !== "*") {
+                const [fruit, bonus] = i.match(/[^-]+/g); // divide item to fruit and bonus
+
+                if (!fruit.match(/\b[1-9]\b/g)) {
+                    throw Error("Inventory fruit is incorrect! ", fruit);
+                } // end of if fruit is not a number 1 - 9 and its a single digit
+
+                const validBonuses = ["I4H", "I4V", "T5", "L51", "L52", "I5CR", "I5X", "T6"];
+                if (!validBonuses.find(valBonus => valBonus === bonus)) {
+                    throw Error("Bonus is incorrect!", bonus);
+                } // end of if bonus is not valid
+            } // end of item is not a diamond (it has no fruit number)
+        }); // end of item iteration
+    } // end of if inventory is an array
+
+
+    // get inventory element
+    const inv = $(".inventory-items")[0];
+
+    console.log("INV", inv, "at", inventoryAt);
+} // end of displayInventoryItems
 
 
 function createGameBoard() {
