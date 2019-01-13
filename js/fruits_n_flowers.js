@@ -2099,7 +2099,7 @@ function startLevel(level) {
 } // end of startLevel
 
 
-// function reads app.inventory and fill it up accordingly
+// function reads app.inventory and fill inventory menu up accordingly
 function displayInventoryItems() {
     const items = app.inventory, // all the items from the inventory
         inventoryAt = app.inventoryAt; // 
@@ -2131,11 +2131,31 @@ function displayInventoryItems() {
         }); // end of item iteration
     } // end of if inventory is an array
 
+    // add fruits
+    const img = {
+        "1": app.images.apple,
+        "2": app.images.orange,
+        "3": app.images.peach,
+        "4": app.images.strawberry,
+        "5": app.images.plum,
+        "6": app.images.lime,
+        "7": app.images.lemon,
+        "8": app.images.blood_orange,
+        "9": app.images.kiwi,
+        "*": app.images.diamond,
+    } // end of img object declaration
 
-    // get inventory element
-    const inv = $(".inventory-items")[0];
+    for (let i = 0; i < 5; i++) {
+        // represent fruit only if there is a corrisponding inventory element to it
+        if (!items[i]) break;
 
-    console.log("INV", inv, "at", inventoryAt);
+        const className = `.inventory-item${i + 1} > div`,
+            elem = $(className),
+            fruit = items[i][0]; // the first digit of the inventory item represent the fruit
+
+        elem.css("background-image", `url(${img[fruit].src})`);
+        console.log(elem, `url(${img[fruit]})`);
+    } // end of for 5
 } // end of displayInventoryItems
 
 
