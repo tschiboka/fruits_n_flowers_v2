@@ -19,13 +19,14 @@
     height: 60%;
     top: 20%;
     left: 15%;
-    background: $panel-bg-color;
+    background: $horizontal-gradient;
     
     .game-board__inventory__menu__arrow--left-box, .game-board__inventory__menu__arrow--right-box {
         position: absolute;
         top: 0;
         width: 10%;
         height: 100%;
+        border-radius: 5px;
     }
 
     .game-board__inventory__menu__arrow--left-box {
@@ -51,16 +52,23 @@
         align-items: center;
         color: white;
         list-style: none;
+        background: rgba(255, 255, 255, 0.05);
 
         .inventory-item {
-            width: 20%;
+            width: calc(20% - 1px);
             height: 100%;
             margin: 0;
 
-            div {
-                margin: 15%;
-                width: 70%;
-                height: 70%;
+            border-left: 1px solid rgba(160, 160, 160, 0.3);
+
+            &:first-child {
+                border-left: none;
+            }
+
+            .inventory-item-container {
+                margin: 10%;
+                width: 80%;
+                height: 80%;
                 background-size: 100% 100%;
             }
         }

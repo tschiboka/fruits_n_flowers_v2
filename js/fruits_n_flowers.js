@@ -1257,7 +1257,6 @@ function getSpecialGems(matches) {
 //             the name of the pattern
 //             the elementSelector is used if coords are null
 function createspecialGemDiv(coord, name, elementSelector) {
-
     // function append a div with className to specialDiv
     function addDivToBonusDiv(className) {
         const div = document.createElement("div");
@@ -1308,7 +1307,19 @@ function createspecialGemDiv(coord, name, elementSelector) {
                 $(specialDiv).addClass(`bonus-sign SIGN-I5CR`);
             } // end of if random false or true
             break;
-        } // end of case T6
+        } // end of case I5
+        case "I5X": { // in case I5X is given (only in inventory otherwise randomly given I5X / I5CR)
+            addDivToBonusDiv("bonus-diagonal1-line");
+            addDivToBonusDiv("bonus-diagonal2-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-I5X`);
+            break;
+        } // end of case I5X
+        case "I5CR": { // in case I5CR is given (only in inventory otherwise randomly given I5X / I5CR)
+            addDivToBonusDiv("bonus-vertical-line");
+            addDivToBonusDiv("bonus-horizontal-line");
+            $(specialDiv).addClass(`bonus-sign SIGN-I5CR`);
+            break;
+        } // end of case I5X
         case "T6": {
             addDivToBonusDiv("bonus-diagonal1-line");
             addDivToBonusDiv("bonus-diagonal2-line");
@@ -1323,6 +1334,7 @@ function createspecialGemDiv(coord, name, elementSelector) {
         $(`#r${coord[0]}c${coord[1]}-pic`).append(specialDiv);
     } // end of if coord parameter is true
     else {
+
         // otherwise add divs to elementId
         $(elementSelector).append(specialDiv);
     } // end of if coord is falsy
@@ -2131,7 +2143,7 @@ function displayInventoryItems() {
         }); // end of item iteration
     } // end of if inventory is an array
 
-    // add fruits
+    // add fruits and diamond imgs
     const img = {
         "1": app.images.apple,
         "2": app.images.orange,
@@ -2149,12 +2161,18 @@ function displayInventoryItems() {
         // represent fruit only if there is a corrisponding inventory element to it
         if (!items[i]) break;
 
-        const className = `.inventory-item${i + 1} > div`,
+        const className = `.inventory-item${i + 1}-container `,
             elem = $(className),
-            fruit = items[i][0]; // the first digit of the inventory item represent the fruit
+            [fruit, bonus] = items[i].match(/[^-]+/g);
 
+        // add fruit / diamond background
         elem.css("background-image", `url(${img[fruit].src})`);
-        console.log(elem, `url(${img[fruit]})`);
+
+        // add bonus divs
+        if (bonus) {
+            createspecialGemDiv(null, bonus, className);
+        } // end of if theres bonus
+        console.log(elem, bonus);
     } // end of for 5
 } // end of displayInventoryItems
 
