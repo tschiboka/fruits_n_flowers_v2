@@ -579,21 +579,17 @@ function addInventoryEvents() {
         const invAt = app.inventoryAt,
             invLen = app.inventory.length - 1;
 
-        console.log(app.inventoryAt, invLen);
         // if there is at least 5 more items left to display
         if (invLen - 4 >= invAt + 5) {
-            console.log("TOGGLE 5");
             app.inventoryAt += 5;
             displayInventoryItems();
         } // end of if 5 more left
         else if (invAt < invLen - 4) {
-
             // if less than 5 but there is still left to display
             // display the rest of the items
             app.inventoryAt = invLen - 4;
             displayInventoryItems();
         } // end if any left to display
-        console.log(app.inventoryAt);
     } // end of toggleInventoryRight
 
 
@@ -2166,6 +2162,7 @@ function displayInventoryItems() {
     const items = app.inventory, // all the items from the inventory
         inventoryAt = app.inventoryAt; // 
 
+    console.log(app.images);
     // check if the inventory elements are correctly represented and haven't been compromised by any side effect
     if (!Array.isArray(items)) {
         throw Error("Inventory is invalid! It supposed to be an array.");
@@ -2215,7 +2212,7 @@ function displayInventoryItems() {
             [fruit, bonus] = items[i + inventoryAt].match(/[^-]+/g);
 
         // add fruit / diamond background
-        elem.css("background-image", `url(${img[fruit].src})`);
+        elem.css("background-image", "url('" + img[fruit].src + "')");
 
         // get rid of previous bonus divs
         $(className).empty();
@@ -2225,6 +2222,22 @@ function displayInventoryItems() {
             createspecialGemDiv(null, bonus, className);
         } // end of if theres bonus
     } // end of for 5
+
+    // check arrows if they are light theres still option to toggle
+    // left
+    if (app.inventoryAt > 0) {
+        $(".game-board__inventory__menu__arrow--left").addClass("active");
+    } else {
+        $(".game-board__inventory__menu__arrow--left").removeClass("active");
+    } // end of if inventory is at 0
+
+    console.log(app.inventoryAt, app.inventory.length);
+    // right
+    if (app.inventoryAt < app.inventory.length - 5) {
+        $(".game-board__inventory__menu__arrow--right").addClass("active");
+    } else {
+        $(".game-board__inventory__menu__arrow--right").removeClass("active");
+    } // end of if inventory is at the end 
 } // end of displayInventoryItems
 
 
