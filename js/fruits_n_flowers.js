@@ -582,13 +582,13 @@ function addInventoryEvents() {
         // if there is at least 5 more items left to display
         if (invLen - 4 >= invAt + 5) {
             app.inventoryAt += 5;
-            displayInventoryItems();
+            displayInventoryItems("right");
         } // end of if 5 more left
         else if (invAt < invLen - 4) {
             // if less than 5 but there is still left to display
             // display the rest of the items
             app.inventoryAt = invLen - 4;
-            displayInventoryItems();
+            displayInventoryItems("right");
         } // end if any left to display
     } // end of toggleInventoryRight
 
@@ -599,13 +599,13 @@ function addInventoryEvents() {
         // if there is 5 more items left to display
         if (invAt > 4) {
             app.inventoryAt -= 5;
-            displayInventoryItems();
+            displayInventoryItems("left");
         } // end of if 5 more left
         else if (invAt > 0) {
             // if less than 5 but there is still left to display
             // display the rest of the items
             app.inventoryAt = 0;
-            displayInventoryItems();
+            displayInventoryItems("left");
         } // end if any left to display
     } // end of toggleInventoryLeft
 
@@ -2158,7 +2158,9 @@ function startLevel(level) {
 
 
 // function reads app.inventory and fill inventory menu up accordingly
-function displayInventoryItems() {
+// direction parameter default is right - and it is used to indicate
+// how the menu indicator lights is divided and activated
+function displayInventoryItems(direction) {
     const items = app.inventory, // all the items from the inventory
         inventoryAt = app.inventoryAt; // 
 
@@ -2231,13 +2233,31 @@ function displayInventoryItems() {
         $(".game-board__inventory__menu__arrow--left").removeClass("active");
     } // end of if inventory is at 0
 
-    console.log(app.inventoryAt, app.inventory.length);
     // right
     if (app.inventoryAt < app.inventory.length - 5) {
         $(".game-board__inventory__menu__arrow--right").addClass("active");
     } else {
         $(".game-board__inventory__menu__arrow--right").removeClass("active");
     } // end of if inventory is at the end 
+
+    // create indicator lights
+    $(".game-board__inventory__menu__indicator").empty(); // get rid of the old ones
+
+    const indicAmount = Math.ceil(app.inventory.length / 5);
+
+    for (i = 0; i < indicAmount; i++) {
+        const indic = document.createElement("div");
+
+        $(indic).css("width", ((100 / indicAmount) - 2) + "%");
+
+        $(".game-board__inventory__menu__indicator").append(indic);
+
+    } // end of for indicAmount
+
+    // light the active indicator
+    const lightOnAt = 0;
+    console.log(app.inventoryAt, app.inventory.length);
+
 } // end of displayInventoryItems
 
 
