@@ -572,6 +572,55 @@ function swipeCharacters(swipeArgs) {
     checkFlowersOverBasket();
 } // end of swipeCharacters
 
+
+
+function addInventoryEvents() {
+    function toggleInventoryRight() {
+        const invAt = app.inventoryAt,
+            invLen = app.inventory.length - 1;
+
+        console.log(app.inventoryAt, invLen);
+        // if there is at least 5 more items left to display
+        if (invLen - 4 >= invAt + 5) {
+            console.log("TOGGLE 5");
+            app.inventoryAt += 5;
+            displayInventoryItems();
+        } // end of if 5 more left
+        else if (invAt < invLen - 4) {
+
+            // if less than 5 but there is still left to display
+            // display the rest of the items
+            app.inventoryAt = invLen - 4;
+            displayInventoryItems();
+        } // end if any left to display
+        console.log(app.inventoryAt);
+    } // end of toggleInventoryRight
+
+
+    function toggleInventoryLeft() {
+        const invAt = app.inventoryAt;
+
+        // if there is 5 more items left to display
+        if (invAt > 4) {
+            app.inventoryAt -= 5;
+            displayInventoryItems();
+        } // end of if 5 more left
+        else if (invAt > 0) {
+            // if less than 5 but there is still left to display
+            // display the rest of the items
+            app.inventoryAt = 0;
+            displayInventoryItems();
+        } // end if any left to display
+    } // end of toggleInventoryLeft
+
+    // add events
+    $(".inventory-right").on("click", toggleInventoryRight);
+    $(".inventory-left").on("click", toggleInventoryLeft);
+} // addInventoryEvents
+
+
+
+
 /*
  
 
@@ -2030,7 +2079,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": ["1-I4H", "*", "5-I4V", "3-I5CR"],         // all the bonus items you buy in the game
+    "inventory": ["1-I4H", "*", "2-I4V", "3-T5", "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
@@ -2052,6 +2101,7 @@ function startLevel(level) {
     createBoardArray(level - 1);
     displayBoard();
     addGameBoardEvents();
+    addInventoryEvents();
 
     // setup values and counters
     app.game_is_on = true;
@@ -2127,7 +2177,6 @@ function displayInventoryItems() {
             //     - fruits can be 1 - 9
             //     - bounuses: I4H, I4V, T5, L51, L52, I5CR, I5X, T6, *
 
-            console.log("ITEM", i);
             if (i !== "*") {
                 const [fruit, bonus] = i.match(/[^-]+/g); // divide item to fruit and bonus
 
@@ -2159,20 +2208,22 @@ function displayInventoryItems() {
 
     for (let i = 0; i < 5; i++) {
         // represent fruit only if there is a corrisponding inventory element to it
-        if (!items[i]) break;
+        if (!items[i] || i + inventoryAt > items.length - 1) break;
 
         const className = `.inventory-item${i + 1}-container `,
             elem = $(className),
-            [fruit, bonus] = items[i].match(/[^-]+/g);
+            [fruit, bonus] = items[i + inventoryAt].match(/[^-]+/g);
 
         // add fruit / diamond background
         elem.css("background-image", `url(${img[fruit].src})`);
+
+        // get rid of previous bonus divs
+        $(className).empty();
 
         // add bonus divs
         if (bonus) {
             createspecialGemDiv(null, bonus, className);
         } // end of if theres bonus
-        console.log(elem, bonus);
     } // end of for 5
 } // end of displayInventoryItems
 
