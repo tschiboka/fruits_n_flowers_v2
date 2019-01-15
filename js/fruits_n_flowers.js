@@ -656,6 +656,7 @@ function addInventoryEvents() {
 
 
     function inventoryItemMove(event, swipeObj) {
+        event.preventDefault();
         // short circuit so condition won't give error when not created yet
         if (swipeObj && swipeObj.down) {
             const currX = event.pageX || event.targetTouches[0].pageX,
@@ -671,13 +672,24 @@ function addInventoryEvents() {
             if (diffY > diffX) {
                 // get some css attributes width height top left
                 const bodyRect = document.body.getBoundingClientRect(),
+                    boardRect = $(".game-board")[0].getBoundingClientRect(),
                     itemRect = $(swipeObj.item)[0].getBoundingClientRect(),
-                    top = itemRect.top - bodyRect.top,
-                    left = itemRect.left - bodyRect.left;
+                    top = itemRect.top - bodyRect.top - boardRect.top,
+                    left = itemRect.left - bodyRect.left - boardRect.left,
+                    width = itemRect.width,
+                    height = itemRect.height;
 
                 // get a clone
-                const clone = $(swipeObj.item).clone();
+                const clone = $(swipeObj.item)
+                    .clone()
+                    .css("top", top + "px")
+                    .css("left", left + "px")
+                    .css("width", width + "px")
+                    .css("height", height + "px")
+                    .addClass("inventory-item--clone");
 
+
+                $(".game-board").append(clone);
 
                 console.log("DRAG", clone, top, left);
             } // end of if verical swipe
@@ -703,7 +715,9 @@ function addInventoryEvents() {
         [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, xCoord, e);
     }); // end of mouse / touch move
 
+
     // inventory element drag to the board
+
     // event is not delegated to the inventory-items div, rather have the five elements separate
     // events because inventory-items div has already swipe event added
     $(".inventory-item").each(function () {

@@ -167,3 +167,8 @@
     color: $main-text-color;
     text-shadow: none;
 }
+
+.inventory-item--clone {
+    position: absolute;
+    background-size: 100% 100%;
+}
