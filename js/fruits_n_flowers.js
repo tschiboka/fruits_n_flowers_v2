@@ -582,13 +582,13 @@ function addInventoryEvents() {
         // if there is at least 5 more items left to display
         if (invLen - 4 >= invAt + 5) {
             app.inventoryAt += 5;
-            displayInventoryItems("right");
+            displayInventoryItems();
         } // end of if 5 more left
         else if (invAt < invLen - 4) {
             // if less than 5 but there is still left to display
             // display the rest of the items
             app.inventoryAt = invLen - 4;
-            displayInventoryItems("right");
+            displayInventoryItems();
         } // end if any left to display
     } // end of toggleInventoryRight
 
@@ -599,13 +599,13 @@ function addInventoryEvents() {
         // if there is 5 more items left to display
         if (invAt > 4) {
             app.inventoryAt -= 5;
-            displayInventoryItems("left");
+            displayInventoryItems();
         } // end of if 5 more left
         else if (invAt > 0) {
             // if less than 5 but there is still left to display
             // display the rest of the items
             app.inventoryAt = 0;
-            displayInventoryItems("left");
+            displayInventoryItems();
         } // end if any left to display
     } // end of toggleInventoryLeft
 
@@ -2158,9 +2158,7 @@ function startLevel(level) {
 
 
 // function reads app.inventory and fill inventory menu up accordingly
-// direction parameter default is right - and it is used to indicate
-// how the menu indicator lights is divided and activated
-function displayInventoryItems(direction) {
+function displayInventoryItems() {
     const items = app.inventory, // all the items from the inventory
         inventoryAt = app.inventoryAt; // 
 
@@ -2255,9 +2253,14 @@ function displayInventoryItems(direction) {
     } // end of for indicAmount
 
     // light the active indicator
-    const lightOnAt = 0;
-    console.log(app.inventoryAt, app.inventory.length);
+    // take off active class from all indicators
+    $(".game-board__inventory__menu__indicator")
+        .children()
+        .removeClass("active");
 
+    // give active to the current one
+    $(`.game-board__inventory__menu__indicator div:nth-child(${Math.ceil(app.inventoryAt / 5) + 1})`)
+        .addClass("active");
 } // end of displayInventoryItems
 
 
