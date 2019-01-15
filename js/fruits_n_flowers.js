@@ -674,12 +674,12 @@ function addInventoryEvents() {
                 const bodyRect = document.body.getBoundingClientRect(),
                     boardRect = $(".game-board")[0].getBoundingClientRect(),
                     itemRect = $(swipeObj.item)[0].getBoundingClientRect(),
-                    top = itemRect.top - bodyRect.top - boardRect.top,
+                    top = itemRect.top - bodyRect.top - bodyRect.top,
                     left = itemRect.left - bodyRect.left - boardRect.left,
                     width = itemRect.width,
                     height = itemRect.height;
 
-                // get a clone
+                // get a clone and set it's 
                 const clone = $(swipeObj.item)
                     .clone()
                     .css("top", top + "px")
@@ -688,10 +688,19 @@ function addInventoryEvents() {
                     .css("height", height + "px")
                     .addClass("inventory-item--clone");
 
+                $("body").append(clone);
 
-                $(".game-board").append(clone);
 
-                console.log("DRAG", clone, top, left);
+                // add eventlistener to clone
+                $("body").on("mousemove touchmove", function (e) {
+                    console.log("CLONE MOVE ", swipeObj.dragClone);
+
+                    $(clone)
+                        .css("left", e.pageX - (boardRect.left - width / 2) - bodyRect.left + "px")
+                        .css("top", e.pageY - (boardRect.top - height / 2) - bodyRect.top + "px");
+                });
+                swipeObj.dragClone = swipeObj.dragClone ? swipeObj.dragClone : clone
+                console.log("DRAG", swipeObj.dragClone);
             } // end of if verical swipe
             //console.log(currX, currY, swipeObj.startX, swipeObj.startY, diffX, diffY);
         } // end of if mouse is down
@@ -720,8 +729,9 @@ function addInventoryEvents() {
 
     // event is not delegated to the inventory-items div, rather have the five elements separate
     // events because inventory-items div has already swipe event added
+    let swipeObj = {};
+    console.log("HERE ", swipeObj)
     $(".inventory-item").each(function () {
-        let swipeObj = {};
         $(this).on("mousedown touchstart", function (e) { swipeObj = inventoryItemStart(e, swipeObj); console.log("START", swipeObj); });
         $(this).on("mouseup touchend", function () { swipeObj = {}; });
         $(this).on("mousemove touchmove", function (e) { swipeObj = inventoryItemMove(e, swipeObj); })
