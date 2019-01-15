@@ -611,7 +611,6 @@ function addInventoryEvents() {
 
 
     function swipeStart(e) {
-        console.log("START");
         if (e.target !== this) {
             swipeStartCoord = e.pageX;
         } // end of if target is menuitems
@@ -619,9 +618,10 @@ function addInventoryEvents() {
     } // end of swipeStart
 
 
-    function swipeOn(mouseDown, startX, currX) {
-        console.log("ON", mouseDown, startX, currX);
+    function swipeOn(mouseDown, startX, currX, event) {
         if (mouseDown) {
+            event.preventDefault();
+
             if (startX > currX + 40) {
                 toggleInventoryRight();
                 return [false, 0]; // reset swipe
@@ -636,6 +636,55 @@ function addInventoryEvents() {
     } // end of swipeOn
 
 
+    function inventoryItemStart(event, swipeObj = {}) {
+        // get the target container
+        const target = event.target;
+        if ($(target).hasClass("inventory-item-container") || $(target).hasClass("inventory-item")) {
+            const itemNum = Number([...target.classList].join("").match(/\d/)[0]),
+                item = $(`.inventory-item${itemNum}-container`)[0];
+
+            swipeObj.item = item;
+            swipeObj.itemNum = itemNum;
+            swipeObj.down = true;
+            swipeObj.startX = event.pageX || event.targetTouches[0].pageX;
+            swipeObj.startY = event.pageY || event.targetTouches[0].pageY;
+            swipeObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
+        } // end of if target is an inventory item
+        return swipeObj;
+    } // end of inventoryItemOn
+
+
+
+    function inventoryItemMove(event, swipeObj) {
+        // short circuit so condition won't give error when not created yet
+        if (swipeObj && swipeObj.down) {
+            const currX = event.pageX || event.targetTouches[0].pageX,
+                currY = event.pageY || event.targetTouches[0].pageY;
+
+            // get the difference of current and start
+            const diffX = Math.max(swipeObj.startX, currX) - Math.min(swipeObj.startX, currX),
+                diffY = Math.max(swipeObj.startY, currY) - Math.min(swipeObj.startY, currY);
+
+            // if swipe is not horizontal start dragging
+            // horizontal swipe reults in swipeing the menu items left n right
+            // which is a different event handler
+            if (diffY > diffX) {
+                // get some css attributes width height top left
+                const bodyRect = document.body.getBoundingClientRect(),
+                    itemRect = $(swipeObj.item)[0].getBoundingClientRect(),
+                    top = itemRect.top - bodyRect.top,
+                    left = itemRect.left - bodyRect.left;
+
+                // get a clone
+                const clone = $(swipeObj.item).clone();
+
+
+                console.log("DRAG", clone, top, left);
+            } // end of if verical swipe
+            //console.log(currX, currY, swipeObj.startX, swipeObj.startY, diffX, diffY);
+        } // end of if mouse is down
+    } // end of inventoryItemMove
+
 
     // INVENORY EVENTS
 
@@ -648,11 +697,21 @@ function addInventoryEvents() {
     let isMouseDown = false, swipeStartCoord = 0;
 
     $(".inventory-items").on("mousedown touchstart", function (e) { isMouseDown = true; swipeStartCoord = swipeStart(e); });
-    $(".inventory-items").on("mouseup touchend", function (e) { isMouseDown = false; swipeStartCoord = 0; console.log("END") });
+    $(".inventory-items").on("mouseup touchend", function () { isMouseDown = false; swipeStartCoord = 0; });
     $(".inventory-items").on("mousemove touchmove", function (e) {
         const xCoord = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
-        [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, xCoord);
-    });
+        [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, xCoord, e);
+    }); // end of mouse / touch move
+
+    // inventory element drag to the board
+    // event is not delegated to the inventory-items div, rather have the five elements separate
+    // events because inventory-items div has already swipe event added
+    $(".inventory-item").each(function () {
+        let swipeObj = {};
+        $(this).on("mousedown touchstart", function (e) { swipeObj = inventoryItemStart(e, swipeObj); console.log("START", swipeObj); });
+        $(this).on("mouseup touchend", function () { swipeObj = {}; });
+        $(this).on("mousemove touchmove", function (e) { swipeObj = inventoryItemMove(e, swipeObj); })
+    }); // end of inventory-item iteration
 } // end of addInventoryEvents
 
 
