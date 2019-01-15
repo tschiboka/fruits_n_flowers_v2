@@ -611,14 +611,16 @@ function addInventoryEvents() {
 
 
     function swipeStart(e) {
+        console.log("START");
         if (e.target !== this) {
             swipeStartCoord = e.pageX;
         } // end of if target is menuitems
-        return e.pageX;
+        return e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
     } // end of swipeStart
 
 
     function swipeOn(mouseDown, startX, currX) {
+        console.log("ON", mouseDown, startX, currX);
         if (mouseDown) {
             if (startX > currX + 40) {
                 toggleInventoryRight();
@@ -637,19 +639,21 @@ function addInventoryEvents() {
 
     // INVENORY EVENTS
 
+
     // click on arrows
     $(".inventory-right").on("click", toggleInventoryRight);
     $(".inventory-left").on("click", toggleInventoryLeft);
 
-    // swipe with mouse on menu items left - right
-    let isMouseDown = false,
-        swipeStartCoord = 0;
+    // swipe with mouse on menu items (left - right directions) / mobile device swipe
+    let isMouseDown = false, swipeStartCoord = 0;
 
-    $(".inventory-items").on("mousedown", function (e) { isMouseDown = true; swipeStartCoord = swipeStart(e); });
-    $(".inventory-items").on("mouseup", function (e) { isMouseDown = false; swipeStartCoord = 0; });
-    $(".inventory-items").on("mousemove", function (e) { [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, e.pageX) });
-
-} // addInventoryEvents
+    $(".inventory-items").on("mousedown touchstart", function (e) { isMouseDown = true; swipeStartCoord = swipeStart(e); });
+    $(".inventory-items").on("mouseup touchend", function (e) { isMouseDown = false; swipeStartCoord = 0; console.log("END") });
+    $(".inventory-items").on("mousemove touchmove", function (e) {
+        const xCoord = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
+        [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, xCoord);
+    });
+} // end of addInventoryEvents
 
 
 
@@ -2298,6 +2302,8 @@ function displayInventoryItems() {
     // give active to the current one
     $(`.game-board__inventory__menu__indicator div:nth-child(${Math.ceil(app.inventoryAt / 5) + 1})`)
         .addClass("active");
+
+    console.log("ACT:", Math.ceil(app.inventoryAt / 5) + 1, "AT", app.inventoryAt, app.inventory.length);
 } // end of displayInventoryItems
 
 
