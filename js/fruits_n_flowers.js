@@ -691,14 +691,22 @@ function addInventoryEvents() {
                 $("body").append(clone);
 
 
-                // add eventlistener to clone
+                // add eventlistener to body
                 $("body").on("mousemove touchmove", function (e) {
                     console.log("CLONE MOVE ", swipeObj.dragClone);
-
                     $(clone)
                         .css("left", e.pageX - (boardRect.left - width / 2) - bodyRect.left + "px")
                         .css("top", e.pageY - (boardRect.top - height / 2) - bodyRect.top + "px");
-                });
+                }); // end of event body on
+
+                $("body").on("mouseup touchup", function (e) {
+                    console.log("UP BODY", clone);
+                    if ((document.querySelector(".inventory-item--clone"))) {
+                        // JQuery gets strange errors here so I will rely on vanilla js now
+                        document.getElementsByTagName("body")[0]
+                            .removeChild(document.querySelector(".inventory-item--clone"));
+                    } // end of if there is a clone item in the body
+                }); // end of body mouse / touch up
                 swipeObj.dragClone = swipeObj.dragClone ? swipeObj.dragClone : clone
                 console.log("DRAG", swipeObj.dragClone);
             } // end of if verical swipe
