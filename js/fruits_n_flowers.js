@@ -609,9 +609,46 @@ function addInventoryEvents() {
         } // end if any left to display
     } // end of toggleInventoryLeft
 
-    // add events
+
+    function swipeStart(e) {
+        if (e.target !== this) {
+            swipeStartCoord = e.pageX;
+        } // end of if target is menuitems
+        return e.pageX;
+    } // end of swipeStart
+
+
+    function swipeOn(mouseDown, startX, currX) {
+        if (mouseDown) {
+            if (startX > currX + 40) {
+                toggleInventoryRight();
+                return [false, 0]; // reset swipe
+            } // end of 40px left
+
+            if (startX < currX - 40) {
+                toggleInventoryLeft();
+                return [false, 0]; // reset swipe
+            } // end of 40px right
+        } // end of if mouse is down
+        return [mouseDown, startX];
+    } // end of swipeOn
+
+
+
+    // INVENORY EVENTS
+
+    // click on arrows
     $(".inventory-right").on("click", toggleInventoryRight);
     $(".inventory-left").on("click", toggleInventoryLeft);
+
+    // swipe with mouse on menu items left - right
+    let isMouseDown = false,
+        swipeStartCoord = 0;
+
+    $(".inventory-items").on("mousedown", function (e) { isMouseDown = true; swipeStartCoord = swipeStart(e); });
+    $(".inventory-items").on("mouseup", function (e) { isMouseDown = false; swipeStartCoord = 0; });
+    $(".inventory-items").on("mousemove", function (e) { [isMouseDown, swipeStartCoord] = swipeOn(isMouseDown, swipeStartCoord, e.pageX) });
+
 } // addInventoryEvents
 
 
