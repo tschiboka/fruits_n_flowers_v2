@@ -651,7 +651,7 @@ function addInventoryEvents() {
             dragObj.startY = event.pageY || event.targetTouches[0].pageY;
             dragObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
         } // end of if target is an inventory item
-        return dragObj;
+        return dragObj.fruit ? dragObj : {}; // return empty obj if fruit is not present
     } // end of inventoryItemOn
 
 
@@ -672,18 +672,12 @@ function addInventoryEvents() {
             // more than 40px on X should cause a menu swipe if event is still on menu-items
 
             if (diffY > diffX && diffX < 40 && diffY > 15) {
-                console.log("START     ", dragObj.startX, dragObj.startY);
-                console.log("CURR MOUSE", currX, currY);
-                console.log("DIFF", diffX, diffY);
-
                 const // get some css attributes width height top left
                     itemRect = $(dragObj.item)[0].getBoundingClientRect(),
                     top = itemRect.top,
                     left = itemRect.left,
                     height = itemRect.height,
                     width = itemRect.width;
-
-                console.log("TOP ", top, "LEFT", left, "\nHEIGHT", height, "WIDTH", width);
 
                 // get a clone and set it's 
                 const clone = $(dragObj.item)
@@ -698,19 +692,15 @@ function addInventoryEvents() {
 
                 dragObj.dragClone = dragObj.dragClone ? dragObj.dragClone : clone;
 
-                // take item off the inventory
-                app.inventory.splice(dragObj.itemNum - 1, 1);
-
-                console.log("INVENTORY", app.inventory);
-                displayInventoryItems();
-
+                $(`.inventory-item:nth-child(${dragObj.itemNum})`)
+                    .css("opacity", "0.2");
             } // end of if verical swipe
         } // end of createInventoryItemClone
 
 
         function dragInventoryItemClone() {
             const // get width and height
-                itemRect = $(dragObj.item)[0].getBoundingClientRect(),
+                itemRect = $("#r0c0-pic")[0].getBoundingClientRect(),
                 height = itemRect.height,
                 width = itemRect.width;
 
@@ -723,7 +713,6 @@ function addInventoryEvents() {
         // if mouseDown and clone has not been created
         // short circuit so condition won't give error when dragObj has not been created yet
         if (dragObj && dragObj.down && !dragObj.dragClone) {
-            event.preventDefault();
             createInventoryItemClone();
         } // end of if mouse is down
 
@@ -737,15 +726,15 @@ function addInventoryEvents() {
 
 
     function bodyMouseSlashTouchUp() {
-        console.log("CLONE", (document.querySelector(".inventory-item--clone")));
         if ((document.querySelector(".inventory-item--clone"))) {
             // JQuery gets strange errors here with no apparent reason,
             // so I will rely on vanilla js now
             document.getElementsByTagName("body")[0]
                 .removeChild(document.querySelector(".inventory-item--clone"));
-            console.log("UP BODY");
-            console.log("CLONE DELETED", document.querySelector(".inventory-item--clone"));
         } // end of if there is a clone item in the body
+
+        $(`.inventory-item:nth-child(${dragObj.itemNum})`)
+            .css("opacity", "1");
 
         isMouseDown = false; // so drag won't affect menu swipe
     } // end of bodyMouseSlashTouchUp
@@ -776,7 +765,7 @@ function addInventoryEvents() {
 
     let dragObj = {};
     $(".inventory-item").each(function () {
-        $(this).on("mousedown touchstart", function (e) { dragObj = inventoryItemStart(e, dragObj); console.log("START", dragObj); });
+        $(this).on("mousedown touchstart", function (e) { dragObj = inventoryItemStart(e, dragObj); });
     }); // end of inventory-item iteration
 
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
@@ -2336,7 +2325,6 @@ function displayInventoryItems() {
     const items = app.inventory, // all the items from the inventory
         inventoryAt = app.inventoryAt; // 
 
-    console.log(app.images);
     // check if the inventory elements are correctly represented and haven't been compromised by any side effect
     if (!Array.isArray(items)) {
         throw Error("Inventory is invalid! It supposed to be an array.");
@@ -2395,11 +2383,11 @@ function displayInventoryItems() {
         // get rid of previous bonus divs
         $(className).empty();
 
-        // add bonus divs
+        // add bonus divs if available
         if (bonus) {
             createspecialGemDiv(null, bonus, className);
         } // end of if theres bonus
-    } // end of for 5
+    } // end of for 5 (inventory items)
 
     // check arrows if they are light theres still option to toggle
     // left
@@ -2439,8 +2427,6 @@ function displayInventoryItems() {
     // give active to the current one
     $(`.game-board__inventory__menu__indicator div:nth-child(${Math.ceil(app.inventoryAt / 5) + 1})`)
         .addClass("active");
-
-    console.log("ACT:", Math.ceil(app.inventoryAt / 5) + 1, "AT", app.inventoryAt, app.inventory.length);
 } // end of displayInventoryItems
 
 
