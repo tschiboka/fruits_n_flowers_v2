@@ -700,6 +700,7 @@ function addInventoryEvents() {
 
                 $(`.inventory-item:nth-child(${dragObj.itemNum})`)
                     .css("opacity", "0.2");
+
             } // end of if verical swipe
         } // end of createInventoryItemClone
 
@@ -709,7 +710,22 @@ function addInventoryEvents() {
                 x = currX - (dragObj.width / 2),
                 y = currY - (dragObj.height / 2);
 
+            const // check if cursor is out of game-board 
+                boardRect = $(".game-board")[0].getBoundingClientRect(),
+                [xMin, yMin, xMax, yMax] = [boardRect.left, boardRect.top, boardRect.right, boardRect.bottom]
+                    .map(num => Math.round(num));
+
+            console.log("BOARD MIN ", xMin, yMin, "MAX", xMax, yMax, "CURR", currX, currY);
             console.log(x, y);
+
+            // cases the drag can be canceled:
+            //   - its out of the game boards range
+            //   - the level has been over while dragging
+            //   - interaction with the board is unabled (eg: end game explosions)
+            if (currX < xMin || currY < yMin || currX > xMax || currX > yMax || !app.game_is_on || !app.game_interaction_enabled) {
+                cancelInventoryItemDrag();
+                return void (0);
+            } // end of if out of range or game is on
 
             $(dragObj.dragClone).css("left", x + "px").css("top", y + "px");
 
@@ -719,7 +735,9 @@ function addInventoryEvents() {
 
             // find objects under the cursor
             if (isUnderGameCell) {
-                console.log(isUnderGameCell);
+                // check if cell under item is droppable aka is a fruit
+                [underCellX, underCellY] = underId.match(/\d+/g);
+                console.log(underCellX, underCellY);
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
@@ -739,7 +757,7 @@ function addInventoryEvents() {
 
 
 
-    function bodyMouseSlashTouchUp() {
+    function cancelInventoryItemDrag() {
         if ((document.querySelector(".inventory-item--clone"))) {
             // JQuery gets strange errors here with no apparent reason,
             // so I will rely on vanilla js now
@@ -751,7 +769,11 @@ function addInventoryEvents() {
             .css("opacity", "1");
 
         isMouseDown = false; // so drag won't affect menu swipe
-    } // end of bodyMouseSlashTouchUp
+        dragObj = {}; // reset 
+    } // end of cancelInventoryItemDrag
+
+
+
     // INVENORY EVENTS
 
 
@@ -786,8 +808,7 @@ function addInventoryEvents() {
 
     $("body").on("mouseup touchup", function (e) {
         if (dragObj.dragClone) {
-            bodyMouseSlashTouchUp();
-            dragObj = {}; // reset 
+            cancelInventoryItemDrag();
         } // end of if there is a dragObj
     }); // end of body mouse / touch up
 
