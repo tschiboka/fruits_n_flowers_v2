@@ -174,3 +174,8 @@
     z-index: 9999;
     pointer-events: none; // necessary because i need to determine which elements are under it
 }
+
+.cross-sight {
+    position: absolute;
+    pointer-events: none;
+}

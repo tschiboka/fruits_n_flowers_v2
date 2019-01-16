@@ -706,6 +706,9 @@ function addInventoryEvents() {
 
 
         function dragInventoryItemClone() {
+            // empty crossight
+            $(".cross-sight").remove();
+
             const // get coordinates
                 x = currX - (dragObj.width / 2),
                 y = currY - (dragObj.height / 2);
@@ -714,9 +717,6 @@ function addInventoryEvents() {
                 boardRect = $(".game-board")[0].getBoundingClientRect(),
                 [xMin, yMin, xMax, yMax] = [boardRect.left, boardRect.top, boardRect.right, boardRect.bottom]
                     .map(num => Math.round(num));
-
-            console.log("BOARD MIN ", xMin, yMin, "MAX", xMax, yMax, "CURR", currX, currY);
-            console.log(x, y);
 
             // cases the drag can be canceled:
             //   - its out of the game boards range
@@ -727,17 +727,44 @@ function addInventoryEvents() {
                 return void (0);
             } // end of if out of range or game is on
 
+            // set the clone coordinates to the current cursor position
             $(dragObj.dragClone).css("left", x + "px").css("top", y + "px");
 
             const // identify cells under the clone object
                 underId = (document.elementFromPoint(x, y) || { "id": "" }).id, // avoid null obj
                 isUnderGameCell = /^r\d+c\d+\-(box|pic)$/.test(underId); // eg r2c2-box or r4c0-pic 
 
-            // find objects under the cursor
+            // Find objects under the cursor
+            // Highlight cells and give a horizontal and vertical clue about the highlighted cell,
+            // it is usefull on mobile when the finger can cover the actual cell we want to drag.
+            // Valid characters and row/cols are highlighted green and invalids are red. 
             if (isUnderGameCell) {
-                // check if cell under item is droppable aka is a fruit
-                [underCellX, underCellY] = underId.match(/\d+/g);
-                console.log(underCellX, underCellY);
+                function createCrossightCell(row, col, color, direction) {
+                    const // get the cells position 
+                        crossEl = document.createElement("div"),
+                        cellRect = $(`#r${row}c${col}-box`)[0].getBoundingClientRect(),
+                        boardRect = $(".game-board")[0].getBoundingClientRect();
+
+                    // set attributes
+                    $(crossEl).addClass("cross-sight")
+                        .css("top", cellRect.top - boardRect.top + 1 + "px")
+                        .css("left", cellRect.left - boardRect.left + 1 + "px")
+                        .css("width", cellRect.width - 1 + "px")
+                        .css("height", cellRect.height - 1 + "px")
+                        .css("background-color", color)
+                        .css("opacity", "1");
+
+                    $(".game-board").append(crossEl);
+                } // end of createCrosSightCell
+
+                const // check if cell under item is droppable aka is a fruit without existing bonus
+                    [cellUnderRow, cellUnderCell] = underId.match(/\d+/g), // get row, cell
+                    isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
+                    hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
+                    fillRange = (start, end) => Array(0).fill().map();
+
+                createCrossightCell(0, 0, "red");
+                console.log(isFruit, hasBonus);
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
