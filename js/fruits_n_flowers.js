@@ -640,17 +640,23 @@ function addInventoryEvents() {
         event.preventDefault();
         // get the target container
         const target = event.target;
-        if ($(target).hasClass("inventory-item-container") || $(target).hasClass("inventory-item")) {
-            const itemNum = Number([...target.classList].join("").match(/\d/)[0]),
-                item = $(`.inventory-item${itemNum}-container`)[0];
+        if (app.game_interaction_enabled) {
+            if ($(target).hasClass("inventory-item-container") || $(target).hasClass("inventory-item")) {
+                const itemNum = Number([...target.classList].join("").match(/\d/)[0]),
+                    item = $(`.inventory-item${itemNum}-container`)[0];
 
-            dragObj.item = item;
-            dragObj.itemNum = itemNum;
-            dragObj.down = true;
-            dragObj.startX = event.pageX || event.targetTouches[0].pageX;
-            dragObj.startY = event.pageY || event.targetTouches[0].pageY;
-            dragObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
-        } // end of if target is an inventory item
+                dragObj.item = item;
+                dragObj.itemNum = itemNum;
+                dragObj.down = true;
+                dragObj.startX = event.pageX || event.targetTouches[0].pageX;
+                dragObj.startY = event.pageY || event.targetTouches[0].pageY;
+                dragObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
+                const itemRect = $("#r0c0-pic")[0].getBoundingClientRect();
+                dragObj.height = itemRect.height;
+                dragObj.width = itemRect.width;
+
+            } // end of if target is an inventory item
+        } // end of if interaction is enabled
         return dragObj.fruit ? dragObj : {}; // return empty obj if fruit is not present
     } // end of inventoryItemOn
 
@@ -699,14 +705,22 @@ function addInventoryEvents() {
 
 
         function dragInventoryItemClone() {
-            const // get width and height
-                itemRect = $("#r0c0-pic")[0].getBoundingClientRect(),
-                height = itemRect.height,
-                width = itemRect.width;
+            const // get coordinates
+                x = currX - (dragObj.width / 2),
+                y = currY - (dragObj.height / 2);
 
-            $(dragObj.dragClone)
-                .css("left", currX - (width / 2) + "px")
-                .css("top", currY - (height / 2) + "px");
+            console.log(x, y);
+
+            $(dragObj.dragClone).css("left", x + "px").css("top", y + "px");
+
+            const // identify cells under the clone object
+                underId = (document.elementFromPoint(x, y) || { "id": "" }).id, // avoid null obj
+                isUnderGameCell = /^r\d+c\d+\-(box|pic)$/.test(underId); // eg r2c2-box or r4c0-pic 
+
+            // find objects under the cursor
+            if (isUnderGameCell) {
+                console.log(isUnderGameCell);
+            } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
 
@@ -771,8 +785,10 @@ function addInventoryEvents() {
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
 
     $("body").on("mouseup touchup", function (e) {
-        bodyMouseSlashTouchUp();
-        dragObj = {}; // reset 
+        if (dragObj.dragClone) {
+            bodyMouseSlashTouchUp();
+            dragObj = {}; // reset 
+        } // end of if there is a dragObj
     }); // end of body mouse / touch up
 
 } // end of addInventoryEvents
