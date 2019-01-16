@@ -761,10 +761,11 @@ function addInventoryEvents() {
                     [cellUnderRow, cellUnderCell] = underId.match(/\d+/g), // get row, cell
                     isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
-                    fillRange = (start, end) => Array(0).fill().map();
+                    fillRange = (start, end) => Array(end - start).fill("").map((_, i) => start + i); // eg: fillRange(2,6) => [2, 3, 4, 5]
 
                 createCrossightCell(0, 0, "red");
                 console.log(isFruit, hasBonus);
+                console.log(fillRange(2, 6));
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
