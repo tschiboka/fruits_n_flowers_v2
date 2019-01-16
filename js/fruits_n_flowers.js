@@ -619,9 +619,9 @@ function addInventoryEvents() {
 
 
     function swipeOn(mouseDown, startX, currX, event) {
-        if (mouseDown) {
-            event.preventDefault();
+        event.preventDefault();
 
+        if (mouseDown) {
             if (startX > currX + 40) {
                 toggleInventoryRight();
                 return [false, 0]; // reset swipe
@@ -636,51 +636,57 @@ function addInventoryEvents() {
     } // end of swipeOn
 
 
-    function inventoryItemStart(event, swipeObj = {}) {
+    function inventoryItemStart(event, dragObj = {}) {
+        event.preventDefault();
         // get the target container
         const target = event.target;
         if ($(target).hasClass("inventory-item-container") || $(target).hasClass("inventory-item")) {
             const itemNum = Number([...target.classList].join("").match(/\d/)[0]),
                 item = $(`.inventory-item${itemNum}-container`)[0];
 
-            swipeObj.item = item;
-            swipeObj.itemNum = itemNum;
-            swipeObj.down = true;
-            swipeObj.startX = event.pageX || event.targetTouches[0].pageX;
-            swipeObj.startY = event.pageY || event.targetTouches[0].pageY;
-            swipeObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
+            dragObj.item = item;
+            dragObj.itemNum = itemNum;
+            dragObj.down = true;
+            dragObj.startX = event.pageX || event.targetTouches[0].pageX;
+            dragObj.startY = event.pageY || event.targetTouches[0].pageY;
+            dragObj.fruit = app.inventory[app.inventoryAt + itemNum - 1];
         } // end of if target is an inventory item
-        return swipeObj;
+        return dragObj;
     } // end of inventoryItemOn
 
 
 
-    function inventoryItemMove(event, swipeObj) {
-        event.preventDefault();
-        // short circuit so condition won't give error when not created yet
-        if (swipeObj && swipeObj.down) {
-            const currX = event.pageX || event.targetTouches[0].pageX,
-                currY = event.pageY || event.targetTouches[0].pageY;
+    function dragInventoryItem(event, dragObj) {
+        const // get cursor position
+            currX = event.pageX || event.targetTouches[0].pageX,
+            currY = event.pageY || event.targetTouches[0].pageY;
 
-            // get the difference of current and start
-            const diffX = Math.max(swipeObj.startX, currX) - Math.min(swipeObj.startX, currX),
-                diffY = Math.max(swipeObj.startY, currY) - Math.min(swipeObj.startY, currY);
+        function createInventoryItemClone() {
+            const // get the difference of current and start
+                diffX = Math.max(dragObj.startX, currX) - Math.min(dragObj.startX, currX),
+                diffY = Math.max(dragObj.startY, currY) - Math.min(dragObj.startY, currY);
 
-            // if swipe is not horizontal start dragging
+            // if swipe is not horizontal make a copy of the item
             // horizontal swipe reults in swipeing the menu items left n right
-            // which is a different event handler
-            if (diffY > diffX) {
-                // get some css attributes width height top left
-                const bodyRect = document.body.getBoundingClientRect(),
-                    boardRect = $(".game-board")[0].getBoundingClientRect(),
-                    itemRect = $(swipeObj.item)[0].getBoundingClientRect(),
-                    top = itemRect.top - bodyRect.top - bodyRect.top,
-                    left = itemRect.left - bodyRect.left - boardRect.left,
-                    width = itemRect.width,
-                    height = itemRect.height;
+            // which is a different event handler thus
+            // more than 40px on X should cause a menu swipe if event is still on menu-items
+
+            if (diffY > diffX && diffX < 40 && diffY > 15) {
+                console.log("START     ", dragObj.startX, dragObj.startY);
+                console.log("CURR MOUSE", currX, currY);
+                console.log("DIFF", diffX, diffY);
+
+                const // get some css attributes width height top left
+                    itemRect = $(dragObj.item)[0].getBoundingClientRect(),
+                    top = itemRect.top,
+                    left = itemRect.left,
+                    height = itemRect.height,
+                    width = itemRect.width;
+
+                console.log("TOP ", top, "LEFT", left, "\nHEIGHT", height, "WIDTH", width);
 
                 // get a clone and set it's 
-                const clone = $(swipeObj.item)
+                const clone = $(dragObj.item)
                     .clone()
                     .css("top", top + "px")
                     .css("left", left + "px")
@@ -690,31 +696,59 @@ function addInventoryEvents() {
 
                 $("body").append(clone);
 
+                dragObj.dragClone = dragObj.dragClone ? dragObj.dragClone : clone;
 
-                // add eventlistener to body
-                $("body").on("mousemove touchmove", function (e) {
-                    console.log("CLONE MOVE ", swipeObj.dragClone);
-                    $(clone)
-                        .css("left", e.pageX - (boardRect.left - width / 2) - bodyRect.left + "px")
-                        .css("top", e.pageY - (boardRect.top - height / 2) - bodyRect.top + "px");
-                }); // end of event body on
+                // take item off the inventory
+                app.inventory.splice(dragObj.itemNum - 1, 1);
 
-                $("body").on("mouseup touchup", function (e) {
-                    console.log("UP BODY", clone);
-                    if ((document.querySelector(".inventory-item--clone"))) {
-                        // JQuery gets strange errors here so I will rely on vanilla js now
-                        document.getElementsByTagName("body")[0]
-                            .removeChild(document.querySelector(".inventory-item--clone"));
-                    } // end of if there is a clone item in the body
-                }); // end of body mouse / touch up
-                swipeObj.dragClone = swipeObj.dragClone ? swipeObj.dragClone : clone
-                console.log("DRAG", swipeObj.dragClone);
+                console.log("INVENTORY", app.inventory);
+                displayInventoryItems();
+
             } // end of if verical swipe
-            //console.log(currX, currY, swipeObj.startX, swipeObj.startY, diffX, diffY);
+        } // end of createInventoryItemClone
+
+
+        function dragInventoryItemClone() {
+            const // get width and height
+                itemRect = $(dragObj.item)[0].getBoundingClientRect(),
+                height = itemRect.height,
+                width = itemRect.width;
+
+            $(dragObj.dragClone)
+                .css("left", currX - (width / 2) + "px")
+                .css("top", currY - (height / 2) + "px");
+        } // end of dragInventoryItemClone
+
+
+        // if mouseDown and clone has not been created
+        // short circuit so condition won't give error when dragObj has not been created yet
+        if (dragObj && dragObj.down && !dragObj.dragClone) {
+            event.preventDefault();
+            createInventoryItemClone();
         } // end of if mouse is down
-    } // end of inventoryItemMove
+
+        // if clone exist drag it
+        if (dragObj && dragObj.down && dragObj.dragClone) {
+            event.preventDefault();
+            dragInventoryItemClone();
+        } // end of if clone exist
+    } // end of dragInventoryItem
 
 
+
+    function bodyMouseSlashTouchUp() {
+        console.log("CLONE", (document.querySelector(".inventory-item--clone")));
+        if ((document.querySelector(".inventory-item--clone"))) {
+            // JQuery gets strange errors here with no apparent reason,
+            // so I will rely on vanilla js now
+            document.getElementsByTagName("body")[0]
+                .removeChild(document.querySelector(".inventory-item--clone"));
+            console.log("UP BODY");
+            console.log("CLONE DELETED", document.querySelector(".inventory-item--clone"));
+        } // end of if there is a clone item in the body
+
+        isMouseDown = false; // so drag won't affect menu swipe
+    } // end of bodyMouseSlashTouchUp
     // INVENORY EVENTS
 
 
@@ -737,13 +771,21 @@ function addInventoryEvents() {
 
     // event is not delegated to the inventory-items div, rather have the five elements separate
     // events because inventory-items div has already swipe event added
-    let swipeObj = {};
-    console.log("HERE ", swipeObj)
+    // the mousedown / touchstart event is on the inventory item
+    // on the other hand mousemove / touchmove and mouseup / touchup event happens on the body
+
+    let dragObj = {};
     $(".inventory-item").each(function () {
-        $(this).on("mousedown touchstart", function (e) { swipeObj = inventoryItemStart(e, swipeObj); console.log("START", swipeObj); });
-        $(this).on("mouseup touchend", function () { swipeObj = {}; });
-        $(this).on("mousemove touchmove", function (e) { swipeObj = inventoryItemMove(e, swipeObj); })
+        $(this).on("mousedown touchstart", function (e) { dragObj = inventoryItemStart(e, dragObj); console.log("START", dragObj); });
     }); // end of inventory-item iteration
+
+    $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
+
+    $("body").on("mouseup touchup", function (e) {
+        bodyMouseSlashTouchUp();
+        dragObj = {}; // reset 
+    }); // end of body mouse / touch up
+
 } // end of addInventoryEvents
 
 
@@ -2166,7 +2208,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 7,
-        "time": 180,
+        "time": 20,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -2207,7 +2249,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": ["1-I4H", "*", "2-I4V", "3-T5", "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
+    "inventory": ["1-I4H", "*", "2-I4V", "3-T5"],//, "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
@@ -2336,15 +2378,19 @@ function displayInventoryItems() {
     } // end of img object declaration
 
     for (let i = 0; i < 5; i++) {
-        // represent fruit only if there is a corrisponding inventory element to it
-        if (!items[i] || i + inventoryAt > items.length - 1) break;
-
-        const className = `.inventory-item${i + 1}-container `,
+        const
+            className = `.inventory-item${i + 1}-container `,
             elem = $(className),
-            [fruit, bonus] = items[i + inventoryAt].match(/[^-]+/g);
+            [fruit, bonus] = (items[i + inventoryAt] || " - ").match(/[^-]+/g);
 
-        // add fruit / diamond background
-        elem.css("background-image", "url('" + img[fruit].src + "')");
+        // represent fruit only if there is a corrisponding inventory element to it
+        if (!items[i] || i + inventoryAt > items.length - 1) {
+            elem.css("background-image", "none");
+        } // end of if element is not present
+        else {
+            // add fruit / diamond background
+            elem.css("background-image", "url('" + img[fruit].src + "')");
+        } // end of if item is present
 
         // get rid of previous bonus divs
         $(className).empty();
