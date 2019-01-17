@@ -783,6 +783,11 @@ function addInventoryEvents() {
                         } // end of if there is an element
                     }); // end of W - E
 
+                    const opacity = [0.9, 0.6, 0.3];
+                    // give smooter colors as it's geting further from center
+                    [N1, S1, W1, E1].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[0]})`); }); // end of circle1 colors
+                    [N2, S2, W2, E2].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[1]})`); }); // end of circle2 colors
+                    [N3, S3, W3, E3].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[2]})`); }); // end of circle3 colors
                 } // end of createCrossightBorder
 
                 const // check if cell under item is droppable aka is a fruit without existing bonus
