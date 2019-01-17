@@ -770,7 +770,7 @@ function addInventoryEvents() {
                     RED = [252, 69, 100], // rgb
                     GREEN = [89, 252, 151],
                     color = dropAble ? GREEN : RED, // decide color 
-                    sequence = (length, start, end) => Array(length)
+                    sequence = (length, start = 0.45, end = 0.01) => Array(length)
                         .fill((start - end) / length)
                         .map((len, i) => (start - ((i + 1) * len)).toFixed(3));
 
@@ -778,8 +778,12 @@ function addInventoryEvents() {
                 createCrossightCell(cellUnderRow, cellUnderCell, `rgba(${color.join(",")},0.5)`);
 
                 // NORTH part of cross-sight
-                toRow.forEach(rowInd => {
+                console.log("NORTH")
+                toRow.forEach((rowInd, i) => {
+                    const opacity = sequence(toRow.length)[i];
 
+                    console.log(rowInd, i, color, opacity, isFruit, hasBonus);
+                    createCrossightCell(rowInd, cellUnderCell, `rgba(${color.join(",")},${opacity})`);
                 }); // end of toRow iteration 
                 //console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
                 //console.log(toRow, fromRow, toCol, fromCol);
@@ -810,6 +814,7 @@ function addInventoryEvents() {
                 .removeChild(document.querySelector(".inventory-item--clone"));
         } // end of if there is a clone item in the body
 
+        // set back the opacity of the removed inventory item
         $(`.inventory-item:nth-child(${dragObj.itemNum})`)
             .css("opacity", "1");
 
