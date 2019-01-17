@@ -762,46 +762,49 @@ function addInventoryEvents() {
                 function createCrossightBorder(row, col) {
                     const // get neightbouring cells
                         getId = (x, y) => document.getElementById(`cross-sight-${x}-${y}`),    // GET ELEMENT ID
-                        [N1, N2, N3] = Array(3).fill().map((_, i) => getId(row - 1 - i, col)), // NORTH ELEMENTS
-                        [S1, S2, S3] = Array(3).fill().map((_, i) => getId(row + 1 + i, col)), // SOUTH ELEMENTS
-                        [W1, W2, W3] = Array(3).fill().map((_, i) => getId(row, col - 1 - i)), // WEST ELEMENTS
-                        [E1, E2, E3] = Array(3).fill().map((_, i) => getId(row, col + 1 + i)); // EAST ELEMENTS
+                        [N1, N2, N3] = Array(3).fill().map((_, i) => ({ "el": getId(row - 1 - i, col), "dist": i })), // NORTH ELEMENTS
+                        [S1, S2, S3] = Array(3).fill().map((_, i) => ({ "el": getId(row + 1 + i, col), "dist": i })), // SOUTH ELEMENTS
+                        [W1, W2, W3] = Array(3).fill().map((_, i) => ({ "el": getId(row, col - 1 - i), "dist": i })), // WEST ELEMENTS
+                        [E1, E2, E3] = Array(3).fill().map((_, i) => ({ "el": getId(row, col + 1 + i), "dist": i })), // EAST ELEMENTS
+                        opacity = [0.9, 0.6, 0.3];
 
                     // NORT-SOUTH has vertical borders
                     [N1, N2, N3, S1, S2, S3].forEach(el => {
-                        if (el) {
-                            $(el).css("border-left", "1px solid white");
-                            $(el).css("border-right", "1px solid white");
+                        if (el.el) {
+                            const bgColor = $(el.el).css("background-color");
+                            $(el.el)
+                                .css("border-left", `1px solid rgb(200, 200, 200, ${opacity[el.dist]})`)
+                                .css("border-right", `1px solid rgb(200, 200, 200, ${opacity[el.dist]})`)
+                                .css("width", `1px solid ${bgColor}`)
+                                .css("border-bottom", `1px solid ${bgColor}`);
                         } // end of if there is an element
                     }); // end of N - S
 
                     // WEST - EAST has horizontal borders
                     [W1, W2, W3, E1, E2, E3].forEach(el => {
-                        if (el) {
-                            $(el).css("border-top", "1px solid white");
-                            $(el).css("border-bottom", "1px solid white");
+                        if (el.el) {
+                            const bgColor = $(el.el).css("background-color");
+                            $(el.el)
+                                .css("border-top", `1px solid rgb(200, 200, 200, ${opacity[el.dist]})`)
+                                .css("border-bottom", `1px solid rgb(200, 200, 200, ${opacity[el.dist]})`)
+                                .css("border-left", `1px solid ${bgColor}`)
+                                .css("border-right", `1px solid ${bgColor}`);
                         } // end of if there is an element
                     }); // end of W - E
-
-                    const opacity = [0.9, 0.6, 0.3];
-                    // give smooter colors as it's geting further from center
-                    [N1, S1, W1, E1].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[0]})`); }); // end of circle1 colors
-                    [N2, S2, W2, E2].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[1]})`); }); // end of circle2 colors
-                    [N3, S3, W3, E3].forEach(el => { if (el) $(el).css("border-color", `rgb(200, 200, 200, ${opacity[2]})`); }); // end of circle3 colors
                 } // end of createCrossightBorder
 
                 const // check if cell under item is droppable aka is a fruit without existing bonus
                     [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number).map(e => Math.abs(e)), // get row, cell
                     isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
-                    dropAble = isFruit && !hasBonus, // valid cell green, invalid red
+                    dropable = isFruit && !hasBonus, // valid cell green, invalid red
                     fillRange = (num1, num2, start = Math.min(num1, num2), end = Math.max(num1, num2)) =>
                         Array(end - start).fill().map((_, i) => Math.abs(start + i)), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
                     [toRow, fromRow] = [fillRange(0, cellUnderRow).reverse(), fillRange(cellUnderRow + 1, 11)], // from is ascending, to is decending
                     [toCol, fromCol] = [fillRange(0, cellUnderCell).reverse(), fillRange(cellUnderCell + 1, 9)], // eg: to [543210] 6 [789]    
                     RED = [252, 69, 100], // rgb
-                    GREEN = [89, 252, 151],
-                    color = dropAble ? GREEN : RED, // decide color 
+                    GREEN = [88, 232, 243],
+                    color = dropable ? GREEN : RED, // decide color 
                     sequence = (length, start = 0.35, end = 0.075) => Array(length)
                         .fill((start - end) / length)
                         .map((len, i) => (start - ((i + 1) * len)).toFixed(3));
@@ -830,6 +833,8 @@ function addInventoryEvents() {
                 }); // end of EAST iteration
 
                 createCrossightBorder(cellUnderRow, cellUnderCell); // add some border to the neightbouring cells
+
+                dragObj.validItemUnderCursor = dropable;
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
@@ -869,6 +874,10 @@ function addInventoryEvents() {
     } // end of cancelInventoryItemDrag
 
 
+    function dropInventoryItem() {
+
+    } // end of dropInventoryItem
+
 
     // INVENORY EVENTS
 
@@ -904,6 +913,10 @@ function addInventoryEvents() {
 
     $("body").on("mouseup touchup", function (e) {
         if (dragObj.dragClone) {
+            if (dragObj.validItemUnderCursor) {
+                console.log("VALID");
+                dropInventoryItem();
+            } // end of if valid item under cursor
             cancelInventoryItemDrag();
         } // end of if there is a dragObj
     }); // end of body mouse / touch up
