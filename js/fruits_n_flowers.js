@@ -758,14 +758,17 @@ function addInventoryEvents() {
                 } // end of createCrosSightCell
 
                 const // check if cell under item is droppable aka is a fruit without existing bonus
-                    [cellUnderRow, cellUnderCell] = underId.match(/\d+/g), // get row, cell
+                    [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number), // get row, cell
                     isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
-                    fillRange = (start, end) => Array(end - start).fill("").map((_, i) => start + i); // eg: fillRange(2,6) => [2, 3, 4, 5]
+                    fillRange = (num1, num2, start = Math.min(num1, num2), end = Math.max(num1, num2)) =>
+                        Array(end - start).fill("").map((_, i) => start + i), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
+                    [toRow, fromRow] = [fillRange(0, cellUnderRow), fillRange(cellUnderRow + 1, 11)],
+                    [toCol, fromCol] = [fillRange(0, cellUnderCell), fillRange(cellUnderCell + 1, 9)];
 
                 createCrossightCell(0, 0, "red");
-                console.log(isFruit, hasBonus);
-                console.log(fillRange(2, 6));
+                console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
+                console.log(toRow, fromRow, toCol, fromCol);
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
