@@ -762,20 +762,27 @@ function addInventoryEvents() {
                     [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number).map(e => Math.abs(e)), // get row, cell
                     isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
+                    dropAble = isFruit && !hasBonus, // valid cell green, invalid red
                     fillRange = (num1, num2, start = Math.min(num1, num2), end = Math.max(num1, num2)) =>
                         Array(end - start).fill("").map((_, i) => Math.abs(start + i)), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
                     [toRow, fromRow] = [fillRange(0, cellUnderRow).reverse(), fillRange(cellUnderRow + 1, 11)], // from is ascending, to is decending
-                    [toCol, fromCol] = [fillRange(0, cellUnderCell).reverse(), fillRange(cellUnderCell + 1, 9)]; // eg: to [543210] 6 [789]    
+                    [toCol, fromCol] = [fillRange(0, cellUnderCell).reverse(), fillRange(cellUnderCell + 1, 9)], // eg: to [543210] 6 [789]    
+                    RED = [252, 69, 100], // rgb
+                    GREEN = [89, 252, 151],
+                    color = dropAble ? GREEN : RED, // decide color 
+                    sequence = (length, start, end) => Array(length)
+                        .fill((start - end) / length)
+                        .map((len, i) => (start - ((i + 1) * len)).toFixed(3));
 
                 // CENTER
-                createCrossightCell(cellUnderRow, cellUnderCell, "red");
+                createCrossightCell(cellUnderRow, cellUnderCell, `rgba(${color.join(",")},0.5)`);
 
                 // NORTH part of cross-sight
                 toRow.forEach(rowInd => {
 
                 }); // end of toRow iteration 
-                console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
-                console.log(toRow, fromRow, toCol, fromCol);
+                //console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
+                //console.log(toRow, fromRow, toCol, fromCol);
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
@@ -805,6 +812,9 @@ function addInventoryEvents() {
 
         $(`.inventory-item:nth-child(${dragObj.itemNum})`)
             .css("opacity", "1");
+
+        // empty crossight
+        $(".cross-sight").remove();
 
         isMouseDown = false; // so drag won't affect menu swipe
         dragObj = {}; // reset 
