@@ -753,10 +753,37 @@ function addInventoryEvents() {
                         .css("width", cellRect.width - 1 + "px")
                         .css("height", cellRect.height - 1 + "px")
                         .css("background-color", color)
-                        .css("opacity", "1");
+                        .css("opacity", "1")
+                        .attr("id", `cross-sight-${row}-${col}`);
 
                     $(".game-board").append(crossEl);
                 } // end of createCrosSightCell
+
+                function createCrossightBorder(row, col) {
+                    const // get neightbouring cells
+                        getId = (x, y) => document.getElementById(`cross-sight-${x}-${y}`),    // GET ELEMENT ID
+                        [N1, N2, N3] = Array(3).fill().map((_, i) => getId(row - 1 - i, col)), // NORTH ELEMENTS
+                        [S1, S2, S3] = Array(3).fill().map((_, i) => getId(row + 1 + i, col)), // SOUTH ELEMENTS
+                        [W1, W2, W3] = Array(3).fill().map((_, i) => getId(row, col - 1 - i)), // WEST ELEMENTS
+                        [E1, E2, E3] = Array(3).fill().map((_, i) => getId(row, col + 1 + i)); // EAST ELEMENTS
+
+                    // NORT-SOUTH has vertical borders
+                    [N1, N2, N3, S1, S2, S3].forEach(el => {
+                        if (el) {
+                            $(el).css("border-left", "1px solid white");
+                            $(el).css("border-right", "1px solid white");
+                        } // end of if there is an element
+                    }); // end of N - S
+
+                    // WEST - EAST has horizontal borders
+                    [W1, W2, W3, E1, E2, E3].forEach(el => {
+                        if (el) {
+                            $(el).css("border-top", "1px solid white");
+                            $(el).css("border-bottom", "1px solid white");
+                        } // end of if there is an element
+                    }); // end of W - E
+
+                } // end of createCrossightBorder
 
                 const // check if cell under item is droppable aka is a fruit without existing bonus
                     [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number).map(e => Math.abs(e)), // get row, cell
@@ -764,13 +791,13 @@ function addInventoryEvents() {
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
                     dropAble = isFruit && !hasBonus, // valid cell green, invalid red
                     fillRange = (num1, num2, start = Math.min(num1, num2), end = Math.max(num1, num2)) =>
-                        Array(end - start).fill("").map((_, i) => Math.abs(start + i)), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
+                        Array(end - start).fill().map((_, i) => Math.abs(start + i)), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
                     [toRow, fromRow] = [fillRange(0, cellUnderRow).reverse(), fillRange(cellUnderRow + 1, 11)], // from is ascending, to is decending
                     [toCol, fromCol] = [fillRange(0, cellUnderCell).reverse(), fillRange(cellUnderCell + 1, 9)], // eg: to [543210] 6 [789]    
                     RED = [252, 69, 100], // rgb
                     GREEN = [89, 252, 151],
                     color = dropAble ? GREEN : RED, // decide color 
-                    sequence = (length, start = 0.40, end = 0.05) => Array(length)
+                    sequence = (length, start = 0.35, end = 0.075) => Array(length)
                         .fill((start - end) / length)
                         .map((len, i) => (start - ((i + 1) * len)).toFixed(3));
 
@@ -797,8 +824,7 @@ function addInventoryEvents() {
                     createCrossightCell(cellUnderRow, colInd, `rgba(${color.join(",")},${sequence(fromCol.length)[i]})`);
                 }); // end of EAST iteration
 
-                //console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
-                //console.log(toRow, fromRow, toCol, fromCol);
+                createCrossightBorder(cellUnderRow, cellUnderCell); // add some border to the neightbouring cells
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
