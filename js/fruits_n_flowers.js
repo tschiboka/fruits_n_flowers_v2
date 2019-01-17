@@ -731,7 +731,8 @@ function addInventoryEvents() {
             $(dragObj.dragClone).css("left", x + "px").css("top", y + "px");
 
             const // identify cells under the clone object
-                underId = (document.elementFromPoint(x, y) || { "id": "" }).id, // avoid null obj
+                underId = (document.elementFromPoint(x + (dragObj.width / 2), y + (dragObj.height / 2)) ||
+                    { "id": "" }).id, // avoid null obj
                 isUnderGameCell = /^r\d+c\d+\-(box|pic)$/.test(underId); // eg r2c2-box or r4c0-pic 
 
             // Find objects under the cursor
@@ -739,7 +740,7 @@ function addInventoryEvents() {
             // it is usefull on mobile when the finger can cover the actual cell we want to drag.
             // Valid characters and row/cols are highlighted green and invalids are red. 
             if (isUnderGameCell) {
-                function createCrossightCell(row, col, color, direction) {
+                function createCrossightCell(row, col, color) {
                     const // get the cells position 
                         crossEl = document.createElement("div"),
                         cellRect = $(`#r${row}c${col}-box`)[0].getBoundingClientRect(),
@@ -758,15 +759,21 @@ function addInventoryEvents() {
                 } // end of createCrosSightCell
 
                 const // check if cell under item is droppable aka is a fruit without existing bonus
-                    [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number), // get row, cell
+                    [cellUnderRow, cellUnderCell] = underId.match(/\d+/g).map(Number).map(e => Math.abs(e)), // get row, cell
                     isFruit = !!(app.board[cellUnderRow][cellUnderCell].match(/[1-9]/g)), // 1-9 true else false
                     hasBonus = $(`#r${cellUnderRow}c${cellUnderCell}-pic`).hasClass("bonus"),
                     fillRange = (num1, num2, start = Math.min(num1, num2), end = Math.max(num1, num2)) =>
-                        Array(end - start).fill("").map((_, i) => start + i), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
-                    [toRow, fromRow] = [fillRange(0, cellUnderRow), fillRange(cellUnderRow + 1, 11)],
-                    [toCol, fromCol] = [fillRange(0, cellUnderCell), fillRange(cellUnderCell + 1, 9)];
+                        Array(end - start).fill("").map((_, i) => Math.abs(start + i)), // eg: fillRange(2,6) => [2, 3, 4, 5] excluding end
+                    [toRow, fromRow] = [fillRange(0, cellUnderRow).reverse(), fillRange(cellUnderRow + 1, 11)], // from is ascending, to is decending
+                    [toCol, fromCol] = [fillRange(0, cellUnderCell).reverse(), fillRange(cellUnderCell + 1, 9)]; // eg: to [543210] 6 [789]    
 
-                createCrossightCell(0, 0, "red");
+                // CENTER
+                createCrossightCell(cellUnderRow, cellUnderCell, "red");
+
+                // NORTH part of cross-sight
+                toRow.forEach(rowInd => {
+
+                }); // end of toRow iteration 
                 console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
                 console.log(toRow, fromRow, toCol, fromCol);
             } // end of if under the clone object and cursor there is a game-board table cell
