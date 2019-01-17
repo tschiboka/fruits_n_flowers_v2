@@ -638,7 +638,6 @@ function addInventoryEvents() {
 
 
     function inventoryItemStart(event, dragObj = {}) {
-        event.preventDefault();
         // get the target container
         const target = event.target;
         if (app.game_interaction_enabled) {
@@ -707,6 +706,7 @@ function addInventoryEvents() {
 
 
         function dragInventoryItemClone() {
+            event.stopPropagation();
             // empty crossight
             $(".cross-sight").remove();
 
@@ -850,7 +850,6 @@ function addInventoryEvents() {
 
         // if clone exist drag it
         if (dragObj && dragObj.down && dragObj.dragClone) {
-            event.preventDefault();
             dragInventoryItemClone();
         } // end of if clone exist
     } // end of dragInventoryItem
@@ -885,6 +884,8 @@ function addInventoryEvents() {
 
         if (bonus) {
             createspecialGemDiv([dragObj.dropRow, dragObj.dropCol], bonus);
+            $(`#r${dragObj.dropRow}c${dragObj.dropCol}-box`).addClass("bonus");
+            $(`#r${dragObj.dropRow}c${dragObj.dropCol}-pic`).addClass("bonus");
         } // end of if theres bonus
 
         // take off element from inventory
@@ -892,8 +893,6 @@ function addInventoryEvents() {
 
         displayInventoryItems();
         displayBoard();
-
-        cicleMatches();
     } // end of dropInventoryItem
 
 
@@ -929,7 +928,8 @@ function addInventoryEvents() {
 
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
 
-    $("body").on("mouseup touchup", function (e) {
+    $("body").on("mouseup touchend", function (e) {
+        console.log("EVENT", e);
         if (dragObj.dragClone) {
             if (dragObj.validItemUnderCursor) {
                 console.log("VALID");
@@ -2361,7 +2361,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 7,
-        "time": 20,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -2402,7 +2402,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": ["1-I4H", "*", "2-I4V", "3-T5"],//, "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
+    "inventory": ["1-I4H", "*", "2-I4V", "3-T5", "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
