@@ -377,6 +377,7 @@ function checkswipeMobility(startId, dir) {
 
 // function returns true if swipe had bonus matches 
 function swipeCharacters(swipeArgs) {
+    console.log(swipeArgs);
     function swapCharacters(r1, c1, r2, c2) {
         const temp = app.board[r1][c1];
 
@@ -835,6 +836,8 @@ function addInventoryEvents() {
                 createCrossightBorder(cellUnderRow, cellUnderCell); // add some border to the neightbouring cells
 
                 dragObj.validItemUnderCursor = dropable;
+                dragObj.dropRow = dropable ? cellUnderRow : false;
+                dragObj.dropCol = dropable ? cellUnderCell : false;
             } // end of if under the clone object and cursor there is a game-board table cell
         } // end of dragInventoryItemClone
 
@@ -875,7 +878,22 @@ function addInventoryEvents() {
 
 
     function dropInventoryItem() {
+        const [fruit, bonus] = (dragObj.fruit).match(/[^-]+/g);
 
+        // set fruit and bonus
+        app.board[dragObj.dropRow][dragObj.dropCol] = fruit;
+
+        if (bonus) {
+            createspecialGemDiv([dragObj.dropRow, dragObj.dropCol], bonus);
+        } // end of if theres bonus
+
+        // take off element from inventory
+        app.inventory.splice(dragObj.itemNum - 1, 1);
+
+        displayInventoryItems();
+        displayBoard();
+
+        cicleMatches();
     } // end of dropInventoryItem
 
 
