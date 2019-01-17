@@ -770,7 +770,7 @@ function addInventoryEvents() {
                     RED = [252, 69, 100], // rgb
                     GREEN = [89, 252, 151],
                     color = dropAble ? GREEN : RED, // decide color 
-                    sequence = (length, start = 0.45, end = 0.01) => Array(length)
+                    sequence = (length, start = 0.40, end = 0.05) => Array(length)
                         .fill((start - end) / length)
                         .map((len, i) => (start - ((i + 1) * len)).toFixed(3));
 
@@ -778,13 +778,25 @@ function addInventoryEvents() {
                 createCrossightCell(cellUnderRow, cellUnderCell, `rgba(${color.join(",")},0.5)`);
 
                 // NORTH part of cross-sight
-                console.log("NORTH")
                 toRow.forEach((rowInd, i) => {
-                    const opacity = sequence(toRow.length)[i];
+                    createCrossightCell(rowInd, cellUnderCell, `rgba(${color.join(",")},${sequence(toRow.length)[i]})`);
+                }); // end of NORTH iteration
 
-                    console.log(rowInd, i, color, opacity, isFruit, hasBonus);
-                    createCrossightCell(rowInd, cellUnderCell, `rgba(${color.join(",")},${opacity})`);
-                }); // end of toRow iteration 
+                // SOUTH part of cross-sight
+                fromRow.forEach((rowInd, i) => {
+                    createCrossightCell(rowInd, cellUnderCell, `rgba(${color.join(",")},${sequence(fromRow.length)[i]})`);
+                }); // end of SOUTH iteration
+
+                // WEST part of cross-sight
+                toCol.forEach((colInd, i) => {
+                    createCrossightCell(cellUnderRow, colInd, `rgba(${color.join(",")},${sequence(toCol.length)[i]})`);
+                }); // end of WEST iteration
+
+                // EAST part of cross-sight
+                fromCol.forEach((colInd, i) => {
+                    createCrossightCell(cellUnderRow, colInd, `rgba(${color.join(",")},${sequence(fromCol.length)[i]})`);
+                }); // end of EAST iteration
+
                 //console.log(isFruit, hasBonus, cellUnderRow, cellUnderCell);
                 //console.log(toRow, fromRow, toCol, fromCol);
             } // end of if under the clone object and cursor there is a game-board table cell
