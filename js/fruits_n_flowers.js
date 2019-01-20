@@ -17,6 +17,7 @@ function start() {
     createLevelPageIndicator();
     styleLevelMenuToCurrenPage();
     addLevelEvents();
+    addInventoryEvents();
 } // end of start
 
 function toggleFullScreen() {
@@ -377,7 +378,6 @@ function checkswipeMobility(startId, dir) {
 
 // function returns true if swipe had bonus matches 
 function swipeCharacters(swipeArgs) {
-    console.log(swipeArgs);
     function swapCharacters(r1, c1, r2, c2) {
         const temp = app.board[r1][c1];
 
@@ -884,7 +884,7 @@ function addInventoryEvents() {
 
         if (bonus) {
             createspecialGemDiv([dragObj.dropRow, dragObj.dropCol], bonus);
-            $(`#r${dragObj.dropRow}c${dragObj.dropCol}-box`).addClass("bonus");
+
             $(`#r${dragObj.dropRow}c${dragObj.dropCol}-pic`).addClass("bonus");
         } // end of if theres bonus
 
@@ -893,6 +893,8 @@ function addInventoryEvents() {
 
         displayInventoryItems();
         displayBoard();
+
+        cycleMatches();
     } // end of dropInventoryItem
 
 
@@ -929,11 +931,10 @@ function addInventoryEvents() {
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
 
     $("body").on("mouseup touchend", function (e) {
-        console.log("EVENT", e);
         if (dragObj.dragClone) {
             if (dragObj.validItemUnderCursor) {
-                console.log("VALID");
                 dropInventoryItem();
+                e.stopPropagation();
             } // end of if valid item under cursor
             cancelInventoryItemDrag();
         } // end of if there is a dragObj
@@ -1356,7 +1357,7 @@ function fillBoardWithNewFruits() {
     const drippingDelay = setInterval(() => {
         if (nextId === idsToFill.length) {
             clearInterval(drippingDelay);
-            cicleMatches(); // cicle back and look for more matches
+            cycleMatches(); // cicle back and look for more matches
         } else {
             fillEmptyCell(nextId);
             nextId++;
@@ -1366,7 +1367,7 @@ function fillBoardWithNewFruits() {
 
 
 
-function cicleMatches() {
+function cycleMatches() {
     const matches = checkMatches();
     displayBoard();
     if (matches) {
@@ -1385,11 +1386,11 @@ function cicleMatches() {
             if (!app.game_interaction_locked) {
                 app.game_interaction_enabled = true; // give interaction back to player
                 app.game_hint_is_paused = false; // hint can count time again
-            } // end of if onteraction is not locked because of the end-game
+            } // end of if interaction is not locked because of the end-game
         } // end of if there are possible matches
     } // end of if there are no further matches
     checkFlowersOverBasket();
-} // end of cicleMatches
+} // end of cycleMatches
 
 
 function displayLevelPoints() {
@@ -2361,7 +2362,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 7,
-        "time": 180,
+        "time": 20,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -2424,7 +2425,6 @@ function startLevel(level) {
     createBoardArray(level - 1);
     displayBoard();
     addGameBoardEvents();
-    addInventoryEvents();
 
     // setup values and counters
     app.game_is_on = true;
@@ -2742,3 +2742,7 @@ function displayBoard() {
         } // end of cell iteration
     } // end of row iteration
 } // end of displayBoard
+
+
+
+
