@@ -18,6 +18,7 @@ function start() {
     styleLevelMenuToCurrenPage();
     addLevelEvents();
     addInventoryEvents();
+    addShopEvent();
 } // end of start
 
 function toggleFullScreen() {
@@ -891,6 +892,8 @@ function addInventoryEvents() {
         // take off element from inventory
         app.inventory.splice(dragObj.itemNum - 1, 1);
 
+        app.inventoryAt = 0;
+
         displayInventoryItems();
         displayBoard();
 
@@ -939,8 +942,14 @@ function addInventoryEvents() {
             cancelInventoryItemDrag();
         } // end of if there is a dragObj
     }); // end of body mouse / touch up
-
 } // end of addInventoryEvents
+
+
+
+
+function addShopEvent() {
+    $("#shop-icon").on("click", () => { $(".shop").show(); });
+} // end of createShop
 
 
 
@@ -2362,7 +2371,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 7,
-        "time": 20,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -2742,7 +2751,6 @@ function displayBoard() {
         } // end of cell iteration
     } // end of row iteration
 } // end of displayBoard
-
 
 
 

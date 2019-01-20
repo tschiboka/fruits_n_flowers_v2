@@ -1,0 +1,16 @@
+.shop {
+    position: absolute;
+    display: none;
+    top: 7%;
+    left: 5%;
+    width: 90%;
+    height: 88%;
+    background: rgba(20, 16, 23, 0.995);
+    color: $main-text-color;
+    text-align: center;
+    justify-content: center;
+    align-items: center;    
+    flex-direction: column;
+    font-size: 40px;
+    z-index: 9999;
+}
