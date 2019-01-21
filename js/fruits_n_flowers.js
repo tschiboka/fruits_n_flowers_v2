@@ -18,7 +18,7 @@ function start() {
     styleLevelMenuToCurrenPage();
     addLevelEvents();
     addInventoryEvents();
-    addShopEvent();
+    addShopEvents();
 } // end of start
 
 function toggleFullScreen() {
@@ -947,7 +947,31 @@ function addInventoryEvents() {
 
 
 
-function addShopEvent() {
+function shopSetup() {
+    const
+        fruitPics = [
+            app.images.apple, app.images.orange, app.images.peach,
+            app.images.strawberry, app.images.plum, app.images.lime,
+            app.images.lemon, app.images.blood_orange, app.images.kiwi
+        ], // end of fruitPics
+        bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"];
+
+
+    // add fruit pics
+    $(".shop__fruits > div").each(function (i) { $(this).css("background-image", `url(${fruitPics[i].src})`) });
+
+    // add bonus pic
+    $(".shop__bonuses > div").each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
+
+    // stop animation
+    $(".shop__bonuses > div div").css("animation-duration", "2s");
+    console.log($(".shop__bonuses > div div"));
+} // end of shopSetup
+
+
+
+function addShopEvents() {
+    shopSetup(); // set the fruit images and bonuses dynamically
     $("#shop-icon").on("click", () => { $(".shop").show(); });
 } // end of createShop
 
