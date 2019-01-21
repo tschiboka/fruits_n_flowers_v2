@@ -986,6 +986,7 @@ function addShopEvents() {
     function updateShop() {
         const price = 0;
 
+        console.log("BASKET", app.shop_basket);
     } // end of updateShop
 
     shopSetup(); // set the fruit images and bonuses dynamically
@@ -996,7 +997,7 @@ function addShopEvents() {
         app.shop_price = 0;
         $("#shop__price").html("$" + app.shop_price);
 
-        app.shop_basket = {};
+        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best-hint": "", "fast-hint": "" };
 
         app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
 
@@ -1013,10 +1014,29 @@ function addShopEvents() {
     $(".shop__fruits-container").on("click", e => {
         if (e.target.id) {
             const fruit = e.target.id.replace(/(shop__|-btn)/g, "");
-            console.log("CLICK", fruit);
-        } // end of if target has an id (only fruit buttons have)
-    });
 
+            app.shop_basket.fruit = fruit;
+
+            // reset unnecessary basket properties, in this case diamond needs to go
+            app.shop_basket.diamond = "";
+
+            updateShop();
+        } // end of if target has an id (only fruit buttons have)
+    }); // end of fruit container click event
+
+    // delegate bonuses to it's container
+    $(".shop__bonuses-container").on("click", e => {
+        if ($(e.target).children().hasClass("bonus-sign")) {
+            const bonus = $(e.target).children().attr("class").split("bonus-sign SIGN-")[1];
+
+            app.shop_basket.bonus = bonus;
+
+            // reset unnecessary basket properties, in this case diamond needs to go
+            app.shop_basket.diamond = "";
+
+            updateShop();
+        } // end of if first child element is a bonus (the last element of the container is a blank place-holder)
+    }); // end of bonuses container click event
 } // end of createShop
 
 
