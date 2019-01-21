@@ -964,8 +964,14 @@ function shopSetup() {
     $(".shop__bonuses > div").each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
 
     // stop animation
-    $(".shop__bonuses > div div").css("animation-duration", "2s");
-    console.log($(".shop__bonuses > div div"));
+    $(".shop__bonuses div.bonus-sign div")
+        .css("animation", "none")
+        .css("background", "rgb(71, 62, 77)");
+
+    $(".shop__bonuses .bonus-square")
+        .css("background", "transparent")
+        .css("border-color", "rgb(71, 62, 77)");
+    console.log($(".shop__bonuses .bonus-square"));
 } // end of shopSetup
 
 
