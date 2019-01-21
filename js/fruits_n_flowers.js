@@ -984,6 +984,7 @@ function shopSetup() {
 
 function addShopEvents() {
     function updateShop() {
+        // PRICEING THE ITEMS IN THE BASKET
         let price = 0;
 
         if (app.shop_basket.fruit) { price += 50; }
@@ -995,10 +996,17 @@ function addShopEvents() {
         if (app.shop_basket.diamond) { price += 2000; }
 
         if (app.shop_basket.bonus && app.shop_basket.fruit) {
-            const bonusPrices = { "IH4": 250, "IV4": 750, "T5": 500, "L51": 400, "L52": 400, "I5X": 600, "I5CR": 850, "T6": 1000 };
+            const bonusPrices = { "I4H": 250, "I4V": 750, "T5": 500, "L51": 400, "L52": 400, "I5X": 600, "I5CR": 850, "T6": 1000 };
 
             price += bonusPrices[app.shop_basket.bonus];
-        } // end of bonus priceing
+        } // end of if has bonus and there is a fruit selected (otherwise bonus wouldn't make sense)
+
+        // DISPLAY PRICE
+        $("#shop__price")
+            .html("$" + price)
+            .css("color", `${price <= app.game_points ? "#58e8f3" : "#d684bb"}`);
+
+
         console.log("BASKET", app.shop_basket);
         console.log("$", price);
     } // end of updateShop
@@ -1029,9 +1037,16 @@ function addShopEvents() {
 
     $("#shop__fast-hint").on("click", () => {
         if (app.game_give_hint_at === 10) {
-            app.shop_basket.fast_hint = true;
+            if (!app.shop_basket.fast_hint) {
+                app.shop_basket.fast_hint = true;
 
-            $("#shop__fast-hint").css("color", "rgb(43, 34, 49)"); // dim color
+                $("#shop__fast-hint").css("color", "rgb(43, 34, 49)"); // dim color
+            } // end of if basket has no fasthint
+            else {
+                app.shop_basket.fast_hint = "";
+
+                $("#shop__fast-hint").css("color", "#58e8f3"); // lighten color
+            } // end of if basket has fast hint
 
             updateShop();
         } // end of if fast hint is not set yet
@@ -1039,9 +1054,16 @@ function addShopEvents() {
 
     $("#shop__best-hint").on("click", () => {
         if (!app.game_best_hint) {
-            app.shop_basket.best_hint = true;
+            if (!app.shop_basket.best_hint) {
+                app.shop_basket.best_hint = true;
 
-            $("#shop__best-hint").css("color", "rgb(43, 34, 49)"); // dim color
+                $("#shop__best-hint").css("color", "rgb(43, 34, 49)"); // dim color
+            } // end of if basket has no besthint
+            else {
+                app.shop_basket.best_hint = "";
+
+                $("#shop__best-hint").css("color", "#58e8f3"); // lighten color
+            } // end of if basket has best hint
 
             updateShop();
         } // end of if best hint is not set yet
