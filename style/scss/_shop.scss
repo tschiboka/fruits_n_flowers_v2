@@ -1,6 +1,6 @@
 .shop {
     position: absolute;
-    ///display: none;
+    display: none;
     top: 7%;
     left: 5%;
     width: 90%;
@@ -53,7 +53,8 @@
     margin: 2%;
     margin-top: 8%;
     
-    .shop-misc-container {
+    .shop__misc-container {
+        display: flex;
         width: 96%;
         height: 60%;
         margin: 2%;
@@ -61,6 +62,30 @@
         border: 1px solid rgb(43, 34, 49);
         border-left: none;
         border-right: none;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80%;
+            width: 40%;
+            margin: 2% 3%;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 2vh;
+            border: 1px solid rgb(43, 34, 49);
+            border-left: none;
+            border-right: none;
+            cursor: pointer;
+        }
+
+        #shop__diamond {
+            width: 20%;
+            background-image: url(../../images/misc/diamond.png);
+            background-size: 60% 60%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
     }
 }
 
@@ -69,7 +94,7 @@
     height: 10%;
     margin: 8% 43%;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgb(43, 34, 49);
+    border: 1px solid rgb(76, 59, 87);
 }
 
 .shop__footer {
@@ -136,6 +161,7 @@
         border: 1px solid rgb(54, 43, 61);
         background: rgba(255, 255, 255, 0.01) center no-repeat;
         background-size: 80% 80%;
+        cursor: pointer;
         
         // first 3 child
         &:nth-child(-n+3) {
@@ -156,5 +182,13 @@
         &:nth-child(n+7) {
             border-bottom: 1px solid transparent;
         }
+    }
+}
+
+#shop__back, #shop__buy, 
+.shop__fruits > div, .shop__bonuses > div,
+#shop__fast-hint, #shop__best-hint, #shop__diamond {
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 }

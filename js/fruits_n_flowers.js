@@ -954,31 +954,69 @@ function shopSetup() {
             app.images.strawberry, app.images.plum, app.images.lime,
             app.images.lemon, app.images.blood_orange, app.images.kiwi
         ], // end of fruitPics
-        bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"];
+        bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"],
+        fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
 
 
     // add fruit pics
-    $(".shop__fruits > div").each(function (i) { $(this).css("background-image", `url(${fruitPics[i].src})`) });
+    $(".shop__fruits > div").each(function (i) {
+        $(this)
+            .css("background-image", `url(${fruitPics[i].src})`)
+            .attr("id", "shop__" + fruits[i] + "-btn");
+    });
 
     // add bonus pic
-    $(".shop__bonuses > div").each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
+    $(".shop__bonuses > div"
+    ).each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
 
     // stop animation
     $(".shop__bonuses div.bonus-sign div")
         .css("animation", "none")
         .css("background", "rgb(71, 62, 77)");
 
+    // square is a bit different, here I need to set other properties
     $(".shop__bonuses .bonus-square")
-        .css("background", "transparent")
+        .css("background-color", "transparent")
         .css("border-color", "rgb(71, 62, 77)");
-    console.log($(".shop__bonuses .bonus-square"));
 } // end of shopSetup
 
 
 
 function addShopEvents() {
+    function updateShop() {
+        const price = 0;
+
+    } // end of updateShop
+
     shopSetup(); // set the fruit images and bonuses dynamically
-    $("#shop-icon").on("click", () => { $(".shop").show(); });
+    $("#shop-icon").on("click", () => {
+        $(".shop").show();
+
+        // reset shop properties
+        app.shop_price = 0;
+        $("#shop__price").html("$" + app.shop_price);
+
+        app.shop_basket = {};
+
+        app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
+
+        app.game_give_hint_at !== 10 ? $("#shop__fast-hint").css("color", "rgb(43, 34, 49)") : $("#shop__fast-hint").css("color", "#58e8f3");
+    });
+
+    $("#shop__back").on("click", () => { $(".shop").hide(); });
+
+    $("#shop__buy").on("click", () => { });
+
+    $("#shop__fast-hint").on("click", () => { });
+
+    // delegate fruits to the whole container
+    $(".shop__fruits-container").on("click", e => {
+        if (e.target.id) {
+            const fruit = e.target.id.replace(/(shop__|-btn)/g, "");
+            console.log("CLICK", fruit);
+        } // end of if target has an id (only fruit buttons have)
+    });
+
 } // end of createShop
 
 
@@ -2426,10 +2464,10 @@ var app = {
     "board": [],                 // the current game gems position
     "currentLevel": 1,
     "flowers": 0,                // the players collected flowers on the actual level
-    "game_best_hint": true,
+    "game_best_hint": false,
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
-    "game_give_hint_at": 5,      // the num of secs a hint is given after no moves
+    "game_give_hint_at": 10,     // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
@@ -2444,6 +2482,8 @@ var app = {
     "images": [],                // the preloaded pictures
     "inventory": ["1-I4H", "*", "2-I4V", "3-T5", "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
+    "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
+    "shop_price": 0,             // the amount needs to be paid in the shop
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
@@ -2473,6 +2513,8 @@ function startLevel(level) {
     app.game_interaction_locked = false;
     app.game_interaction_enabled = true;
     app.flowers = 0;
+    app.game_best_hint = false;
+    app.game_give_hint_at = 10;
 
     // reset flower counter
     $("#flower-counter").html(levels[app.currentLevel - 1].flowersToCompleteTheLevel);
