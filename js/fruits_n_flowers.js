@@ -969,8 +969,7 @@ function addShopEvents() {
         });
 
         // add bonus pic
-        $(".shop__bonuses > div"
-        ).each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
+        $(".shop__bonuses > div").each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
 
         // stop animation
         $(".shop__bonuses div.bonus-sign div")
@@ -1011,6 +1010,8 @@ function addShopEvents() {
         app.shop_basket.price = price;
 
         // DISPLAY ITEM
+
+        // display fruits
         fruitPics = {
             "apple": app.images.apple, "orange": app.images.orange, "peach": app.images.peach,
             "strawberry": app.images.strawberry, "plum": app.images.plum, "lime": app.images.lime,
@@ -1026,6 +1027,14 @@ function addShopEvents() {
         else {
             $(".shop__display").css("background-image", "none");
         } // end of basket has no fruit or diamond
+
+        // display bonuses
+        $(".shop__display").empty();
+        if (app.shop_basket.bonus) {
+            createspecialGemDiv(null, app.shop_basket.bonus, ".shop__display");
+        } // end of if basket has bonus
+
+
     } // end of updateShop
 
 
