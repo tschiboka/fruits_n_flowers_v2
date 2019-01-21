@@ -997,7 +997,7 @@ function addShopEvents() {
         app.shop_price = 0;
         $("#shop__price").html("$" + app.shop_price);
 
-        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best-hint": "", "fast-hint": "" };
+        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "" };
 
         app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
 
@@ -1008,7 +1008,35 @@ function addShopEvents() {
 
     $("#shop__buy").on("click", () => { });
 
-    $("#shop__fast-hint").on("click", () => { });
+    $("#shop__fast-hint").on("click", () => {
+        if (app.game_give_hint_at === 10) {
+            app.shop_basket.fast_hint = true;
+
+            $("#shop__fast-hint").css("color", "rgb(43, 34, 49)"); // dim color
+
+            updateShop();
+        } // end of if fast hint is not set yet
+    }); // end of fast hint click event
+
+    $("#shop__best-hint").on("click", () => {
+        if (!app.game_best_hint) {
+            app.shop_basket.best_hint = true;
+
+            $("#shop__best-hint").css("color", "rgb(43, 34, 49)"); // dim color
+
+            updateShop();
+        } // end of if best hint is not set yet
+    }); // end of fast hint click event
+
+    $("#shop__diamond").on("click", () => {
+        app.shop_basket.diamond = true;
+
+        // reset fruit and bonus
+        app.shop_basket.fruit = "";
+        app.shop_basket.bonus = "";
+
+        updateShop();
+    }); // end of diamond click event
 
     // delegate fruits to the whole container
     $(".shop__fruits-container").on("click", e => {
