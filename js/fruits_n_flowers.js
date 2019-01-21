@@ -984,10 +984,26 @@ function shopSetup() {
 
 function addShopEvents() {
     function updateShop() {
-        const price = 0;
+        let price = 0;
 
+        if (app.shop_basket.fruit) { price += 50; }
+
+        if (app.shop_basket.fast_hint) { price += 200; }
+
+        if (app.shop_basket.best_hint) { price += 300; }
+
+        if (app.shop_basket.diamond) { price += 2000; }
+
+        if (app.shop_basket.bonus && app.shop_basket.fruit) {
+            const bonusPrices = { "IH4": 250, "IV4": 750, "T5": 500, "L51": 400, "L52": 400, "I5X": 600, "I5CR": 850, "T6": 1000 };
+
+            price += bonusPrices[app.shop_basket.bonus];
+        } // end of bonus priceing
         console.log("BASKET", app.shop_basket);
+        console.log("$", price);
     } // end of updateShop
+
+
 
     shopSetup(); // set the fruit images and bonuses dynamically
     $("#shop-icon").on("click", () => {
@@ -1003,6 +1019,9 @@ function addShopEvents() {
 
         app.game_give_hint_at !== 10 ? $("#shop__fast-hint").css("color", "rgb(43, 34, 49)") : $("#shop__fast-hint").css("color", "#58e8f3");
     });
+
+
+    // SHOP EVENTS
 
     $("#shop__back").on("click", () => { $(".shop").hide(); });
 
