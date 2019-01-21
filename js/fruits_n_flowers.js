@@ -947,42 +947,44 @@ function addInventoryEvents() {
 
 
 
-function shopSetup() {
-    const
-        fruitPics = [
-            app.images.apple, app.images.orange, app.images.peach,
-            app.images.strawberry, app.images.plum, app.images.lime,
-            app.images.lemon, app.images.blood_orange, app.images.kiwi
-        ], // end of fruitPics
-        bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"],
-        fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
-
-
-    // add fruit pics
-    $(".shop__fruits > div").each(function (i) {
-        $(this)
-            .css("background-image", `url(${fruitPics[i].src})`)
-            .attr("id", "shop__" + fruits[i] + "-btn");
-    });
-
-    // add bonus pic
-    $(".shop__bonuses > div"
-    ).each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
-
-    // stop animation
-    $(".shop__bonuses div.bonus-sign div")
-        .css("animation", "none")
-        .css("background", "rgb(71, 62, 77)");
-
-    // square is a bit different, here I need to set other properties
-    $(".shop__bonuses .bonus-square")
-        .css("background-color", "transparent")
-        .css("border-color", "rgb(71, 62, 77)");
-} // end of shopSetup
-
-
-
 function addShopEvents() {
+    function shopSetup() {
+        const
+            fruitPics = [
+                app.images.apple, app.images.orange, app.images.peach,
+                app.images.strawberry, app.images.plum, app.images.lime,
+                app.images.lemon, app.images.blood_orange, app.images.kiwi
+            ], // end of fruitPics
+            bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"],
+            fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
+
+
+        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "", "price": 0 };
+
+        // add fruit pics
+        $(".shop__fruits > div").each(function (i) {
+            $(this)
+                .css("background-image", `url(${fruitPics[i].src})`)
+                .attr("id", "shop__" + fruits[i] + "-btn");
+        });
+
+        // add bonus pic
+        $(".shop__bonuses > div"
+        ).each(function (i) { createspecialGemDiv(null, bonusType[i], this); });
+
+        // stop animation
+        $(".shop__bonuses div.bonus-sign div")
+            .css("animation", "none")
+            .css("background", "rgb(71, 62, 77)");
+
+        // square is a bit different, here I need to set other properties
+        $(".shop__bonuses .bonus-square")
+            .css("background-color", "transparent")
+            .css("border-color", "rgb(71, 62, 77)");
+    } // end of shopSetup
+
+
+
     function updateShop() {
         // PRICEING THE ITEMS IN THE BASKET
         let price = 0;
@@ -1006,9 +1008,24 @@ function addShopEvents() {
             .html("$" + price)
             .css("color", `${price <= app.game_points ? "#58e8f3" : "#d684bb"}`);
 
+        app.shop_basket.price = price;
 
-        console.log("BASKET", app.shop_basket);
-        console.log("$", price);
+        // DISPLAY ITEM
+        fruitPics = {
+            "apple": app.images.apple, "orange": app.images.orange, "peach": app.images.peach,
+            "strawberry": app.images.strawberry, "plum": app.images.plum, "lime": app.images.lime,
+            "lemon": app.images.lemon, "blood_orange": app.images.blood_orange, "kiwi": app.images.kiwi
+        }; // end of fruitPics 
+
+        if (app.shop_basket.fruit) {
+            $(".shop__display").css("background-image", `url(${fruitPics[app.shop_basket.fruit].src})`);
+        } // end of if basket has a fruit
+        else if (app.shop_basket.diamond) {
+            $(".shop__display").css("background-image", `url(${app.images.diamond.src})`);
+        } // end of if basket has diamond
+        else {
+            $(".shop__display").css("background-image", "none");
+        } // end of basket has no fruit or diamond
     } // end of updateShop
 
 
@@ -1018,10 +1035,9 @@ function addShopEvents() {
         $(".shop").show();
 
         // reset shop properties
-        app.shop_price = 0;
-        $("#shop__price").html("$" + app.shop_price);
+        $("#shop__price").html("$0");
 
-        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "" };
+        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "", "price": 0 };
 
         app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
 
@@ -1029,11 +1045,16 @@ function addShopEvents() {
     });
 
 
+    function buyContentOfBasket() {
+        console.log("BUY");
+    } // end of buyContentOfBasket
+
+
     // SHOP EVENTS
 
     $("#shop__back").on("click", () => { $(".shop").hide(); });
 
-    $("#shop__buy").on("click", () => { });
+    $("#shop__buy").on("click", () => { buyContentOfBasket(); });
 
     $("#shop__fast-hint").on("click", () => {
         if (app.game_give_hint_at === 10) {
@@ -2564,7 +2585,7 @@ var app = {
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
-    "game_points": 0,            // total points
+    "game_points": 5000,            // total points
     "game_time_from_last_hint": 0,
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
