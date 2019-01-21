@@ -7,46 +7,99 @@
     height: 88%;
     background: rgba(20, 16, 23, 0.995);
     color: $main-text-color;
-    text-align: center;
-    justify-content: center;
-    align-items: center;    
-    flex-direction: column;
-    font-size: 40px;
+    font-size: 2.7vh;
     z-index: 9999;
 
-    .shop__items-and-scroll-container {
+    .shop-items {
         position: relative;
-        display: flex;
-        flex-direction: row;
         margin: 2%;
-        padding: 2%;
-        width: 92%;
-        height: 84%;
+        width: 96%;
+        height: 96%;
         border: 1px solid rgb(43, 34, 49);
 
-        .shop-scroll {
-            margin: 1%;
-            width: 1%;
-            height: 98%;
-            border: 1px solid rgb(43, 34, 49);
-        }
-
-        .shop-items {
+        .shop__fruit-and-bonus-section {
             display: flex;
-            flex-direction: column;
-            margin: 1%;
-            width: 94%;
-            height: 98%;
-            border: 1px solid rgb(43, 34, 49);
-            overflow: hidden;
+            flex-direction: row;
+            width: 100%;
+            height: 40%;
             
-            .shop-item__row {
-                flex-shrink: 0;
-                margin: 1%;
-                width: 98%;
-                height: 15%;
+            .shop__fruit-section {
+                margin: 2%;
+                padding: 2%;
+                width: 92%;
+                height: 90%;
                 border: 1px solid rgb(43, 34, 49);
+
+                .shop__text {
+                    width: 100%;
+                    text-align: center;
+                }
+
+                .shop__fruits-container {
+                    width: 100%;
+                    height: 85%;
+                    background: red;
+                    border: 1px solid rgb(43, 34, 49);
+                }
+            }
+    
+            .shop__bonus-section {
+                margin: 2%;
+                padding: 2%;
+                width: 92%;
+                height: 90%;
+                border: 1px solid rgb(43, 34, 49);
+
+                .shop__text {
+                    width: 100%;
+                    text-align: center;
+                }
+
+                .shop__bonuses-container {
+                    width: 100%;
+                    height: 85%;
+                    background: red;
+                    border: 1px solid rgb(43, 34, 49);
+                }
             }
         }
     }
+}
+
+.shop__text {
+    opacity: 0.7;
+}
+
+
+.shop__misc-section {
+    width: 96%;
+    height: 20%;
+    margin: 2%;
+    margin-top: 6%;
+    border: 1px solid rgb(43, 34, 49);
+    
+    .misc-text {
+        padding-left: 2%;
+    }
+    
+    .shop-misc-container {
+        width: 96%;
+        height: 60%;
+        margin: 2%;
+        background: green;
+    }
+}
+
+.shop__display {
+    width: 14%;
+    height: 10%;
+    margin: 4% 43%;
+    background: pink;
+}
+
+.shop-footer {
+    width: 96%;
+    height: 18%;
+    margin: 2%;
+    background: blue;
 }
