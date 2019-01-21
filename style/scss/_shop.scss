@@ -13,4 +13,40 @@
     flex-direction: column;
     font-size: 40px;
     z-index: 9999;
+
+    .shop__items-and-scroll-container {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        margin: 2%;
+        padding: 2%;
+        width: 92%;
+        height: 84%;
+        border: 1px solid rgb(43, 34, 49);
+
+        .shop-scroll {
+            margin: 1%;
+            width: 1%;
+            height: 98%;
+            border: 1px solid rgb(43, 34, 49);
+        }
+
+        .shop-items {
+            display: flex;
+            flex-direction: column;
+            margin: 1%;
+            width: 94%;
+            height: 98%;
+            border: 1px solid rgb(43, 34, 49);
+            overflow: hidden;
+            
+            .shop-item__row {
+                flex-shrink: 0;
+                margin: 1%;
+                width: 98%;
+                height: 15%;
+                border: 1px solid rgb(43, 34, 49);
+            }
+        }
+    }
 }
