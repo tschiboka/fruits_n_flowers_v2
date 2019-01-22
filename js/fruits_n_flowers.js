@@ -1414,66 +1414,70 @@ function checkMatches() {
 
 
 function animateExplosions(matches) {
-    // disable interaction with the gameboard while animation is going 
-    // until new characters are on the board
-    app.game_interaction_enabled = false;
-    app.game_hint_is_paused = false; // hint stops counting time, so it won't disrupt animation
+    // several function can call animateExplosions, in cases matches might be even empty
+    if (matches.length) {
+        console.log(matches);
+        // disable interaction with the gameboard while animation is going 
+        // until new characters are on the board
+        app.game_interaction_enabled = false;
+        app.game_hint_is_paused = false; // hint stops counting time, so it won't disrupt animation
 
-    // parentXY is necessary for calculating the shards relative xy
-    const parentXY = $(".game-board")[0].getBoundingClientRect();
+        // parentXY is necessary for calculating the shards relative xy
+        const parentXY = $(".game-board")[0].getBoundingClientRect();
 
-    // iterate matches
-    matches.map(match => {
-        if (match.sample !== "X") {
-            // iterate id coordinates
-            for (i = 0; i < match.coords.length; i++) {
-                const coord = match.coords[i];
+        // iterate matches
+        matches.map(match => {
+            if (match.sample !== "X") {
+                // iterate id coordinates
+                for (i = 0; i < match.coords.length; i++) {
+                    const coord = match.coords[i];
 
-                // get id XY position
-                const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
+                    // get id XY position
+                    const idXY = $(`#r${coord[0]}c${coord[1]}-pic`)[0].getBoundingClientRect();
 
-                // create 5 shards for each id
-                for (sh = 0; sh < 5; sh++) {
-                    // create a shard
-                    shard = document.createElement("div");
-                    shard.id = `shard_r${coord[0]}c${coord[1]}`;
-                    $(shard).addClass("shard");
+                    // create 5 shards for each id
+                    for (sh = 0; sh < 5; sh++) {
+                        // create a shard
+                        shard = document.createElement("div");
+                        shard.id = `shard_r${coord[0]}c${coord[1]}`;
+                        $(shard).addClass("shard");
 
-                    // set x y relative to gameboard and its own piece position
-                    const diffX = [18, 18, 10, 2, 0], // each piece is placed a bit differently
-                        diffY = [0, 14, 17, 14, 0];
+                        // set x y relative to gameboard and its own piece position
+                        const diffX = [18, 18, 10, 2, 0], // each piece is placed a bit differently
+                            diffY = [0, 14, 17, 14, 0];
 
-                    $(shard).css({ top: idXY.y - parentXY.y + diffY[sh], left: idXY.x - parentXY.x + diffX[sh] });
+                        $(shard).css({ top: idXY.y - parentXY.y + diffY[sh], left: idXY.x - parentXY.x + diffX[sh] });
 
-                    // set background image according to the fruit type
-                    // 0 is reserved for transparent so array should start from 1
-                    const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
-                        imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
-                        imgURL = `url(${app.images[imgName].src})`;
+                        // set background image according to the fruit type
+                        // 0 is reserved for transparent so array should start from 1
+                        const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
+                            imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
+                            imgURL = `url(${app.images[imgName].src})`;
 
-                    $(shard).css(`backgroundImage`, imgURL);
-                    $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
+                        $(shard).css(`backgroundImage`, imgURL);
+                        $(shard).addClass(`shard${sh + 1}`); // add shard number for different keyframe animations
 
-                    // delay explosion on pieces randomly
-                    const randomDelay = ((Math.random() * 1.5) / 10).toFixed(2) + "s";
-                    $(shard)[0].style.animationDelay = randomDelay;
-                    $(shard)[0].style.WebkitAnimationDelay = randomDelay;
-                    $(".game-board").append(shard);
-                } // end of creating five shards
-            }; // end of iteration id times
-        } // end if sample is not none
-    }); //end of match iteration
+                        // delay explosion on pieces randomly
+                        const randomDelay = ((Math.random() * 1.5) / 10).toFixed(2) + "s";
+                        $(shard)[0].style.animationDelay = randomDelay;
+                        $(shard)[0].style.WebkitAnimationDelay = randomDelay;
+                        $(".game-board").append(shard);
+                    } // end of creating five shards
+                }; // end of iteration id times
+            } // end if sample is not none
+        }); //end of match iteration
 
-    // remove elements with 0.45s delay, giving time for animation
-    const removeShardsDelay = setTimeout(() => {
-        $(".shard").remove();
+        // remove elements with 0.45s delay, giving time for animation
+        const removeShardsDelay = setTimeout(() => {
+            $(".shard").remove();
 
-        // when animation is done start to fill the board up again
-        gravity();  // make elements fill the created gaps
-        clearTimeout(removeShardsDelay);
-    }, 450);
+            // when animation is done start to fill the board up again
+            gravity();  // make elements fill the created gaps
+            clearTimeout(removeShardsDelay);
+        }, 450);
 
-    destroyStones(matches.map(match => match.coords));
+        destroyStones(matches.map(match => match.coords));
+    } // end of if there are matches at all
 } // end of animateExplosions
 
 
@@ -1685,7 +1689,6 @@ function displayLevelPoints() {
     // find the centre of the matches
     const X = [], Y = [];
 
-    console.log(app.game_matches);
     // get the x and y coordinates
     if (app.game_matches.lenght) {
         app.game_matches.forEach(match => {
@@ -1792,7 +1795,7 @@ function displayLevelPoints() {
 
 
 
-// just na helper function, when game is finishing, it won't let the game finish while there is flowers above any basket
+// just a helper function, when game is finishing, it won't let the game finish while there is flowers above any basket
 function checkFlowersOverBasket() {
     // check if character above is flower
     const isFlower = (e) => ["A", "B", "C", "D", "E"].find(fl => fl === e);
@@ -1810,7 +1813,6 @@ function checkFlowersOverBasket() {
 
 
 function destroyFlowersOverBasket() {
-    checkFlowersOverBasket();
     // get the basket positions
     basketsPos = []
     app.board.forEach((row, rowPos) =>
@@ -2715,6 +2717,36 @@ function rewardUser() {
         // add values to inventory
         rewardsArr.forEach(rew => app.inventory.unshift(rew));
 
+        // give a message about the newly recieved rewards gem(s)
+        const
+            rewardMsgDiv = document.createElement("div"),
+            gemDiv = document.createElement("div"),
+            okBtn = document.createElement("button"),
+            pluralS = n => n > 1 ? `s` : ``;     // weather message has gem / gems
+
+        // add gem container
+        $(gemDiv).addClass("reward-gem-container");
+
+        // add OK button
+        $(okBtn)
+            .addClass("end-of-level-ok-btn")
+            .html("Thanks!")
+            .on("click", () => { $(".reward-div").hide(); });
+
+        $(rewardMsgDiv)
+            .addClass("reward-div levelHasNotBeenCompletedDiv")  // level... class matches our needs here
+            .html(`You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} then the level requirement.` +
+                ` Find your reward gem${pluralS(rewardsArr.length)} in your inventory!`)
+            .append(gemDiv)
+            .append(okBtn);
+
+
+        // add div to level-menu as usual (only because it looks great)
+        $(".level-menu").append(rewardMsgDiv);
+
+        $(rewardMsgDiv).show();
+
+        console.log($(rewardMsgDiv));
     } // end of if there is extra flowers collected
 
 } // end of rewardUser
