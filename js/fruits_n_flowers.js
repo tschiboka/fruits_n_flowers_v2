@@ -1005,7 +1005,7 @@ function addShopEvents() {
         // DISPLAY PRICE
         $("#shop__price")
             .html("$" + price)
-            .css("color", `${price <= app.game_points ? "#58e8f3" : "#d684bb"}`);
+            .css("color", `${price <= app.game_total_points ? "#58e8f3" : "#d684bb"}`);
 
         app.shop_basket.price = price;
 
@@ -1040,13 +1040,13 @@ function addShopEvents() {
     function buyContentOfBasket() {
         let transaction = false;
         console.log("BUY");
-        if (app.game_points >= app.shop_basket.price) {
+        if (app.game_total_points >= app.shop_basket.price) {
 
             // take price off
-            app.game_points -= app.shop_basket.price;
+            app.game_total_points -= app.shop_basket.price;
 
             // display current user poins
-            $(".game-board__total-points").html(app.game_points + "$");
+            $(".game-board__total-points").html(app.game_total_points + "$");
 
             // create an inventory element
             const fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
@@ -2626,7 +2626,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 7,
-        "time": 180,
+        "time": 18,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -2662,7 +2662,6 @@ var app = {
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
-    "game_points": 5000,            // total points
     "game_time_from_last_hint": 0,
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
@@ -2707,7 +2706,7 @@ function startLevel(level) {
     $("#flower-counter").html(levels[app.currentLevel - 1].flowersToCompleteTheLevel);
 
     // reset points
-    $(".game-board__total-points").html("$" + app.game_points);
+    $(".game-board__total-points").html("$" + app.game_total_points);
 
     // level timer
     displayTime(app.game_time_left); // prime timer
