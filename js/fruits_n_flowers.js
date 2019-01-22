@@ -1091,6 +1091,27 @@ function addShopEvents() {
             // close shop if any transactoion happened
             if (transaction) $(".shop").hide();
         } // end of there is sufficient found
+        else {
+            // create no funds message
+            const
+                msgDiv = document.createElement("div"),
+                okBtn = document.createElement("button");
+
+            $(okBtn)
+                .addClass("insufficient-funds-btn")
+                .html("OK")
+                .on("click", () => {
+                    $(".insufficient-funds-msg").remove();
+                });
+
+            $(msgDiv)
+                .addClass("insufficient-funds-msg")
+                .html("Insufficient funds!")
+                .append(okBtn);
+
+            $(".shop").append(msgDiv);
+            console.log("FUNDS BABE!", msgDiv);
+        } // end of there were insufficient founds
     } // end of buyContentOfBasket
 
 
@@ -1106,18 +1127,23 @@ function addShopEvents() {
     // SHOP EVENTS
 
     $("#shop-icon").on("click", () => {
-        $(".shop").show();
+        if (app.game_interaction_enabled) {
+            $(".shop").show();
 
-        // reset shop properties
-        $("#shop__price").html("$0");
+            // remove message if it has been left open
+            $(".insufficient-funds-msg").remove();
 
-        app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "", "price": 0 };
+            // reset shop properties
+            $("#shop__price").html("$0");
 
-        app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
+            app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "", "price": 0 };
 
-        app.game_give_hint_at !== 10 ? $("#shop__fast-hint").css("color", "rgb(43, 34, 49)") : $("#shop__fast-hint").css("color", "#58e8f3");
+            app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
 
-        updateShop();
+            app.game_give_hint_at !== 10 ? $("#shop__fast-hint").css("color", "rgb(43, 34, 49)") : $("#shop__fast-hint").css("color", "#58e8f3");
+
+            updateShop();
+        } // end of if interaction is enabled with the board
     }); // end of shop icon click event
 
 
@@ -2459,6 +2485,9 @@ function displayTime(time) {
 function closeLevel() {
     app.game_interaction_enabled = false; // user can not interact the board after this point
     app.game_interaction_locked = true; // don't let further functions set interaction back as a side effect
+
+    // close shop if it was open
+    $(".shop").hide();
 
     // an end game is coming where all bonus gems are destoyed
     // display time is up label
