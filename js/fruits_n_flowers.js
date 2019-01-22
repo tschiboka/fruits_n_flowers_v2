@@ -1030,16 +1030,81 @@ function addShopEvents() {
 
         // display bonuses
         $(".shop__display").empty();
+
         if (app.shop_basket.bonus) {
             createspecialGemDiv(null, app.shop_basket.bonus, ".shop__display");
         } // end of if basket has bonus
-
-
     } // end of updateShop
+
+
+    function buyContentOfBasket() {
+        let transaction = false;
+        console.log("BUY");
+        if (app.game_points >= app.shop_basket.price) {
+
+            // take price off
+            app.game_points -= app.shop_basket.price;
+
+            // display current user poins
+            $(".game-board__total-points").html(app.game_points + "$");
+
+            // create an inventory element
+            const fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
+            let newInventoryElem = null;
+
+            // add fruit
+            if (app.shop_basket.fruit) {
+                newInventoryElem = fruits.findIndex(f => f === app.shop_basket.fruit) + 1;
+                transaction = true;
+            } // end of if basket had fruit
+
+            // add bonus
+            if (app.shop_basket.bonus) {
+                newInventoryElem += "-" + app.shop_basket.bonus;
+                transaction = true;
+            } // end of if basket had bonus
+
+            // add diamond
+            if (app.shop_basket.diamond) {
+                newInventoryElem = "*";
+                transaction = true;
+            } // end of basket had diamond
+
+            // add fast hint
+            if (app.shop_basket.fast_hint) {
+                app.game_give_hint_at = 3;
+                transaction = true;
+            } // and of basket had fast-hint
+
+            // add best hint
+            if (app.shop_basket.best_hint) {
+                app.game_best_hint = true;
+                transaction = true;
+            } // and of basket had fast-hint
+
+            // display item in the inventory
+            if (newInventoryElem) {
+                app.inventory.unshift(newInventoryElem);
+                displayInventoryItems();
+            } // end of if there was an element to be displayed in the inventory
+
+            // close shop if any transactoion happened
+            if (transaction) $(".shop").hide();
+        } // end of there is sufficient found
+    } // end of buyContentOfBasket
+
+
 
 
 
     shopSetup(); // set the fruit images and bonuses dynamically
+
+
+
+
+
+    // SHOP EVENTS
+
     $("#shop-icon").on("click", () => {
         $(".shop").show();
 
@@ -1051,15 +1116,10 @@ function addShopEvents() {
         app.game_best_hint ? $("#shop__best-hint").css("color", "rgb(43, 34, 49)") : $("#shop__best-hint").css("color", "#58e8f3");
 
         app.game_give_hint_at !== 10 ? $("#shop__fast-hint").css("color", "rgb(43, 34, 49)") : $("#shop__fast-hint").css("color", "#58e8f3");
-    });
 
+        updateShop();
+    }); // end of shop icon click event
 
-    function buyContentOfBasket() {
-        console.log("BUY");
-    } // end of buyContentOfBasket
-
-
-    // SHOP EVENTS
 
     $("#shop__back").on("click", () => { $(".shop").hide(); });
 
@@ -1116,6 +1176,10 @@ function addShopEvents() {
 
             app.shop_basket.fruit = fruit;
 
+            if (!app.shop_basket.bonus) {
+                app.shop_basket.bonus = "I4H";
+            } // end of if no bonus has been selected yet
+
             // reset unnecessary basket properties, in this case diamond needs to go
             app.shop_basket.diamond = "";
 
@@ -1129,6 +1193,9 @@ function addShopEvents() {
             const bonus = $(e.target).children().attr("class").split("bonus-sign SIGN-")[1];
 
             app.shop_basket.bonus = bonus;
+
+            // add apple as a fruit if fruit has not been chosen yet
+            if (!app.shop_basket.fruit) { app.shop_basket.fruit = "apple"; }
 
             // reset unnecessary basket properties, in this case diamond needs to go
             app.shop_basket.diamond = "";
@@ -2512,6 +2579,7 @@ function showLevelStats() {
                 .html()
                 .replace(/\d+/, tot); // the new total earned after a level completition
             $(".game-board__total-points").html(totPts);
+            console.log("here i give points");
         } // escape anim
     }, 100); // end of animPointsDelay
 } // end of showLevelStats
@@ -2637,6 +2705,9 @@ function startLevel(level) {
 
     // reset flower counter
     $("#flower-counter").html(levels[app.currentLevel - 1].flowersToCompleteTheLevel);
+
+    // reset points
+    $(".game-board__total-points").html("$" + app.game_points);
 
     // level timer
     displayTime(app.game_time_left); // prime timer
