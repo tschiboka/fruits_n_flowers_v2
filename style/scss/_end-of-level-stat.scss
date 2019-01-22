@@ -67,9 +67,33 @@
 
 
 .reward-gem-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     height: 20%;
-    background: rgba(255, 255, 255, 0.05);
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
     border: 2px solid rgb(43, 34, 49);
     border-left: none;
     border-right: none;
+
+    .reward-gem {
+        margin: 0 2% 0 2%;
+        height: 75%;
+        width: 15%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 80% 80%;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgb(66, 57, 73);
+
+        &:first-child {
+            border-left: none;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+    }
 }

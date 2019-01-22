@@ -2678,6 +2678,7 @@ function showLevelStats() {
 
 
 function rewardUser() {
+
     // if you have had extra flowers collected apart from the level requirement
     // user recieves reward gems:
     //      - > 5 extra, divide the numbers by five eg (12 = 5 + 5 + 2) 
@@ -2726,6 +2727,34 @@ function rewardUser() {
 
         // add gem container
         $(gemDiv).addClass("reward-gem-container");
+
+        // greate gems
+        const img = {
+            "1": app.images.apple,
+            "2": app.images.orange,
+            "3": app.images.peach,
+            "4": app.images.strawberry,
+            "5": app.images.plum,
+            "6": app.images.lime,
+            "7": app.images.lemon,
+            "8": app.images.blood_orange,
+            "9": app.images.kiwi,
+            "*": app.images.diamond,
+        } // end of img object declaration    
+
+        rewardsArr.forEach(rew => {
+            const
+                [fruit, bonus] = rew.match(/[^-]+/g)
+            rewGem = document.createElement("div");
+
+            $(rewGem)
+                .addClass("reward-gem")
+                .css("background-image", "url('" + img[fruit].src + "')");
+
+            $(gemDiv).append(rewGem);
+
+            console.log(rewGem);
+        }); // end of rewards forEach
 
         // add OK button
         $(okBtn)
@@ -2780,7 +2809,7 @@ var levels = [
         "blueprint": [
             "F.......F",
             "LF.**..FL",
-            "L.F.....L",
+            "L.......L",
             "L.F12...L",
             "L.FF....L",
             "L.FF2.FFL",
