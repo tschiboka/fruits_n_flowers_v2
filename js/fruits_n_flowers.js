@@ -571,7 +571,7 @@ function swipeCharacters(swipeArgs) {
         animateExplosions(matches);
     } // end of if matches found
     displayBoard();
-    checkFlowersOverBasket();
+    destroyFlowersOverBasket();
 } // end of swipeCharacters
 
 
@@ -1659,9 +1659,10 @@ function fillBoardWithNewFruits() {
 function cycleMatches() {
     const matches = checkMatches();
     displayBoard();
+    destroyFlowersOverBasket();
     if (matches) {
         animateExplosions(matches);
-        checkFlowersOverBasket();
+        console.log("here i check flowersoverbasket")
     } // if there are further matches
     else {
         const possibleMatches = possibleMoves();
@@ -1678,7 +1679,7 @@ function cycleMatches() {
             } // end of if interaction is not locked because of the end-game
         } // end of if there are possible matches
     } // end of if there are no further matches
-    checkFlowersOverBasket();
+    destroyFlowersOverBasket();
 } // end of cycleMatches
 
 
@@ -1688,14 +1689,22 @@ function displayLevelPoints() {
     const X = [], Y = [];
 
     // get the x and y coordinates
-    app.game_matches.forEach(match => {
-        match.coords.forEach(xy => {
-            const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
+    if (app.game_matches) {
+        app.game_matches.forEach(match => {
+            match.coords.forEach(xy => {
+                const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
 
-            X.push(rect.x);
-            Y.push(rect.y);
-        }); // end of match foreach
-    }); // end of matches forEach
+                X.push(rect.x);
+                Y.push(rect.y);
+            }); // end of match foreach
+        }); // end of matches forEach    
+    } // end of if points coming from a match
+    else {
+        const rect = $(".game-board")[0].getBoundingClientRect();
+
+        X.push(rect.x);
+        Y.push(rect.y);
+    } // end of points coming without a match eg: flower over basket
 
     // get the average xy
     avgCoords = {
@@ -1783,7 +1792,28 @@ function displayLevelPoints() {
 } // end of displayLevelPoints
 
 
+
+
+// just na helper function, when game is finishing, it won't let the game finish while there is flowers above any basket
 function checkFlowersOverBasket() {
+    // check if character above is flower
+    const isFlower = (e) => ["A", "B", "C", "D", "E"].find(fl => fl === e);
+    let flowerOverBasket = 0;
+
+    app.board.forEach((row, rowPos) =>
+        row.forEach((cell, cellPos) => {
+            if (cell === "U" && isFlower((app.board[rowPos - 1] || [])[cellPos])) flowerOverBasket++;
+        }) // end of cell
+    ); // end of row
+    console.log("FLOWER OVER BASKET", flowerOverBasket);
+    return flowerOverBasket;
+} // end of checkFlowersOverBasket
+
+
+
+
+function destroyFlowersOverBasket() {
+    checkFlowersOverBasket();
     // get the basket positions
     basketsPos = []
     app.board.forEach((row, rowPos) =>
@@ -1848,7 +1878,7 @@ function checkFlowersOverBasket() {
             } // if flower
         } // end of if row > 0
     }); // end of basket iteration
-} // end of checkFloversOverBasket
+} // end of destroyFlowersOverBasket
 
 
 function getSpecialGems(matches) {
@@ -2518,9 +2548,9 @@ function closeLevel() {
 
     let bonusesLeft;
     const turnDelay = setInterval(() => {
-
         // if no more bonus left get out of Interval
         if (bonusesLeft === 0) {
+            console.log(bonusesLeft === 0 && checkFlowersOverBasket() === 0);
             // remove game table and display levelboard again
             $(timeIsUp).remove();
             $(".game-board")[0].removeChild($(".game-board__table")[0]);
@@ -2725,12 +2755,12 @@ var levels = [
             "LF.**..FL",
             "L.F.....L",
             "L.F12...L",
-            "L.F.....L",
-            "L.F12.FFL",
-            "L.F12...L",
+            "L.FF....L",
+            "L.FF2.FFL",
+            "L.FF2...L",
             "LLLALLLLL",
             "#LLLLLLL#",
-            "#1F1LLLL#",
+            "#FFFLLLL#",
             "##UUUU###",
         ],
         "fruitVariationNumber": 6,
