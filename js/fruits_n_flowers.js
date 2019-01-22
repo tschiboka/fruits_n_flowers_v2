@@ -16,6 +16,7 @@ function start() {
     createLevelTables();
     createLevelPageIndicator();
     styleLevelMenuToCurrenPage();
+    addMenuEvents();
     addLevelEvents();
     addInventoryEvents();
     addShopEvents();
@@ -246,6 +247,15 @@ function styleLevelMenuToCurrenPage() {
     $(".level-menu__footer__text-container")
         .html(`-&lt;[&nbsp;&nbsp;${activePageNum} / ${Math.ceil(levels.length / 25)}&nbsp;&nbsp;]&gt;-`);
 } // end of styleLevelMenu
+
+
+
+
+function addMenuEvents() {
+    $(".menu__open-close-btn-box").on("click", () => {
+        console.log("MENU OPEN");
+    });
+} // end of add MenuEvents
 
 
 
@@ -1416,7 +1426,6 @@ function checkMatches() {
 function animateExplosions(matches) {
     // several function can call animateExplosions, in cases matches might be even empty
     if (matches.length) {
-        console.log(matches);
         // disable interaction with the gameboard while animation is going 
         // until new characters are on the board
         app.game_interaction_enabled = false;
@@ -2027,7 +2036,6 @@ function createspecialGemDiv(coord, name, elementSelector) {
     else {
 
         // otherwise add divs to elementId
-        console.log("ELEMENT", $(elementSelector), specialDiv)
         $(elementSelector).append(specialDiv);
     } // end of if coord is falsy
 } // end of createSpecialGemDiv
@@ -2779,14 +2787,8 @@ function rewardUser() {
 
             if (bonus) {
                 createspecialGemDiv(null, bonus, ".reward-gem" + rewInd);
-
-                console.log("HERE", $("reward-gem" + rewInd))
             } // end of if theres bonus
-
-            console.log(rewGem);
         }); // end of rewards forEach
-
-        console.log($(rewardMsgDiv));
     } // end of if there is extra flowers collected
 
 } // end of rewardUser
@@ -2818,22 +2820,22 @@ var levels = [
     // level 1
     {
         "blueprint": [
-            "F.......F",
-            "LF.**..FL",
-            "L.......L",
-            "L.F12...L",
-            "L.FF....L",
-            "L.FF2.FFL",
-            "L.FF2...L",
-            "LLLALLLLL",
+            "..FFFFF..",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "LLLLLLLLL",
             "#LLLLLLL#",
-            "#FFFLLLL#",
-            "##UUUU###",
+            "##LLLLL##",
+            "###UUU###",
         ],
         "fruitVariationNumber": 6,
-        "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
-        "flowersToCompleteTheLevel": 1,
-        "time": 2,
+        "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
+        "flowersToCompleteTheLevel": 3,
+        "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
