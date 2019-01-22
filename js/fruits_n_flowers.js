@@ -2027,6 +2027,7 @@ function createspecialGemDiv(coord, name, elementSelector) {
     else {
 
         // otherwise add divs to elementId
+        console.log("ELEMENT", $(elementSelector), specialDiv)
         $(elementSelector).append(specialDiv);
     } // end of if coord is falsy
 } // end of createSpecialGemDiv
@@ -2742,20 +2743,6 @@ function rewardUser() {
             "*": app.images.diamond,
         } // end of img object declaration    
 
-        rewardsArr.forEach(rew => {
-            const
-                [fruit, bonus] = rew.match(/[^-]+/g)
-            rewGem = document.createElement("div");
-
-            $(rewGem)
-                .addClass("reward-gem")
-                .css("background-image", "url('" + img[fruit].src + "')");
-
-            $(gemDiv).append(rewGem);
-
-            console.log(rewGem);
-        }); // end of rewards forEach
-
         // add OK button
         $(okBtn)
             .addClass("end-of-level-ok-btn")
@@ -2774,6 +2761,30 @@ function rewardUser() {
         $(".level-menu").append(rewardMsgDiv);
 
         $(rewardMsgDiv).show();
+
+
+        // set gems picture and bonus divs
+        rewardsArr.forEach((rew, rewInd) => {
+            const
+                [fruit, bonus] = rew.match(/[^-]+/g)
+            rewGem = document.createElement("div");
+
+            // set bg pic and attr
+            $(rewGem)
+                .addClass("reward-gem reward-gem" + rewInd)
+                .css("background-image", "url('" + img[fruit].src + "')");
+
+            // create special gem
+            $(gemDiv).append(rewGem);
+
+            if (bonus) {
+                createspecialGemDiv(null, bonus, ".reward-gem" + rewInd);
+
+                console.log("HERE", $("reward-gem" + rewInd))
+            } // end of if theres bonus
+
+            console.log(rewGem);
+        }); // end of rewards forEach
 
         console.log($(rewardMsgDiv));
     } // end of if there is extra flowers collected
