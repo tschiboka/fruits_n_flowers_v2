@@ -2547,21 +2547,19 @@ function closeLevel() {
 
 
 function showLevelStats() {
-    console.log("TASK", levels[app.currentLevel - 1].flowersToCompleteTheLevel);
-
+    // create a message div: level has not been completed
     if (app.flowers < levels[app.currentLevel - 1].flowersToCompleteTheLevel) {
-        // create a message div: level has not been completed
-        console.log("BOOOOO");
         const
             notCompletedDiv = document.createElement("div"),
             okBtn = document.createElement("button");
 
+        // set OK button
         $(okBtn)
             .addClass("end-of-level-ok-btn")
             .html("Try again!")
             .on("click", () => { $(notCompletedDiv).remove(); });
 
-
+        // set the message div
         $(notCompletedDiv)
             .addClass("levelHasNotBeenCompletedDiv")
             .html("Level has not been completed! On this level you need to collect " +
@@ -2569,16 +2567,19 @@ function showLevelStats() {
                 " and your basket has " + app.flowers + ".")
             .append(okBtn);
 
+        // add it to level-menu (it's size perfectly fits the layout,
+        // even though thematicaly containing such element doesn't make sense)
         $(".level-menu").append(notCompletedDiv);
 
         $(notCompletedDiv).show();
-
-        console.log(notCompletedDiv);
     } // end of if level assignment hasn't been completed
+    // if the assignment has been completed show level stats and add points
     else {
         // Display new Total points
         $(".end-of-level-stat").show();
-        const totEl = $("#level-stat__total-points"),
+
+        const
+            totEl = $("#level-stat__total-points"),
             lvlEl = $("#level-stat__level-points");
 
         // ok button not visible yet
@@ -2587,11 +2588,12 @@ function showLevelStats() {
         let tot = app.game_total_points,
             lvl = app.game_level_points;
 
+        // display the point values
         totEl.html(tot);
         lvlEl.html(lvl);
 
         // animate tot points going up while level points down (2sec = 20 display)
-        let counter = 30,
+        let counter = 40,
             pointsDiff; // declared below
 
         // try to distribute points as equally as possible
@@ -2620,7 +2622,11 @@ function showLevelStats() {
                 clearInterval(animPointsDelay);
                 $("#level-stat__ok-btn")
                     .show()
-                    .on("click", () => { $(".end-of-level-stat").hide(); });
+                    .on("click", () => {
+                        $(".end-of-level-stat").hide();
+
+                        rewardUser();
+                    }); // end of OK button event listener
 
                 app.game_total_points += app.game_level_points;
                 app.game_level_points = 0;
@@ -2640,8 +2646,53 @@ function showLevelStats() {
             } // escape anim
         }, 100); // end of animPointsDelay
     } // end of if level assignment has been completed
-
 } // end of showLevelStats
+
+
+
+function rewardUser() {
+    // if you have had extra flowers collected apart from the level requirement
+    // user recieves reward gems:
+    //      - > 5 extra, divide the numbers by five eg (12 = 5 + 5 + 2) 
+    //      - every 5 extra: reward is a diamond
+    //      - 4 extra: reward is an T6
+    //      - 3 extra: reward is a I5CR or I4V
+    //      - 2 extra: reward is a IX or T5
+    //      - 1 extra: reward is I4H or L51 or L52 
+    const extraFlowers = app.flowers - levels[app.currentLevel - 1].flowersToCompleteTheLevel;
+
+    if (extraFlowers > 0) {
+        const // divvy up the rewards between diamonds and flowers and set up function vars
+            diamonds = Math.floor(extraFlowers / 5),                                // number of diamonds recieved
+            rest = extraFlowers - (5 * diamonds),                                   // any left less than 5
+            rewardsArr = [],                                                        // format is identical to inventory, so inventory arr can be pushed easyly
+            fruitRange = levels[app.currentLevel - 1].fruitVariationNumber,         // don't give user fruit out of level range
+            fruitArr = [...Array(fruitRange).keys()].map(f => ++f),                 // at the beggining of the level progress higher fruits won't be really usable
+            randomArrayElement = arr => arr[Math.floor(Math.random() * arr.length)],// choose a random element from an array
+            fruit = randomArrayElement(fruitArr);                                   // the chosen fruit
+
+
+        // build up rewards array
+
+        // add diamonds
+        for (let i = 0; i < diamonds; i++) {
+            rewardsArr.push("*");
+        } // end of for diamonds
+
+        // set the rest of the rewards
+        switch (rest) {
+            case 4: { rewardsArr.push(fruit + "-T6"); break; }
+            case 3: { rewardsArr.push(fruit + "-" + randomArrayElement(["I5CR", "I4V"])); break; }
+            case 2: { rewardsArr.push(fruit + "-" + randomArrayElement(["I5X", "T5"])); break; }
+            case 1: { rewardsArr.push(fruit + "-" + randomArrayElement(["I4H", "L51", "L52"])); break; }
+        } // end of swith rest
+
+        // add values to inventory
+        rewardsArr.forEach(rew => app.inventory.unshift(rew));
+
+    } // end of if there is extra flowers collected
+
+} // end of rewardUser
 
 /*
  
@@ -2672,20 +2723,20 @@ var levels = [
         "blueprint": [
             "F.......F",
             "LF.**..FL",
-            "L.......L",
-            "L..12...L",
-            "L.......L",
-            "L..12.FFL",
+            "L.F.....L",
+            "L.F12...L",
+            "L.F.....L",
+            "L.F12.FFL",
             "L.F12...L",
             "LLLALLLLL",
             "#LLLLLLL#",
-            "#111LLLL#",
-            "###UUU###",
+            "#1F1LLLL#",
+            "##UUUU###",
         ],
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 7, // this will help to generate new flowers when board starts to run out
-        "flowersToCompleteTheLevel": 7,
-        "time": 18,
+        "flowersToCompleteTheLevel": 1,
+        "time": 2,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},

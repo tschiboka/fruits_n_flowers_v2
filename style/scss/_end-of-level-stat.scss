@@ -34,6 +34,7 @@
     border: 2px solid rgb(43, 34, 49);
     border-left: none;
     border-right: none;
+    
     &:hover {
         cursor: pointer;
         background: rgba(255, 255, 255, 0.1);
@@ -53,9 +54,13 @@
         font-size: 4vh;
         font-family: "main-game-font";
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid $main-text-color;
+        border: 2px solid rgb(43, 34, 49);
+        border-left: none;
+        border-right: none;
+        
         &:hover {
             cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
         }
     }
 }
