@@ -2547,70 +2547,100 @@ function closeLevel() {
 
 
 function showLevelStats() {
-    // Display new Total points
-    $(".end-of-level-stat").show();
-    const totEl = $("#level-stat__total-points"),
-        lvlEl = $("#level-stat__level-points");
+    console.log("TASK", levels[app.currentLevel - 1].flowersToCompleteTheLevel);
 
-    // ok button not visible yet
-    $("#level-stat__ok-btn").hide();
+    if (app.flowers < levels[app.currentLevel - 1].flowersToCompleteTheLevel) {
+        // create a message div: level has not been completed
+        console.log("BOOOOO");
+        const
+            notCompletedDiv = document.createElement("div"),
+            okBtn = document.createElement("button");
 
-    let tot = app.game_total_points,
-        lvl = app.game_level_points;
+        $(okBtn)
+            .addClass("end-of-level-ok-btn")
+            .html("Try again!")
+            .on("click", () => { $(notCompletedDiv).remove(); });
 
-    totEl.html(tot);
-    lvlEl.html(lvl);
 
-    // animate tot points going up while level points down (2sec = 20 display)
-    let counter = 30,
-        pointsDiff; // declared below
+        $(notCompletedDiv)
+            .addClass("levelHasNotBeenCompletedDiv")
+            .html("Level has not been completed! On this level you need to collect " +
+                levels[app.currentLevel - 1].flowersToCompleteTheLevel + " flowers," +
+                " and your basket has " + app.flowers + ".")
+            .append(okBtn);
 
-    // try to distribute points as equally as possible
-    if (lvl <= 20) {
-        pointsDiff = Array(lvl).fill(1);
-        counter = lvl;
-    } else {
-        pointsDiff = Array(20).fill(Math.floor(lvl / 19));
-        remainder = lvl - pointsDiff[0] * 19;
-        pointsDiff.push(remainder);
-    } // end of if level point is greater than 20
+        $(".level-menu").append(notCompletedDiv);
 
-    // counter starts 30 because 1 sec is a delay
-    const animPointsDelay = setInterval(() => {
-        if (counter > 20) {
-            counter--; // just wait
-        }
-        if (counter > 0 && counter <= 20) {
-            tot += pointsDiff[counter];
-            lvl -= pointsDiff[counter];
-            totEl.html(tot);
-            lvlEl.html(lvl);
-            counter--;
-        } // while there are still points to increment / decrement
-        if (counter <= 0) {
-            clearInterval(animPointsDelay);
-            $("#level-stat__ok-btn")
-                .show()
-                .on("click", () => { $(".end-of-level-stat").hide(); });
+        $(notCompletedDiv).show();
 
-            app.game_total_points += app.game_level_points;
-            app.game_level_points = 0;
+        console.log(notCompletedDiv);
+    } // end of if level assignment hasn't been completed
+    else {
+        // Display new Total points
+        $(".end-of-level-stat").show();
+        const totEl = $("#level-stat__total-points"),
+            lvlEl = $("#level-stat__level-points");
 
-            // reset level-points
-            const lvlPts = $(".game-board__level-points")
-                .html()
-                .replace(/\d+/, "0");
+        // ok button not visible yet
+        $("#level-stat__ok-btn").hide();
 
-            $(".game-board__level-points").html(lvlPts);
+        let tot = app.game_total_points,
+            lvl = app.game_level_points;
 
-            // update total points
-            const totPts = $(".game-board__total-points")
-                .html()
-                .replace(/\d+/, tot); // the new total earned after a level completition
-            $(".game-board__total-points").html(totPts);
-            console.log("here i give points");
-        } // escape anim
-    }, 100); // end of animPointsDelay
+        totEl.html(tot);
+        lvlEl.html(lvl);
+
+        // animate tot points going up while level points down (2sec = 20 display)
+        let counter = 30,
+            pointsDiff; // declared below
+
+        // try to distribute points as equally as possible
+        if (lvl <= 20) {
+            pointsDiff = Array(lvl).fill(1);
+            counter = lvl;
+        } else {
+            pointsDiff = Array(20).fill(Math.floor(lvl / 19));
+            remainder = lvl - pointsDiff[0] * 19;
+            pointsDiff.push(remainder);
+        } // end of if level point is greater than 20
+
+        // counter starts 30 because 1 sec is a delay
+        const animPointsDelay = setInterval(() => {
+            if (counter > 20) {
+                counter--; // just wait
+            }
+            if (counter > 0 && counter <= 20) {
+                tot += pointsDiff[counter];
+                lvl -= pointsDiff[counter];
+                totEl.html(tot);
+                lvlEl.html(lvl);
+                counter--;
+            } // while there are still points to increment / decrement
+            if (counter <= 0) {
+                clearInterval(animPointsDelay);
+                $("#level-stat__ok-btn")
+                    .show()
+                    .on("click", () => { $(".end-of-level-stat").hide(); });
+
+                app.game_total_points += app.game_level_points;
+                app.game_level_points = 0;
+
+                // reset level-points
+                const lvlPts = $(".game-board__level-points")
+                    .html()
+                    .replace(/\d+/, "0");
+
+                $(".game-board__level-points").html(lvlPts);
+
+                // update total points
+                const totPts = $(".game-board__total-points")
+                    .html()
+                    .replace(/\d+/, tot); // the new total earned after a level completition
+                $(".game-board__total-points").html(totPts);
+            } // escape anim
+        }, 100); // end of animPointsDelay
+    } // end of if level assignment has been completed
+
 } // end of showLevelStats
 
 /*
