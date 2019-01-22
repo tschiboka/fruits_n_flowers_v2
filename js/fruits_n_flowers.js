@@ -1039,7 +1039,6 @@ function addShopEvents() {
 
     function buyContentOfBasket() {
         let transaction = false;
-        console.log("BUY");
         if (app.game_total_points >= app.shop_basket.price) {
 
             // take price off
@@ -1110,7 +1109,6 @@ function addShopEvents() {
                 .append(okBtn);
 
             $(".shop").append(msgDiv);
-            console.log("FUNDS BABE!", msgDiv);
         } // end of there were insufficient founds
     } // end of buyContentOfBasket
 
@@ -1409,7 +1407,7 @@ function checkMatches() {
     // multiple match double the points
     if (matches.length > 1) app.game_partial_points *= 2;
 
-    if (!matches.length) app.game_turn_is_over = true;
+    if (!matches.length && checkFlowersOverBasket === 0) app.game_turn_is_over = true;
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -1662,7 +1660,6 @@ function cycleMatches() {
     destroyFlowersOverBasket();
     if (matches) {
         animateExplosions(matches);
-        console.log("here i check flowersoverbasket")
     } // if there are further matches
     else {
         const possibleMatches = possibleMoves();
@@ -1688,8 +1685,9 @@ function displayLevelPoints() {
     // find the centre of the matches
     const X = [], Y = [];
 
+    console.log(app.game_matches);
     // get the x and y coordinates
-    if (app.game_matches) {
+    if (app.game_matches.lenght) {
         app.game_matches.forEach(match => {
             match.coords.forEach(xy => {
                 const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
@@ -1805,7 +1803,6 @@ function checkFlowersOverBasket() {
             if (cell === "U" && isFlower((app.board[rowPos - 1] || [])[cellPos])) flowerOverBasket++;
         }) // end of cell
     ); // end of row
-    console.log("FLOWER OVER BASKET", flowerOverBasket);
     return flowerOverBasket;
 } // end of checkFlowersOverBasket
 
@@ -2550,7 +2547,6 @@ function closeLevel() {
     const turnDelay = setInterval(() => {
         // if no more bonus left get out of Interval
         if (bonusesLeft === 0) {
-            console.log(bonusesLeft === 0 && checkFlowersOverBasket() === 0);
             // remove game table and display levelboard again
             $(timeIsUp).remove();
             $(".game-board")[0].removeChild($(".game-board__table")[0]);
@@ -2565,7 +2561,6 @@ function closeLevel() {
 
         // when turn is over destroy next gem
         if (app.game_turn_is_over) bonusesLeft = endGameTurn();
-
     }, 1000); // end of setInterval
 
     // set up variables
