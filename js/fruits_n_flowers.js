@@ -253,8 +253,16 @@ function styleLevelMenuToCurrenPage() {
 
 function addMenuEvents() {
     $(".menu__open-close-btn-box").on("click", () => {
-        console.log("MENU OPEN");
-    });
+        // toggle menu open-close
+        if (!$(".menu").hasClass("menu-open")) {
+            console.log("MENU OPEN");
+            $(".menu").addClass("menu-open");
+        } // end of if menu was open
+        else {
+            console.log("MENU CLOSE");
+            $(".menu").removeClass("menu-open");
+        } // end of if menu was closed
+    }); // end of menu button click event
 } // end of add MenuEvents
 
 
