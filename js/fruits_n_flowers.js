@@ -437,15 +437,16 @@ function menuFunctions(action) {
                 txt = "Game is paused!\n Do you need some more break time? Press NO if you want to return to the game!",
                 callBack = () => { app.game_is_paused = false; closeSelf(); };
 
-
             app.game_is_paused = true;
             giveMessage(txt, callBack);
             break;
         } // end of case pause
         case "restart": {
-            const txt = "Would you like to restart the level?";
+            const
+                txt = "Would you like to restart the level?",
+                callBack = () => { closeSelf(); coldCloseLevel(); startLevel(app.currentLevel) };
 
-            giveMessage(txt, function () { });
+            giveMessage(txt, callBack);
             break;
         } // end of case restart
     } // end of switch action
