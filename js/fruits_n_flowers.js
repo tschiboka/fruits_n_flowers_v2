@@ -256,11 +256,15 @@ function addMenuEvents() {
         // toggle menu open-close
         if (!$(".menu").hasClass("menu-open")) {
             console.log("MENU OPEN");
-            $(".menu").addClass("menu-open");
+            $(".menu")
+                .addClass("menu-open")
+                .removeClass("menu-close");
         } // end of if menu was open
         else {
             console.log("MENU CLOSE");
-            $(".menu").removeClass("menu-open");
+            $(".menu")
+                .removeClass("menu-open")
+                .addClass("menu-close");
         } // end of if menu was closed
     }); // end of menu button click event
 } // end of add MenuEvents
