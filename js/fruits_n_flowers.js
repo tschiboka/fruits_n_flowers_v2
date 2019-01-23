@@ -252,30 +252,80 @@ function styleLevelMenuToCurrenPage() {
 
 
 function addMenuEvents() {
+    let // set swipe positions
+        isMouseDownOnMainMenuBtn = false,
+        mainMenuSwipeStart = 0,
+        mainMenuSwipeEnd = 0;
+
+
     // menu arrow
-    $(".menu__open-close-btn-box").on("click", () => {
-        // toggle menu open-close
-        if (!$(".menu").hasClass("menu-open")) {
-            $(".menu")
-                .addClass("menu-open")
-                .removeClass("menu-close");
+    $(".menu__open-close-btn-box")
+        .on("click", () => {
+            // toggle menu open-close
+            if (!$(".menu").hasClass("menu-open")) {
+                $(".menu")
+                    .addClass("menu-open")
+                    .removeClass("menu-close");
 
-            $(".menu__open-close-arrow")
-                .addClass("arrow-open")
-                .removeClass("arrow-close");
-        } // end of if menu was open
-        else {
-            $(".menu")
-                .removeClass("menu-open")
-                .addClass("menu-close");
+                $(".menu__open-close-arrow")
+                    .addClass("arrow-open")
+                    .removeClass("arrow-close");
+            } // end of if menu was open
+            else {
+                $(".menu")
+                    .removeClass("menu-open")
+                    .addClass("menu-close");
 
-            $(".menu__open-close-arrow")
-                .addClass("arrow-close")
-                .removeClass("arrow-open");
-        } // end of if menu was closed
+                $(".menu__open-close-arrow")
+                    .addClass("arrow-close")
+                    .removeClass("arrow-open");
+            } // end of if menu was closed
 
+            // prevent scrolling the page for the duration of the swipe
+            $("body").addClass("noscroll");
+        }) // end of menu button click event
+        // menu arrow swipe
+        .on("mousedown touchstart", event => {
+            isMouseDownOnMainMenuBtn = true;
+            mainMenuSwipeStart = event.pageY || event.changedTouches[0].pageY; // case for desktop / mobile
+            console.log("DOWN", mainMenuSwipeStart);
+        }); // end of menu button mousedown
 
-    }); // end of menu button click event
+    // add mouse/touch up to body, because swipe will not end on the main menu open-colse btn
+    $("body")
+        .on("mouseup touchend", event => {
+            // if swipe started on menu
+            if (isMouseDownOnMainMenuBtn) {
+                isMouseDownOnMainMenuBtn = false; // reset
+                mainMenuSwipeEnd = event.pageY || event.changedTouches[0].pageY; // case for desktop / mobile
+                console.log("END", mainMenuSwipeEnd)
+
+                // if swipe larger than 30px direction top
+                if (mainMenuSwipeStart > mainMenuSwipeEnd + 30) {
+                    $(".menu")
+                        .addClass("menu-open")
+                        .removeClass("menu-close");
+
+                    $(".menu__open-close-arrow")
+                        .addClass("arrow-open")
+                        .removeClass("arrow-close");
+                } // end of swipe up
+
+                // if swipe smaller than 30px direction bottom
+                if (mainMenuSwipeStart < mainMenuSwipeEnd - 30) {
+                    $(".menu")
+                        .removeClass("menu-open")
+                        .addClass("menu-close");
+
+                    $(".menu__open-close-arrow")
+                        .addClass("arrow-close")
+                        .removeClass("arrow-open");
+                } // end of swipe down
+            } // end of mousedown is made by main menu btn
+
+            // let scrolling when swipe done
+            $("body").removeClass("noscroll");
+        }); // end of body mouse end / touch up
 } // end of add MenuEvents
 
 

@@ -161,6 +161,9 @@
     animation: arrow-down-anim 0.2s ease-out;
 }
 
+.noscroll {
+    overflow: hidden;
+}
 
 @keyframes menu-up-anim {
     0% {
