@@ -335,8 +335,57 @@ function addMenuEvents() {
             // let scrolling when swipe done
             $("body").removeClass("noscroll");
         }); // end of body mouse end / touch up
+
+    $(".back-btn").on("click", () => { menuFunctions("back"); });
 } // end of add MenuEvents
 
+
+
+// action arg must be provided
+function menuFunctions(action) {
+
+    // Back, restart, pause have the same message type
+    // only the text and the function changes, when OK button is pressed
+    function giveMessage(text, callback) {
+
+        // message is only visible when game board is open
+        if (app.game_is_on) {
+
+            const // create divs end buttons
+                msgDiv = document.createElement("div"),
+                msgInnerDiv = document.createElement("div"),
+                buttonDiv = document.createElement("div"),
+                yesBtn = document.createElement("button"),
+                noBtn = document.createElement("button");
+
+
+            $(buttonDiv).addClass("main-menu-msg-button-container");
+
+            $(msgInnerDiv)
+                .addClass("main-menu-msg-inner")
+                .html(text)
+                .append(buttonDiv);
+
+            $(msgDiv)
+                .addClass("main-menu-msg")
+                .append(msgInnerDiv);
+
+            $(".game-board").append(msgDiv);
+
+            $(msgDiv).show();
+        } // end of if game is on
+    } // end of giveMessage
+
+
+
+    switch (action) {
+        case "back": {
+            const txt = "Are you sure you want to quit the current game and return to level menu?";
+            giveMessage(txt, function () { });
+            break;
+        } // end of case back
+    } // end of switch action
+} // end of menuFunctions 
 
 
 
