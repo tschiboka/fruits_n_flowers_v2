@@ -43,6 +43,9 @@
                 width: 100%;
                 height: 100%;
                 background: $green;
+                transform-origin: 0% 0%;
+                perspective: 200; 
+                perspective-origin: 50% 50%;
                 clip-path: polygon(
                     43% 70%,
                     50% 10%,
@@ -148,6 +151,15 @@
     animation: menu-down-anim 0.2s ease-out;
 }
 
+.arrow-open {
+    transform: rotateX(180deg) translateY(-20px);
+    animation: arrow-down-anim 0.2s ease-out;
+}
+
+.arrow-close {
+    transform: rotateX(0) translateY(0);
+    animation: arrow-down-anim 0.2s ease-out;
+}
 
 
 @keyframes menu-up-anim {
@@ -165,5 +177,23 @@
     }
     100% {
         height: 20px;
+    }
+}
+
+@keyframes arrow-down-anim {
+    0% {
+        transform: rotateX(0) translateY(0);
+    }
+    100% {
+        transform: rotateX(180deg) translateY(-20px); 
+    }
+}
+
+@keyframes arrow-up-anim {
+    0% {
+        transform: rotateX(180deg) translateY(-20px); 
+    }
+    100% {
+        transform: rotateX(0) translateY(0);
     }
 }
