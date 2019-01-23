@@ -358,8 +358,22 @@ function menuFunctions(action) {
                 yesBtn = document.createElement("button"),
                 noBtn = document.createElement("button");
 
+            $(yesBtn)
+                .addClass("main-menu-msg-btn")
+                .html("Yes");
 
-            $(buttonDiv).addClass("main-menu-msg-button-container");
+            $(noBtn)
+                .addClass("main-menu-msg-btn")
+                .html("No");
+
+
+            $(buttonDiv)
+                .addClass("main-menu-msg-button-container")
+                .append(yesBtn)
+                .append(noBtn);
+
+            $(yesBtn)
+                .addClass("main-menu-msg-btn")
 
             $(msgInnerDiv)
                 .addClass("main-menu-msg-inner")
