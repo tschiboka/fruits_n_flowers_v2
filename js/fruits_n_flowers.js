@@ -337,6 +337,10 @@ function addMenuEvents() {
         }); // end of body mouse end / touch up
 
     $(".back-btn").on("click", () => { menuFunctions("back"); });
+
+    $(".pause-btn").on("click", () => { menuFunctions("pause"); });
+
+    $(".restart-btn").on("click", () => { menuFunctions("restart"); });
 } // end of add MenuEvents
 
 
@@ -346,7 +350,7 @@ function menuFunctions(action) {
 
     // Back, restart, pause have the same message type
     // only the text and the function changes, when OK button is pressed
-    function giveMessage(text, callback) {
+    function giveMessage(text, callBack) {
 
         // message is only visible when game board is open
         if (app.game_is_on) {
@@ -358,46 +362,92 @@ function menuFunctions(action) {
                 yesBtn = document.createElement("button"),
                 noBtn = document.createElement("button");
 
+            // add buttons
             $(yesBtn)
                 .addClass("main-menu-msg-btn")
-                .html("Yes");
+                .html("Yes")
+                .on("click", callBack);
 
             $(noBtn)
                 .addClass("main-menu-msg-btn")
-                .html("No");
+                .html("No")
+                .on("click", () => { $(msgDiv).remove(); }); // end of NO button ckick event
 
-
+            // add button container
             $(buttonDiv)
                 .addClass("main-menu-msg-button-container")
                 .append(yesBtn)
                 .append(noBtn);
 
-            $(yesBtn)
-                .addClass("main-menu-msg-btn")
-
+            // add inner div
             $(msgInnerDiv)
                 .addClass("main-menu-msg-inner")
                 .html(text)
                 .append(buttonDiv);
 
+            // append the whole lot
             $(msgDiv)
                 .addClass("main-menu-msg")
                 .append(msgInnerDiv);
 
             $(".game-board").append(msgDiv);
-
             $(msgDiv).show();
+
+            $(".menu").removeClass("menu-open").addClass("menu-close");
+            $(".menu__open-close-arrow").addClass("arrow-close").removeClass("arrow-open");
+
         } // end of if game is on
     } // end of giveMessage
 
 
+    // close the level without giving point or playing the end game
+    function coldCloseLevel() {
+        app.game_interaction_enabled = false; // user can not interact the board after this point
+        app.game_interaction_locked = true; // don't let further functions set interaction back as a side effect
+
+        // close shop if it was open
+        $(".shop").hide();
+
+        app.game_is_on = false;
+        app.game_is_paused = false;
+
+        $(".game-board")[0].removeChild($(".game-board__table")[0]);
+        $(".game-board").hide();
+        $("header")
+            .removeClass("header--hidden header-out")
+            .addClass("header--visible header-in");
+        $(".level-menu").show();
+    } // end of coldCloseLevel
+
+    function closeSelf() {
+        $(".main-menu-msg").remove();
+    } // end of closeSelf
 
     switch (action) {
         case "back": {
-            const txt = "Are you sure you want to quit the current game and return to level menu?";
-            giveMessage(txt, function () { });
+            const
+                txt = "Are you sure you want to quit the current game and return to level menu?",
+                callBack = () => { closeSelf(); coldCloseLevel(); };
+
+            giveMessage(txt, callBack);
             break;
         } // end of case back
+        case "pause": {
+            const
+                txt = "Game is paused!\n Do you need some more break time? Press NO if you want to return to the game!",
+                callBack = () => { app.game_is_paused = false; closeSelf(); };
+
+
+            app.game_is_paused = true;
+            giveMessage(txt, callBack);
+            break;
+        } // end of case pause
+        case "restart": {
+            const txt = "Would you like to restart the level?";
+
+            giveMessage(txt, function () { });
+            break;
+        } // end of case restart
     } // end of switch action
 } // end of menuFunctions 
 
