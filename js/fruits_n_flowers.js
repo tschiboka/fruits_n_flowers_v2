@@ -218,8 +218,7 @@ function addLevelEvents() {
         if (pageSwipeStartX - 40 > pageSwipeEndX) {
             turnLevelPage("+");
         } // end of swipe left
-        console.log("END", pageSwipeEndX);
-    });
+    }); // end of menu page mouse up / touch end
 
     $(".level-menu__header__level-indicator").on("click", function (event) {
         // event is delegated by common class name to-level-page-n
@@ -3071,6 +3070,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 3,
+        "targetPoints": 1000,
         "time": 180,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -3104,6 +3104,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
+    "game_max_target_points": [],// an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3125,11 +3126,13 @@ var app = {
 // demo just to trigger game board
 function startLevel(level) {
     toggleFullScreen();
+
     // arrange new layout
     $(".level-menu").hide();
     $("header")
         .removeClass("header--visible header-in")
         .addClass("header--hidden header-out");
+
     $(".game-board").show();
 
     // create game environment
@@ -3154,6 +3157,13 @@ function startLevel(level) {
 
     // reset points
     $(".game-board__total-points").html("$" + app.game_total_points);
+
+    // set level target points
+    const
+        levelTarget = levels[app.currentLevel - 1].targetPoints,
+        divTxt = $(".game-board__level-points").html().replace(/\/\d+/, "/" + levelTarget);
+
+    $(".game-board__level-points").html(divTxt);
 
     // level timer
     displayTime(app.game_time_left); // prime timer
