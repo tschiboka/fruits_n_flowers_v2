@@ -194,4 +194,9 @@
     &:hover {
         background-color: rgba(255, 255, 255, 0.1);
     }
+
+    &:active {
+        background: rgba(19, 246, 242, 0.95);
+        color: rgba(0, 0, 0, 0.9);
+    }
 }

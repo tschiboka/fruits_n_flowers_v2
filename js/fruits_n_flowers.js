@@ -415,6 +415,9 @@ function menuFunctions(action) {
         // close shop if it was open
         $(".shop").hide();
 
+        // close previous message if it was left open
+        closeSelf();
+
         app.game_is_on = false;
         app.game_is_paused = false;
 

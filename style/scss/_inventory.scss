@@ -150,6 +150,14 @@
     right: 3%; 
     background-image: url("../../images/icons/shop-icon.png");
     cursor: pointer;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1)
+    }
+
+    &:active {
+        background-color: rgba(19, 246, 242, 0.1);
+    }
 }
 
 #flower-counter {
