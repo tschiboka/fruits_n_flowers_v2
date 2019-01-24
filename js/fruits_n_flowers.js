@@ -191,6 +191,38 @@ function addLevelEvents() {
     $(".level-menu__arrow-left").on("click", () => { turnLevelPage("-") });
     $(".level-menu__arrow-right").on("click", () => { turnLevelPage("+") });
 
+    // add swipe event to level menu page
+    // vars for the swipe events
+    let isMouseDownOnPage = false,
+        pageSwipeStartX = 0,
+        pageSwipeEndX = 0;
+
+    // add mouse down touch start event on menu page
+    $(".level-menu__page").on("mousedown touchstart", e => {
+        isMouseDownOnPage = true;
+
+        pageSwipeStartX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
+
+        console.log("START", pageSwipeStartX);
+    }); // end of menu page mouse down / touch start event
+
+    $(".level-menu__page").on("mouseup touchend", e => {
+        e.preventDefault();
+
+        pageSwipeEndX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
+
+        // case for swipe right
+        if (pageSwipeStartX + 40 < pageSwipeEndX) {
+            console.log("RIGHT");
+        } // end of swipe right
+
+        // case for swipe left
+        if (pageSwipeStartX - 40 > pageSwipeEndX) {
+            console.log("LEFT");
+        } // end of swipe left
+        console.log("END", pageSwipeEndX);
+    });
+
     $(".level-menu__header__level-indicator").on("click", function (event) {
         // event is delegated by common class name to-level-page-n
         if (/to-level-page-/g.test($(event.target).attr("class"))) {
