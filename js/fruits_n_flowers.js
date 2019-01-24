@@ -349,8 +349,10 @@ function addMenuEvents() {
 function menuFunctions(action) {
 
     // Back, restart, pause have the same message type
-    // only the text and the function changes, when OK button is pressed
-    function giveMessage(text, callBack) {
+    // callBackYes, callBackNo are the button functions when clicked
+    // if absent button will not be created
+    // buttonYesTxt buttonNoTxt are not necessary to be provided
+    function giveMessage(text, callBackYes, callBackNo, buttonYesTxt, buttonNoTxt) {
 
         // message is only visible when game board is open
         if (app.game_is_on) {
@@ -359,19 +361,24 @@ function menuFunctions(action) {
                 msgDiv = document.createElement("div"),
                 msgInnerDiv = document.createElement("div"),
                 buttonDiv = document.createElement("div"),
-                yesBtn = document.createElement("button"),
-                noBtn = document.createElement("button");
+                yesBtn = callBackYes ? document.createElement("button") : null,
+                noBtn = callBackNo ? document.createElement("button") : null;
+
 
             // add buttons
-            $(yesBtn)
-                .addClass("main-menu-msg-btn")
-                .html("Yes")
-                .on("click", callBack);
+            if (!!callBackYes) {
+                $(yesBtn)
+                    .addClass("main-menu-msg-btn")
+                    .html(buttonYesTxt || "Yes")
+                    .on("click", callBackYes);
+            } // end of if callBackYes is provided
 
-            $(noBtn)
-                .addClass("main-menu-msg-btn")
-                .html("No")
-                .on("click", () => { $(msgDiv).remove(); }); // end of NO button ckick event
+            if (!!callBackNo) {
+                $(noBtn)
+                    .addClass("main-menu-msg-btn")
+                    .html(buttonNoTxt || "No")
+                    .on("click", callBackNo); // end of NO button ckick event
+            } // end of if callBackNo is provided
 
             // add button container
             $(buttonDiv)
@@ -426,27 +433,29 @@ function menuFunctions(action) {
     switch (action) {
         case "back": {
             const
-                txt = "Are you sure you want to quit the current game and return to level menu?",
-                callBack = () => { closeSelf(); coldCloseLevel(); };
+                txt = "Are you sure you want to quit the current game and return to the level menu?",
+                callBackYes = () => { closeSelf(); coldCloseLevel(); },
+                callBackNo = () => { closeSelf(); };
 
-            giveMessage(txt, callBack);
+            giveMessage(txt, callBackYes, callBackNo);
             break;
         } // end of case back
         case "pause": {
             const
-                txt = "Game is paused!\n Do you need some more break time? Press NO if you want to return to the game!",
-                callBack = () => { app.game_is_paused = false; closeSelf(); };
+                txt = "Game is paused! Press OK if you want to return to the game!",
+                callBackYes = () => { app.game_is_paused = false; closeSelf(); };
 
             app.game_is_paused = true;
-            giveMessage(txt, callBack);
+            giveMessage(txt, callBackYes, null, "OK");
             break;
         } // end of case pause
         case "restart": {
             const
                 txt = "Would you like to restart the level?",
-                callBack = () => { closeSelf(); coldCloseLevel(); startLevel(app.currentLevel) };
+                callBackYes = () => { closeSelf(); coldCloseLevel(); startLevel(app.currentLevel) },
+                callBackNo = () => { closeSelf(); };
 
-            giveMessage(txt, callBack);
+            giveMessage(txt, callBackYes, callBackNo, "Restart");
             break;
         } // end of case restart
     } // end of switch action
