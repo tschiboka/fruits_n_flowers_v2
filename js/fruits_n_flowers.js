@@ -202,8 +202,6 @@ function addLevelEvents() {
         isMouseDownOnPage = true;
 
         pageSwipeStartX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
-
-        console.log("START", pageSwipeStartX);
     }); // end of menu page mouse down / touch start event
 
     $(".level-menu__page").on("mouseup touchend", e => {
@@ -213,12 +211,12 @@ function addLevelEvents() {
 
         // case for swipe right
         if (pageSwipeStartX + 40 < pageSwipeEndX) {
-            console.log("RIGHT");
+            turnLevelPage("-");
         } // end of swipe right
 
         // case for swipe left
         if (pageSwipeStartX - 40 > pageSwipeEndX) {
-            console.log("LEFT");
+            turnLevelPage("+");
         } // end of swipe left
         console.log("END", pageSwipeEndX);
     });
