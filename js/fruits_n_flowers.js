@@ -2818,7 +2818,7 @@ function closeLevel() {
 
 
 function showLevelStats() {
-    // create a message div: level has not been completed
+    // if level has not been completed create a message div: level has not been completed
     if (app.flowers < levels[app.currentLevel - 1].flowersToCompleteTheLevel) {
         const
             notCompletedDiv = document.createElement("div"),
@@ -2846,6 +2846,7 @@ function showLevelStats() {
     } // end of if level assignment hasn't been completed
     // if the assignment has been completed show level stats and add points
     else {
+
         // Display new Total points
         $(".end-of-level-stat").show();
 
@@ -2874,7 +2875,7 @@ function showLevelStats() {
         } else {
             pointsDiff = Array(20).fill(Math.floor(lvl / 19));
             remainder = lvl - pointsDiff[0] * 19;
-            pointsDiff.push(remainder);
+            pointsDiff[0] = remainder;
         } // end of if level point is greater than 20
 
         // counter starts 30 because 1 sec is a delay
@@ -2883,8 +2884,8 @@ function showLevelStats() {
                 counter--; // just wait
             }
             if (counter > 0 && counter <= 20) {
-                tot += pointsDiff[counter];
-                lvl -= pointsDiff[counter];
+                tot += pointsDiff[counter - 1] || 0;
+                lvl -= pointsDiff[counter - 1] || 0;
                 totEl.html(tot);
                 lvlEl.html(lvl);
                 counter--;
@@ -3025,7 +3026,7 @@ function rewardUser() {
             } // end of if theres bonus
         }); // end of rewards forEach
     } // end of if there is extra flowers collected
-
+    console.log("THE      END");
 } // end of rewardUser
 
 /*
@@ -3069,9 +3070,9 @@ var levels = [
         ],
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
-        "flowersToCompleteTheLevel": 3,
-        "targetPoints": 1000,
-        "time": 180,
+        "flowersToCompleteTheLevel": 0,
+        "targetPoints": 10,
+        "time": 10,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
