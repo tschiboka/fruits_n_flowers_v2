@@ -15,6 +15,7 @@ function start() {
     // prepare levels
     createLevelTables();
     createLevelPageIndicator();
+    setLevelMax();
     styleLevelMenuToCurrenPage();
     addMenuEvents();
     addLevelEvents();
@@ -153,7 +154,7 @@ function createLevelTables() {
                 box.append(progressBar);
 
                 cell.id = `level-cell-${levelNum}`;
-                $(cell).addClass(`to-level-${levelNum}`);
+                $(cell).addClass(`to-level-${levelNum} level-cell`);
 
                 cell.append(box);
 
@@ -178,6 +179,49 @@ function createLevelTables() {
 } // end of createLevelTable
 
 
+
+
+// set the progress bars on each level
+// on levels that are not available yet (the previous level has not been completed yet), put a padlock sign
+// on levels that are completed put a progress bar, that shows how much has been completed from the level target
+// last level completed is 5. app.game_max_target_points = [120, 33, 660, 105, 509]
+function setLevelMax() {
+    const levelCells = $(".level-cell");
+
+    // iterate over all level cells
+    levelCells.each(function (ind) {
+        if (ind < levels.length) {
+            console.log(app.game_max_target_points[ind]);
+            if (app.game_max_target_points[ind]) {
+                // create a progress div
+                const
+                    progress = document.createElement("div"),
+                    progressBar = $(this).find(".level-progressbar"),
+                    percent = Math.min(
+                        Math.floor(
+                            ((app.game_max_target_points[ind] / levels[ind].targetPoints) || 0) * 100
+                        ), 100);
+
+                $(progress).
+                    addClass("progress" + (percent === 100 ? " maxed" : "")). // when maxed let it be different color
+                    css("width", percent + "%");
+
+                $(progressBar)
+                    .empty() // so it won't be duplicated, if function is called multiple times
+                    .append(progress);
+
+                console.log(ind + 1, levels[ind].targetPoints, app.game_max_target_points[ind], percent + "%");
+
+
+            } // end of there is any progress so far
+        } // end of level cell has a valid level
+    }); // end of level cell iteration
+} // end of setLevelMax
+
+
+
+
+
 /*
 
 
@@ -185,6 +229,11 @@ function createLevelTables() {
 
 
 */
+
+
+
+
+
 
 function addLevelEvents() {
     // add eventlistener to arrows, there are only two of them, no need to delegate
@@ -2991,7 +3040,7 @@ function rewardUser() {
         $(okBtn)
             .addClass("end-of-level-ok-btn")
             .html("Thanks!")
-            .on("click", () => { $(".reward-div").hide(); });
+            .on("click", () => { $(".reward-div").remove(); setMaxPointOnLevel(); });
 
         $(rewardMsgDiv)
             .addClass("reward-div levelHasNotBeenCompletedDiv")  // level... class matches our needs here
@@ -3026,7 +3075,10 @@ function rewardUser() {
             } // end of if theres bonus
         }); // end of rewards forEach
     } // end of if there is extra flowers collected
-    console.log("THE      END");
+    else {
+
+        console.log("THE      END");
+    } // end of if no exra flower has been collected
 } // end of rewardUser
 
 /*
@@ -3065,13 +3117,13 @@ var levels = [
             ".........",
             "LLLLLLLLL",
             "#LLLLLLL#",
-            "##LLLLL##",
+            "##F234F##",
             "###UUU###",
         ],
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
-        "flowersToCompleteTheLevel": 0,
-        "targetPoints": 10,
+        "flowersToCompleteTheLevel": 1,
+        "targetPoints": 2000,
         "time": 10,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -3105,7 +3157,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_target_points": [],// an array holding the best points user made on a particular level
+    "game_max_target_points": [2503, 110, 550, 1020],// an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
