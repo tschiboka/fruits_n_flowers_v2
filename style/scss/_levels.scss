@@ -59,6 +59,13 @@ $green: rgb(141, 238, 121);
                 color: $main-text-color;
                 font-size: 1.4rem;
                 cursor: pointer;
+
+                &.locked {
+                    background-image: url(../../images/icons/padlock.png);
+                    background-position: 97% 13%;
+                    background-repeat: no-repeat;
+                    background-size: 30% 30%;
+                }
                 
                 div {
                    position: relative;
@@ -86,7 +93,7 @@ $green: rgb(141, 238, 121);
                     }
 
                     .maxed {
-                        background: rgba(112, 252, 184, 0.76);
+                        background: rgba(112, 252, 159, 0.6);
                     }
                 }
             }

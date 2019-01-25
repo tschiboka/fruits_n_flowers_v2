@@ -191,7 +191,9 @@ function setLevelMax() {
     // iterate over all level cells
     levelCells.each(function (ind) {
         if (ind < levels.length) {
-            console.log(app.game_max_target_points[ind]);
+            $(this).removeClass("locked"); // make sure no cell has been left locked, later we refresh locked cells
+
+            // CREATE PROGRESSBAR
             if (app.game_max_target_points[ind]) {
                 // create a progress div
                 const
@@ -209,11 +211,20 @@ function setLevelMax() {
                 $(progressBar)
                     .empty() // so it won't be duplicated, if function is called multiple times
                     .append(progress);
-
-                console.log(ind + 1, levels[ind].targetPoints, app.game_max_target_points[ind], percent + "%");
-
-
             } // end of there is any progress so far
+
+            // ADD PADLOCKS
+            const
+                lockedFrom = !app.game_max_target_points[app.game_max_target_points.length - 1]
+                    ? app.game_max_target_points.length
+                    : app.game_max_target_points.length + 1;
+
+            // if previous level has been completed aka its not level max is not 0 or undefined
+            if (ind >= lockedFrom) {
+                $(this).addClass("locked");
+
+                console.log(this);
+            } // end of locked cells
         } // end of level cell has a valid level
     }); // end of level cell iteration
 } // end of setLevelMax
@@ -3157,7 +3168,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_target_points": [2503, 110, 550, 1020],// an array holding the best points user made on a particular level
+    "game_max_target_points": [2503, 110, 550, 10],// an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
