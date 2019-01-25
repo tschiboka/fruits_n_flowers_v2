@@ -184,7 +184,7 @@ function createLevelTables() {
 // set the progress bars on each level
 // on levels that are not available yet (the previous level has not been completed yet), put a padlock sign
 // on levels that are completed put a progress bar, that shows how much has been completed from the level target
-// last level completed is 5. app.game_max_target_points = [120, 33, 660, 105, 509]
+// last level completed is 5. app.game_max_points = [120, 33, 660, 105, 509]
 function setLevelMax() {
     const levelCells = $(".level-cell");
 
@@ -194,14 +194,14 @@ function setLevelMax() {
             $(this).removeClass("locked"); // make sure no cell has been left locked, later we refresh locked cells
 
             // CREATE PROGRESSBAR
-            if (app.game_max_target_points[ind]) {
+            if (app.game_max_points[ind]) {
                 // create a progress div
                 const
                     progress = document.createElement("div"),
                     progressBar = $(this).find(".level-progressbar"),
                     percent = Math.min(
                         Math.floor(
-                            ((app.game_max_target_points[ind] / levels[ind].targetPoints) || 0) * 100
+                            ((app.game_max_points[ind] / levels[ind].targetPoints) || 0) * 100
                         ), 100);
 
                 $(progress).
@@ -215,9 +215,9 @@ function setLevelMax() {
 
             // ADD PADLOCKS
             const
-                lockedFrom = !app.game_max_target_points[app.game_max_target_points.length - 1]
-                    ? app.game_max_target_points.length
-                    : app.game_max_target_points.length + 1;
+                lockedFrom = !app.game_max_points[app.game_max_points.length - 1]
+                    ? app.game_max_points.length
+                    : app.game_max_points.length + 1;
 
             // if previous level has been completed aka its not level max is not 0 or undefined
             if (ind >= lockedFrom) {
@@ -2908,6 +2908,18 @@ function showLevelStats() {
     } // end of if level assignment hasn't been completed
     // if the assignment has been completed show level stats and add points
     else {
+        console.log("MAX BEFORE", app.game_max_points[app.currentLevel - 1]);
+
+        console.log("POINTS", app.game_level_points);
+
+        const max = app.game_max_points[app.currentLevel - 1];
+
+
+
+        app.game_max_points[app.currentLevel - 1] = max < app.game_level_points ? app.game_level_points : max;
+
+        console.log("MAX AFTER", app.game_max_points[app.currentLevel - 1]);
+
 
         // Display new Total points
         $(".end-of-level-stat").show();
@@ -2980,6 +2992,8 @@ function showLevelStats() {
             } // escape anim
         }, 100); // end of animPointsDelay
     } // end of if level assignment has been completed
+
+    setLevelMax();
 } // end of showLevelStats
 
 
@@ -3136,7 +3150,7 @@ var levels = [
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
         "flowersToCompleteTheLevel": 1,
-        "targetPoints": 2000,
+        "targetPoints": 500,
         "time": 10,
     }, {}, {}, {}, {}, {}, {}, {}, {}, {},
     {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -3171,7 +3185,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_target_points": [2000, 110, 550, 10],// an array holding the best points user made on a particular level
+    "game_max_points": [20, 110, 550, 10],// an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3218,7 +3232,7 @@ function startLevel(level) {
     app.flowers = 0;
     app.game_best_hint = false;
     app.game_give_hint_at = 10;
-    app.game_current_level_maxed = app.game_max_target_points[app.currentLevel - 1] >= levels[app.currentLevel - 1].targetPoints;
+    app.game_current_level_maxed = app.game_max_points[app.currentLevel - 1] >= levels[app.currentLevel - 1].targetPoints;
 
     console.log("MAXED", app.game_current_level_maxed);
 
