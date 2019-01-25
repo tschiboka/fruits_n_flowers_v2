@@ -222,8 +222,6 @@ function setLevelMax() {
             // if previous level has been completed aka its not level max is not 0 or undefined
             if (ind >= lockedFrom) {
                 $(this).addClass("locked");
-
-                console.log(this);
             } // end of locked cells
         } // end of level cell has a valid level
     }); // end of level cell iteration
@@ -516,6 +514,7 @@ function menuFunctions(action) {
             .removeClass("header--hidden header-out")
             .addClass("header--visible header-in");
         $(".level-menu").show();
+        setLevelMax();
     } // end of coldCloseLevel
 
     function closeSelf() {
@@ -1989,12 +1988,14 @@ function cycleMatches() {
 
 
 function displayLevelPoints() {
+    // double the points if level has been maxed out
+    if (app.game_current_level_maxed) app.game_partial_points *= 2;
+
     // display partial points
     // find the centre of the matches
     const X = [], Y = [];
-
     // get the x and y coordinates
-    if (app.game_matches.lenght) {
+    if (app.game_matches.length) {
         app.game_matches.forEach(match => {
             match.coords.forEach(xy => {
                 const rect = $(`#r${xy[0]}c${xy[1]}-box`)[0].getBoundingClientRect();
@@ -2861,6 +2862,7 @@ function closeLevel() {
                 .removeClass("header--hidden header-out")
                 .addClass("header--visible header-in");
             $(".level-menu").show();
+            setLevelMax();
             showLevelStats();
             clearInterval(turnDelay);
         } // end of no more bonuses left
@@ -3051,7 +3053,7 @@ function rewardUser() {
         $(okBtn)
             .addClass("end-of-level-ok-btn")
             .html("Thanks!")
-            .on("click", () => { $(".reward-div").remove(); setMaxPointOnLevel(); });
+            .on("click", () => { $(".reward-div").remove(); });
 
         $(rewardMsgDiv)
             .addClass("reward-div levelHasNotBeenCompletedDiv")  // level... class matches our needs here
@@ -3161,6 +3163,7 @@ var app = {
     "currentLevel": 1,
     "flowers": 0,                // the players collected flowers on the actual level
     "game_best_hint": false,
+    "game_current_level_maxed": true, // if current level is maxed out user gets double points
     "game_interaction_enabled": true, // responsible for switching off mouse and touch events, while animating or searching for matches
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
     "game_give_hint_at": 10,     // the num of secs a hint is given after no moves
@@ -3168,7 +3171,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_target_points": [2503, 110, 550, 10],// an array holding the best points user made on a particular level
+    "game_max_target_points": [2000, 110, 550, 10],// an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3215,6 +3218,9 @@ function startLevel(level) {
     app.flowers = 0;
     app.game_best_hint = false;
     app.game_give_hint_at = 10;
+    app.game_current_level_maxed = app.game_max_target_points[app.currentLevel - 1] >= levels[app.currentLevel - 1].targetPoints;
+
+    console.log("MAXED", app.game_current_level_maxed);
 
     // reset flower counter
     $("#flower-counter").html(levels[app.currentLevel - 1].flowersToCompleteTheLevel);
