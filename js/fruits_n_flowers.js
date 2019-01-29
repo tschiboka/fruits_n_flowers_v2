@@ -2908,18 +2908,24 @@ function showLevelStats() {
     } // end of if level assignment hasn't been completed
     // if the assignment has been completed show level stats and add points
     else {
-        console.log("MAX BEFORE", app.game_max_points[app.currentLevel - 1]);
-
-        console.log("POINTS", app.game_level_points);
-
         const max = app.game_max_points[app.currentLevel - 1];
-
-
 
         app.game_max_points[app.currentLevel - 1] = max < app.game_level_points ? app.game_level_points : max;
 
-        console.log("MAX AFTER", app.game_max_points[app.currentLevel - 1]);
+        // Create end of level stat message
+        const // create elements
+            container = document.createElement("div");
 
+        $(container)
+            .addClass("end-of-level-stat")
+            .html("" +
+                "<div id='end-of-level-stat-txt'>Total money</div>" +
+                "<div id='level-stat__total-points'></div>" +
+                "<div id='end-of-level-stat-txt'>Earned on this level</div>" +
+                "<div id='level-stat__level-points'></div>" +
+                "<button id='level-stat__ok-btn'>OK</button>");
+
+        $(".level-menu").append(container);
 
         // Display new Total points
         $(".end-of-level-stat").show();
@@ -2952,6 +2958,7 @@ function showLevelStats() {
             pointsDiff[0] = remainder;
         } // end of if level point is greater than 20
 
+
         // counter starts 30 because 1 sec is a delay
         const animPointsDelay = setInterval(() => {
             if (counter > 20) {
@@ -2965,14 +2972,15 @@ function showLevelStats() {
                 counter--;
             } // while there are still points to increment / decrement
             if (counter <= 0) {
+                console.log("COUNTER", counter)
                 clearInterval(animPointsDelay);
                 $("#level-stat__ok-btn")
                     .show()
                     .on("click", () => {
-                        $(".end-of-level-stat").hide();
+                        $(".end-of-level-stat").remove();
 
-                        rewardUser();
-                    }); // end of OK button event listener
+                        rewardUser(); // show reward gem if earned any
+                    }); // end of end of level stat ok button click
 
                 app.game_total_points += app.game_level_points;
                 app.game_level_points = 0;
@@ -2999,6 +3007,7 @@ function showLevelStats() {
 
 
 function rewardUser() {
+    console.log("REWARD USER");
 
     // if you have had extra flowers collected apart from the level requirement
     // user recieves reward gems:
@@ -3078,11 +3087,14 @@ function rewardUser() {
 
 
         // add div to level-menu as usual (only because it looks great)
-        $(".level-menu").append(rewardMsgDiv);
+        $(".level-menu")
+            .remove(".reward-div") // remove in case it would get duplicated
+            .append(rewardMsgDiv);
 
         $(rewardMsgDiv).show();
 
 
+        console.log("REWARDS", rewardsArr);
         // set gems picture and bonus divs
         rewardsArr.forEach((rew, rewInd) => {
             const
