@@ -47,7 +47,7 @@ var levels = [
             "..SMLMS..",
             "####U####",
         ],
-        "fruitVariationNumber": 5,
+        "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 1,
         "flowersToCompleteTheLevel": 1,
         "targetPoints": 2000,

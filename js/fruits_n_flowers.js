@@ -288,11 +288,9 @@ function addLevelEvents() {
         } // end of if target is valid elem
     }); // end of indicator click
 
+
+
     // add eventListeners to level buttons
-
-    // demo just to trigger game board
-    //$(".to-level-1").on("click", () => startLevel(1));
-
     // level buttons are all delegated to level-page
     $(".level-page").on("click", function (e) {
         const // get level number
@@ -304,9 +302,38 @@ function addLevelEvents() {
             const isLocked = $("#level-cell-" + levelNum).hasClass("locked");
 
             if (!isLocked) {
-                console.log("CLICK");
-                console.log("LEVEL", isLocked);
+                const // validate level
+                    L = levels[levelNum - 1], // just to spare some chars L = current level obj
+                    props = ["blueprint", "fruitVariationNumber", "minimumFlowersOnBoard", "flowersToCompleteTheLevel", "targetPoints", "time"],
+                    HASALLPROPS = props.every(pr => L.hasOwnProperty(pr)), // check if level has any missing property
+                    blueprint = L.blueprint || [[]],
+                    blueprintIsCorrectSize = blueprint.length === 11 && blueprint.every(row => row.length === 9), // blueprint is 11 X 9 2D array
+                    blueprintCharsValid = /[123456789.ABCDEFSMLU*#]/g.test(blueprint.join("")), // blueprint has only valid caracters
+                    BLUEPRINTOK = blueprintCharsValid && blueprintIsCorrectSize,
+                    inRange = (num, fromN, toN) => !isNaN(num) && num >= fromN && num <= toN, // range is inclusive! from N to N
+                    FRUITOK = inRange(L.fruitVariationNumber, 5, 9),
+                    MINFLOWEROK = inRange(L.minimumFlowersOnBoard, 1, 9),
+                    FLOWERSTOCOMPLETEOK = inRange(L.flowersToCompleteTheLevel, 1, 20),
+                    TARGETOK = inRange(L.targetPoints, 500, 10000),
+                    TIMEOK = inRange(L.time, 60, 300),
+                    VALIDLEVEL = HASALLPROPS && BLUEPRINTOK && FRUITOK && MINFLOWEROK && FLOWERSTOCOMPLETEOK && TARGETOK && TIMEOK;
 
+                if (VALIDLEVEL) {
+                    startLevel(levelNum);
+                } // end of if level can be started safely and no erors were found in the current level
+                else {
+                    let errorMsg = "\n";
+
+                    errorMsg += HASALLPROPS ? "" : "\tLEVEL HAS MISSING PROPERTIES\n";
+                    errorMsg += BLUEPRINTOK ? "" : "\tBLUEPRINT PROPERTY MISSING OR INVALID SIZE OR HAS INVALID VALUE\n";
+                    errorMsg += FRUITOK ? "" : "\tFRUIT VARIATION NUMBER IS MISSING OR OUT OF RANGE (5 - 9)\n";
+                    errorMsg += MINFLOWEROK ? "" : "\tMINIMUM FLOWERS ON LEVEL IS MISSING OR OUT OF RANGE (1 - 9)\n";
+                    errorMsg += FLOWERSTOCOMPLETEOK ? "" : "\tFLOWERS TO COMPLETE LEVEL IS MISSING OR OUT OF RANGE (1 - 20)\n";
+                    errorMsg += TARGETOK ? "" : "\tTARGET POINT IS MISSING OR OUT OF RANGE (500 - 10000)\n";
+                    errorMsg += TIMEOK ? "" : "\tLEVEL TIME IS MISSING OR OUT OF RANGE (60 - 300)\n";
+
+                    throw Error(errorMsg);
+                } // end of if level has any invalid property
             } // end of if level is not locked
         } // end of if event is on a valid level number
     }); // end of level-page click listener
