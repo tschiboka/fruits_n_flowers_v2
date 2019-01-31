@@ -261,6 +261,7 @@ function addLevelEvents() {
         isMouseDownOnPage = true;
 
         pageSwipeStartX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
+        console.log(e.pageX, e.targetTouches[0]);
     }); // end of menu page mouse down / touch start event
 
     $(".level-menu__page").on("mouseup touchend", e => {
@@ -3139,7 +3140,7 @@ function rewardUser() {
 
         $(rewardMsgDiv)
             .addClass("reward-div levelHasNotBeenCompletedDiv")  // level... class matches our needs here
-            .html(`You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} then the level requirement.` +
+            .html(`You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} than the level requirement.` +
                 ` Find your reward gem${pluralS(rewardsArr.length)} in your inventory!`)
             .append(gemDiv)
             .append(okBtn);
@@ -3189,7 +3190,7 @@ function rewardUser() {
 
 var app = {
     "board": [],                 // the current game gems position
-    "currentLevel": 1,
+    "currentLevel": 0,
     "flowers": 0,                // the players collected flowers on the actual level
     "game_best_hint": false,
     "game_current_level_maxed": true, // if current level is maxed out user gets double points
@@ -3221,6 +3222,7 @@ var app = {
 
 // demo just to trigger game board
 function startLevel(level) {
+    app.currentLevel = level;
     toggleFullScreen();
 
     // arrange new layout
@@ -3513,7 +3515,6 @@ function displayBoard() {
             if (app.board[r][c] === "F") {
                 app.board[r][c] = "ABCDE"[Math.floor(Math.random() * 5)];
             } // end of if "F" random flower 
-
 
             // make random fruits when encounters char "."
             if (app.board[r][c] === ".") {
