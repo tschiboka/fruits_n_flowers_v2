@@ -357,6 +357,13 @@ function addMenuEvents() {
     // menu arrow
     $(".menu__open-close-btn-box")
         .on("click", () => {
+            // in case pause message have been left open, and menu opened again
+            // you could return the game while game is paused, so I make
+            // sure cheating is not possible
+            $(".main-menu-msg").remove(); // remove message if it was left open
+            app.game_is_paused = false;
+
+
             // toggle menu open-close
             if (!$(".menu").hasClass("menu-open")) {
                 $(".menu")
@@ -2822,6 +2829,7 @@ function closeLevel() {
 
     // close shop if it was open
     $(".shop").hide();
+    $(".main-menu-msg").remove(); // remove message if it was left open
 
     // an end game is coming where all bonus gems are destoyed
     // display time is up label
@@ -2847,7 +2855,7 @@ function closeLevel() {
             fillBoardWithNewFruits();
         } // end of if there are still bonuses left
 
-        return bonuses.length
+        return bonuses.length;
     } // end of endGameTurn
 
     let bonusesLeft;
@@ -2884,7 +2892,8 @@ function showLevelStats() {
     if (app.flowers < levels[app.currentLevel - 1].flowersToCompleteTheLevel) {
         const
             notCompletedDiv = document.createElement("div"),
-            okBtn = document.createElement("button");
+            okBtn = document.createElement("button"),
+            pluralS = levels[app.currentLevel - 1].flowersToCompleteTheLevel > 1 ? "s" : "";
 
         // set OK button
         $(okBtn)
@@ -2896,8 +2905,8 @@ function showLevelStats() {
         $(notCompletedDiv)
             .addClass("levelHasNotBeenCompletedDiv")
             .html("Level has not been completed! On this level you need to collect " +
-                levels[app.currentLevel - 1].flowersToCompleteTheLevel + " flowers," +
-                " and your basket has " + app.flowers + ".")
+                levels[app.currentLevel - 1].flowersToCompleteTheLevel + " flower" +
+                pluralS + ", and your basket has " + app.flowers + ".")
             .append(okBtn);
 
         // add it to level-menu (it's size perfectly fits the layout,
@@ -3120,62 +3129,6 @@ function rewardUser() {
     } // end of if no exra flower has been collected
 } // end of rewardUser
 
-/*
- 
-        LEVELS
- 
-*/
-
-/* 
- * Each level object consist :
- *     - blueprint: array of 11 strings with 9 chars
- *         - "X"       : transparent (when matches found)
- *         - "1" - "9" : cell is different fruits
- *         - "."       : any random fruits
- *         - "A" - "E" : cell is one of the flowers
- *         - "F"       : any random flower
- *         - "S, M, L" : cell is stone small medium large (breakable)
- *         - "#"       : cell is wall (unbreakable)
- *         - "U"       : cell is basket
- *         - "*"       : diamonds 
- *         - "a" - "z" :lower case letters are kept for special characters like explosions and time stopers
- *     - fruitVariationNumber : determine the number of the possible randomly
- *         created fruits [5 - 9] 
- */
-
-var levels = [
-    // level 1
-    {
-        "blueprint": [
-            "..FFFFF..",
-            ".........",
-            ".........",
-            ".........",
-            ".........",
-            ".........",
-            ".........",
-            "LLLLLLLLL",
-            "#LLLLLLL#",
-            "##F234F##",
-            "###UUU###",
-        ],
-        "fruitVariationNumber": 6,
-        "minimumFlowersOnBoard": 3, // this will help to generate new flowers when board starts to run out
-        "flowersToCompleteTheLevel": 1,
-        "targetPoints": 500,
-        "time": 10,
-    }, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-];
 
 
 /*
@@ -3226,6 +3179,7 @@ function startLevel(level) {
         .removeClass("header--visible header-in")
         .addClass("header--hidden header-out");
 
+    $(".main-menu-msg").remove(); // remove message if it was left open
     $(".game-board").show();
 
     // create game environment
