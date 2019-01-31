@@ -146,11 +146,12 @@ function createLevelTables() {
                     box = document.createElement("div"),
                     progressBar = document.createElement("div");
 
-                box.id = `level-btn-${levelNum} to-level-${levelNum}`;
+                box.id = `level-btn-${levelNum}`;
+                $(box).addClass(`to-level-${levelNum}`);
                 box.innerHTML = `${levelNum}`;
 
-                progressBar.id = `level-progress-${levelNum} to-level-${levelNum}`;
-                $(progressBar).addClass("level-progressbar");
+                progressBar.id = `level-progress-${levelNum}`;
+                $(progressBar).addClass("level-progressbar to-level-" + levelNum);
                 box.append(progressBar);
 
                 cell.id = `level-cell-${levelNum}`;
@@ -290,8 +291,30 @@ function addLevelEvents() {
     // add eventListeners to level buttons
 
     // demo just to trigger game board
-    $(".to-level-1").on("click", () => startLevel(1));
+    //$(".to-level-1").on("click", () => startLevel(1));
+
+    // level buttons are all delegated to level-page
+    $(".level-page").on("click", function (e) {
+        const // get level number
+            levelNum = [...e.target.classList]       // extract array-like dom tokens to array
+                .find(lvl => /\d+/g.test(lvl))       // find a className where level number is indiicated (all has to have one, else it is not a level btn)
+                .match(/\d+/g).map(Number)[0];       // extract the number
+
+        if (levelNum && levels[levelNum - 1]) {
+            const isLocked = $("#level-cell-" + levelNum).hasClass("locked");
+
+            if (!isLocked) {
+                console.log("CLICK");
+                console.log("LEVEL", isLocked);
+
+            } // end of if level is not locked
+        } // end of if event is on a valid level number
+    }); // end of level-page click listener
 } // end of addLevelEvents
+
+
+
+
 
 function turnLevelPage(turnTo) {
     // turnTo parameter can be number or + or -
