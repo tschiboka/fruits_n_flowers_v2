@@ -188,6 +188,7 @@ function createLevelTables() {
 // last level completed is 5. app.game_max_points = [120, 33, 660, 105, 509]
 function setLevelMax() {
     const levelCells = $(".level-cell");
+    console.log("APP MAX POINTS", app.game_max_points);
 
     // iterate over all level cells
     levelCells.each(function (ind) {
@@ -2968,10 +2969,15 @@ function showLevelStats() {
     } // end of if level assignment hasn't been completed
     // if the assignment has been completed show level stats and add points
     else {
-        const max = app.game_max_points[app.currentLevel - 1];
+        const max = app.game_max_points[app.currentLevel - 1] || 0;
 
-        app.game_max_points[app.currentLevel - 1] = max < app.game_level_points ? app.game_level_points : max;
+        // update max points if its greater than the previous one
+        app.game_max_points[app.currentLevel - 1] = max <= app.game_level_points
+            ? app.game_level_points
+            : max;
 
+        console.log("PREVIOUS", max, "CURRENT", app.game_level_points);
+        console.log("MAX POINTS NEW", app.game_max_points);
         // Create end of level stat message
         const // create elements
             container = document.createElement("div");
@@ -3201,7 +3207,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_points": [20, 110, 550, 10],// an array holding the best points user made on a particular level
+    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3209,7 +3215,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": ["1-I4H", "*", "2-I4V", "3-T5", "*", "4-L51", "5-L52", "6-I5CR", "*", "7-I5X", "8-T6", "9-I4H", "1-I4V", "*", "2-T5", "3-L51", "4-L52"],         // all the bonus items you buy in the game
+    "inventory": [],             // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
