@@ -649,8 +649,32 @@ var levels = [
         ],
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 1,
-        "flowersToCompleteTheLevel": 1,
+        "flowersToCompleteTheLevel": 3,
         "targetPoints": 2800,
         "time": 150,
     },
+
+
+    // level 26
+    {
+        "blueprint": [
+            "####F####",
+            "##.....##",
+            "#.......#",
+            "#.......#",
+            "##.....##",
+            "#########",
+            "##.....##",
+            "#.......#",
+            "#.......#",
+            "##.....##",
+            "####U####",
+        ],
+        "fruitVariationNumber": 6,
+        "minimumFlowersOnBoard": 1,
+        "flowersToCompleteTheLevel": 2,
+        "targetPoints": 1800,
+        "time": 60,
+    },
+
 ];

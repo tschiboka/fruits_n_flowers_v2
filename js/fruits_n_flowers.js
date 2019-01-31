@@ -70,7 +70,7 @@ function preloadPics() {
         "misc/basket",
         "misc/diamond",
         "shards/apple_shard1", "shards/apple_shard2", "shards/apple_shard3", "shards/apple_shard4", "shards/apple_shard5",
-        "shards/blood-orange_shard1", "shards/blood-orange_shard2", "shards/blood-orange_shard3", "shards/blood-orange_shard4", "shards/blood-orange_shard5",
+        "shards/blood_orange_shard1", "shards/blood_orange_shard2", "shards/blood_orange_shard3", "shards/blood_orange_shard4", "shards/blood_orange_shard5",
         "shards/kiwi_shard1", "shards/kiwi_shard2", "shards/kiwi_shard3", "shards/kiwi_shard4", "shards/kiwi_shard5",
         "shards/lemon_shard1", "shards/lemon_shard2", "shards/lemon_shard3", "shards/lemon_shard4", "shards/lemon_shard5",
         "shards/lime_shard1", "shards/lime_shard2", "shards/lime_shard3", "shards/lime_shard4", "shards/lime_shard5",
@@ -253,23 +253,30 @@ function addLevelEvents() {
 
     // add swipe event to level menu page
     // vars for the swipe events
-    let isMouseDownOnPage = false,
+    let
         pageSwipeStartX = 0,
         pageSwipeEndX = 0;
 
+    const
+        getXCoord = event => {
+            console.log(event);
+            const // get X coord
+                mouse = event.pageX,
+                touch = (event.changedTouches ? event.changedTouches[0].pageX : undefined);
+
+
+            return mouse || touch;
+        }; // end of getXCoord
+
     // add mouse down touch start event on menu page
     $(".level-menu__page").on("mousedown touchstart", e => {
-        isMouseDownOnPage = true;
 
-        pageSwipeStartX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
-        console.log(e.pageX, e.targetTouches[0]);
+        pageSwipeStartX = getXCoord(e);
     }); // end of menu page mouse down / touch start event
 
     $(".level-menu__page").on("mouseup touchend", e => {
-        e.preventDefault();
 
-        pageSwipeEndX = e.pageX || e.targetTouches[0].pageX; // case for desktop / mobile
-
+        pageSwipeEndX = getXCoord(e);
         // case for swipe right
         if (pageSwipeStartX + 40 < pageSwipeEndX) {
             turnLevelPage("-");
@@ -295,6 +302,7 @@ function addLevelEvents() {
     // add eventListeners to level buttons
     // level buttons are all delegated to level-page
     $(".level-page").on("click", function (e) {
+        console.log("CLICK");
         const // get level number
             levelNum = [...e.target.classList]       // extract array-like dom tokens to array
                 .find(lvl => /\d+/g.test(lvl))       // find a className where level number is indiicated (all has to have one, else it is not a level btn)
@@ -1316,10 +1324,10 @@ function addShopEvents() {
             fruitPics = [
                 app.images.apple, app.images.orange, app.images.peach,
                 app.images.strawberry, app.images.plum, app.images.lime,
-                app.images.lemon, app.images.blood_orange, app.images.kiwi
+                app.images.kiwi, app.images.blood_orange, app.images.lemon
             ], // end of fruitPics
             bonusType = ["I4H", "I4V", "T5", "L51", "L52", "I5X", "I5CR", "T6"],
-            fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
+            fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "kiwi", "blood_orange", "lemon"];
 
 
         app.shop_basket = { "fruit": "", "bonus": "", "diamond": "", "best_hint": "", "fast_hint": "", "price": 0 };
@@ -1812,7 +1820,7 @@ function animateExplosions(matches) {
 
                         // set background image according to the fruit type
                         // 0 is reserved for transparent so array should start from 1
-                        const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"],
+                        const fruits = ["", "apple", "orange", "peach", "strawberry", "plum", "lime", "kiwi", "blood_orange", "lemon"],
                             imgName = fruits[Number(match.sample)] + "_shard" + (sh + 1),
                             imgURL = `url(${app.images[imgName].src})`;
 
@@ -3132,9 +3140,9 @@ function rewardUser() {
             "4": app.images.strawberry,
             "5": app.images.plum,
             "6": app.images.lime,
-            "7": app.images.lemon,
+            "7": app.images.kiwi,
             "8": app.images.blood_orange,
-            "9": app.images.kiwi,
+            "9": app.images.lemon,
             "*": app.images.diamond,
         } // end of img object declaration    
 
@@ -3207,7 +3215,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
+    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3358,9 +3366,9 @@ function displayInventoryItems() {
         "4": app.images.strawberry,
         "5": app.images.plum,
         "6": app.images.lime,
-        "7": app.images.lemon,
+        "7": app.images.kiwi,
         "8": app.images.blood_orange,
-        "9": app.images.kiwi,
+        "9": app.images.lemon,
         "*": app.images.diamond,
     } // end of img object declaration
 
@@ -3496,9 +3504,9 @@ function displayBoard() {
         "4": app.images.strawberry,
         "5": app.images.plum,
         "6": app.images.lime,
-        "7": app.images.lemon,
+        "7": app.images.kiwi,
         "8": app.images.blood_orange,
-        "9": app.images.kiwi,
+        "9": app.images.lemon,
         "#": app.images.rock_wall,
         "S": app.images.stone_sm,
         "M": app.images.stone_md,
