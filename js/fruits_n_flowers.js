@@ -2932,7 +2932,7 @@ function closeLevel() {
             $(".level-menu").show();
 
             // some cases level point didn't match the displayed one so now I simply copy it
-            app.game_level_points = $(".game-board__level-points").html().match(/\d+/g)[0]
+            app.game_level_points = Number($(".game-board__level-points").html().match(/\d+/g)[0]);
 
             setLevelMax();
             showLevelStats();
@@ -3216,7 +3216,7 @@ var app = {
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
     "game_give_hint_at": 10,     // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
-    "game_total_points": 1000,      // points earned throughout the game
+    "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
     "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
@@ -3227,7 +3227,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": ["*", "*", "*", "*"],             // all the bonus items you buy in the game
+    "inventory": [],             // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
