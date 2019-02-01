@@ -3222,7 +3222,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
+    "game_max_points": [],      // an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3602,7 +3602,6 @@ function localStorageIsAvailable() {
     try {
         const storage = window.localStorage;
         storage.setItem("test", "test");
-        console.log("LOCALSTORAGE", storage);
         storage.removeItem("test");
         return true;
     } // end of try to set local storage key value pair
@@ -3613,14 +3612,46 @@ function localStorageIsAvailable() {
 
 
 
+// function set a key value pair in the storage
+// arrays are presented
+function setStorage(key, val) {
+    if (!localStorageIsAvailable) return void (0); // quit function if localStorage is not available
+
+    const value = JSON.stringify(val); // localStorage only accepts strings
+    window.localStorage.setItem(key, value);
+} // end of setStorage
+
+
+
 
 
 // function loads app values to app obj
 function setAppValuesFromLocalStorage() {
     // test local storage
-    console.log("LOCAL STORAGE IS AVAILABLE", localStorageIsAvailable());
+    console.log("LOCAL STORAGE AVAILABLE", localStorageIsAvailable());
+
+    if (!localStorageIsAvailable) return void (0); // quit function if localStorage is not available
+
+    const storage = window.localStorage;
+    // information that is stored in localStorage :
+    //     - game_total_points
+    //     - game_max_points
+    //     - inventory
 
 
     // check if localStorage has been set up --> if its not the first time the browser visits the page
+    if (storage.getItem("game_total_points") === null ||
+        storage.getItem("game_max_points") === null ||
+        storage.getItem("inventory") === null) {
+        setStorage("game_total_points", 0);
+        setStorage("game_max_points", []);
+        setStorage("inventory", []);
+        console.log("STORAGE", storage);
+    } // end of if local storage hasn't been set on the page
+    else {
+        app.game_total_points = Number(JSON.parse(storage.getItem("game_total_points")));
+        app.game_max_points = JSON.parse(storage.getItem("game_max_points")).map(Number);
+        app.inventory = JSON.parse(storage.getItem("inventory"));
+    } // end of if local storage has been set
 
 } // end of setAppValuesFromLocalStorage
