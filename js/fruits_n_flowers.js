@@ -2924,12 +2924,16 @@ function closeLevel() {
         if (bonusesLeft === 0) {
             // remove game table and display levelboard again
             $(timeIsUp).remove();
-            $(".game-board")[0].removeChild($(".game-board__table")[0]);
+            $(".game-board__table").remove();
             $(".game-board").hide();
             $("header")
                 .removeClass("header--hidden header-out")
                 .addClass("header--visible header-in");
             $(".level-menu").show();
+
+            // some cases level point didn't match the displayed one so now I simply copy it
+            app.game_level_points = $(".game-board__level-points").html().match(/\d+/g)[0]
+
             setLevelMax();
             showLevelStats();
             clearInterval(turnDelay);
