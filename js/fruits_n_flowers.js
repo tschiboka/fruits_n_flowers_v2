@@ -3,6 +3,9 @@ $(document).ready(
         // preload pictures while logo animation is running
         preloadPics();
 
+        // set app values from local storage
+        setAppValuesFromLocalStorage();
+
         // delay start while logo animation is running
         setTimeout(() => { start(); }, 3000);
     } // end of ready
@@ -3236,7 +3239,7 @@ var app = {
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
-
+console.log("APP 1", app);
 
 // demo just to trigger game board
 function startLevel(level) {
@@ -3592,3 +3595,32 @@ function displayBoard() {
 
 
 
+
+
+// check if local storage is available
+function localStorageIsAvailable() {
+    try {
+        const storage = window.localStorage;
+        storage.setItem("test", "test");
+        console.log("LOCALSTORAGE", storage);
+        storage.removeItem("test");
+        return true;
+    } // end of try to set local storage key value pair
+    catch (e) {
+        return false;
+    } // end of catch local storage test error
+} // end of localStorageIsAvailable
+
+
+
+
+
+// function loads app values to app obj
+function setAppValuesFromLocalStorage() {
+    // test local storage
+    console.log("LOCAL STORAGE IS AVAILABLE", localStorageIsAvailable());
+
+
+    // check if localStorage has been set up --> if its not the first time the browser visits the page
+
+} // end of setAppValuesFromLocalStorage
