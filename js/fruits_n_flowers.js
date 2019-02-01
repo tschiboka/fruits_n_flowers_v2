@@ -3219,7 +3219,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
+    "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together

@@ -677,4 +677,237 @@ var levels = [
         "time": 60,
     },
 
+
+
+    // level 27
+    {
+        "blueprint": [
+            "...F.F...",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "#.......#",
+            "##.....##",
+            "###...###",
+            "####U####",
+        ],
+        "fruitVariationNumber": 5,
+        "minimumFlowersOnBoard": 2,
+        "flowersToCompleteTheLevel": 10,
+        "targetPoints": 9000,
+        "time": 300,
+    },
+
+    // level 28
+    {
+        "blueprint": [
+            "...F.F...",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "#SSSSSSS#",
+            "##MMMMM##",
+            "###LLL###",
+            "####U####",
+        ],
+        "fruitVariationNumber": 5,
+        "minimumFlowersOnBoard": 2,
+        "flowersToCompleteTheLevel": 3,
+        "targetPoints": 3000,
+        "time": 300,
+    },
+
+
+
+    // level 29
+    {
+        "blueprint": [
+            "####F####",
+            "###...###",
+            "##.....##",
+            "##.....##",
+            "##.....##",
+            "##..*..##",
+            "##.....##",
+            "##.....##",
+            "##.....##",
+            "###...###",
+            "####U####",
+        ],
+        "fruitVariationNumber": 6,
+        "minimumFlowersOnBoard": 1,
+        "flowersToCompleteTheLevel": 2,
+        "targetPoints": 1300,
+        "time": 150,
+    },
+
+
+    // level 30
+    {
+        "blueprint": [
+            "....F....",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "SSSSSSSSS",
+            "S*SS*SS*S",
+            "SSSSSSSSS",
+            "####U####",
+        ],
+        "fruitVariationNumber": 7,
+        "minimumFlowersOnBoard": 1,
+        "flowersToCompleteTheLevel": 1,
+        "targetPoints": 8500,
+        "time": 180,
+    },
+
+
+
+    // level 31
+    {
+        "blueprint": [
+            "....F....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "....#....",
+            "L...#...L",
+            "U#######U",
+        ],
+        "fruitVariationNumber": 7,
+        "minimumFlowersOnBoard": 1,
+        "flowersToCompleteTheLevel": 2,
+        "targetPoints": 2000,
+        "time": 210,
+    },
+
+
+    // level 32
+    {
+        "blueprint": [
+            "F.......F",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "....#....",
+            "...#.#...",
+            "..#...#..",
+            "S..#U#..S",
+            "*S..#..S*",
+        ],
+        "fruitVariationNumber": 6,
+        "minimumFlowersOnBoard": 2,
+        "flowersToCompleteTheLevel": 2,
+        "targetPoints": 5100,
+        "time": 120,
+    },
+
+
+    // level 33
+    {
+        "blueprint": [
+            "....F....",
+            ".........",
+            ".........",
+            ".........",
+            "...###...",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "SSSSSSSSS",
+            "UUUUUUUUU",
+        ],
+        "fruitVariationNumber": 9,
+        "minimumFlowersOnBoard": 3,
+        "flowersToCompleteTheLevel": 4,
+        "targetPoints": 1800,
+        "time": 180,
+    },
+
+
+    // level 34
+    {
+        "blueprint": [
+            "F...F...F",
+            ".........",
+            ".........",
+            ".........",
+            "#.......#",
+            "M.......M",
+            "L.......L",
+            "U.......U",
+            "#...M...#",
+            "*..LLL..*",
+            "####U####",
+        ],
+        "fruitVariationNumber": 7,
+        "minimumFlowersOnBoard": 3,
+        "flowersToCompleteTheLevel": 3,
+        "targetPoints": 1200,
+        "time": 90,
+    },
+
+
+    // level 35
+    {
+        "blueprint": [
+            "FFFFFFFFF",
+            "...***...",
+            ".........",
+            ".........",
+            ".........",
+            "LLLLLLLLL",
+            ".........",
+            "MMMMMMMMM",
+            ".........",
+            "SSSSSSSSS",
+            "UUUUUUUUU",
+        ],
+        "fruitVariationNumber": 6,
+        "minimumFlowersOnBoard": 20,
+        "flowersToCompleteTheLevel": 15,
+        "targetPoints": 5000,
+        "time": 180,
+    },
+
+
+
+    // level 36
+    {
+        "blueprint": [
+            "....F....",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            ".........",
+            "...#U#...",
+            "LL#####LL",
+            "*#######*",
+            "#########",
+        ],
+        "fruitVariationNumber": 7,
+        "minimumFlowersOnBoard": 1,
+        "flowersToCompleteTheLevel": 3,
+        "targetPoints": 2500,
+        "time": 90,
+    },
+
 ];
