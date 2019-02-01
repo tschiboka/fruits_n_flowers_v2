@@ -597,7 +597,7 @@ var levels = [
             ".........",
             "....###..",
             ".....L...",
-            "....#U####",
+            "...#U####",
         ],
         "fruitVariationNumber": 6,
         "minimumFlowersOnBoard": 3,

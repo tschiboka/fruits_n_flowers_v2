@@ -1386,7 +1386,7 @@ function addShopEvents() {
         fruitPics = {
             "apple": app.images.apple, "orange": app.images.orange, "peach": app.images.peach,
             "strawberry": app.images.strawberry, "plum": app.images.plum, "lime": app.images.lime,
-            "lemon": app.images.lemon, "blood_orange": app.images.blood_orange, "kiwi": app.images.kiwi
+            "blood_orange": app.images.blood_orange, "kiwi": app.images.kiwi, "lemon": app.images.lemon
         }; // end of fruitPics 
 
         if (app.shop_basket.fruit) {
@@ -1419,7 +1419,7 @@ function addShopEvents() {
             $(".game-board__total-points").html(app.game_total_points + "$");
 
             // create an inventory element
-            const fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "lemon", "blood_orange", "kiwi"];
+            const fruits = ["apple", "orange", "peach", "strawberry", "plum", "lime", "kiwi", "blood_orange", "lemon"];
             let newInventoryElem = null;
 
             // add fruit
@@ -2984,8 +2984,9 @@ function showLevelStats() {
             ? app.game_level_points
             : max;
 
-        console.log("PREVIOUS", max, "CURRENT", app.game_level_points);
-        console.log("MAX POINTS NEW", app.game_max_points);
+
+
+
         // Create end of level stat message
         const // create elements
             container = document.createElement("div");
@@ -3153,9 +3154,9 @@ function rewardUser() {
             .on("click", () => { $(".reward-div").remove(); });
 
         $(rewardMsgDiv)
-            .addClass("reward-div levelHasNotBeenCompletedDiv")  // level... class matches our needs here
-            .html(`You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} than the level requirement.` +
-                ` Find your reward gem${pluralS(rewardsArr.length)} in your inventory!`)
+            .addClass("levelHasNotBeenCompletedDiv reward-div")  // level... class matches our needs here
+            .html(`<div>You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} than the level requirement.` +
+                ` Find your reward gem${pluralS(rewardsArr.length)} in your inventory!</div>`)
             .append(gemDiv)
             .append(okBtn);
 
@@ -3212,7 +3213,7 @@ var app = {
     "game_interaction_locked": false, // keeps interaction locked while end-game is on
     "game_give_hint_at": 10,     // the num of secs a hint is given after no moves
     "game_hint_is_paused": false,
-    "game_total_points": 0,      // points earned throughout the game
+    "game_total_points": 1000,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
     "game_max_points": [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],      // an array holding the best points user made on a particular level
@@ -3223,7 +3224,7 @@ var app = {
     "game_time_left": 0,         // we'll set the remaining time when level starts
     "game_turn_is_over": true,   // game is in the middle of a match turn
     "images": [],                // the preloaded pictures
-    "inventory": [],             // all the bonus items you buy in the game
+    "inventory": ["*", "*", "*", "*"],             // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
@@ -3395,6 +3396,7 @@ function displayInventoryItems() {
             createspecialGemDiv(null, bonus, className);
         } // end of if theres bonus
     } // end of for 5 (inventory items)
+
 
     // check arrows if they are light theres still option to toggle
     // left
