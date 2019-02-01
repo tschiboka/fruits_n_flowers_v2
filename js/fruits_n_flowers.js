@@ -332,6 +332,7 @@ function addLevelEvents() {
                     VALIDLEVEL = HASALLPROPS && BLUEPRINTOK && FRUITOK && MINFLOWEROK && FLOWERSTOCOMPLETEOK && TARGETOK && TIMEOK;
 
                 if (VALIDLEVEL) {
+                    console.log("START LEVEL", levelNum);
                     startLevel(levelNum);
                 } // end of if level can be started safely and no erors were found in the current level
                 else {
@@ -1266,6 +1267,7 @@ function addInventoryEvents() {
         // take off element from inventory
         app.inventory.splice(dragObj.itemNum - 1, 1);
 
+
         app.inventoryAt = 0;
 
         displayInventoryItems();
@@ -1415,8 +1417,10 @@ function addShopEvents() {
         let transaction = false;
         if (app.game_total_points >= app.shop_basket.price) {
 
-            // take price off
+            // take price off and save it in storage
             app.game_total_points -= app.shop_basket.price;
+            setStorage("game_total_points", app.game_total_points);
+            console.log("STORAGE", window.localStorage);
 
             // display current user poins
             $(".game-board__total-points").html(app.game_total_points + "$");
@@ -2981,8 +2985,8 @@ function showLevelStats() {
         $(".level-menu").append(notCompletedDiv);
 
         $(notCompletedDiv).show();
-    } // end of if level assignment hasn't been completed
-    // if the assignment has been completed show level stats and add points
+    } // end of if level task hasn't been completed
+    // if the requrement has been completed show level stats and add points
     else {
         const max = app.game_max_points[app.currentLevel - 1] || 0;
 
@@ -2991,7 +2995,8 @@ function showLevelStats() {
             ? app.game_level_points
             : max;
 
-
+        // update storage
+        setStorage("game_max_points", app.game_max_points);
 
 
         // Create end of level stat message
@@ -3079,6 +3084,8 @@ function showLevelStats() {
                     .html()
                     .replace(/\d+/, tot); // the new total earned after a level completition
                 $(".game-board__total-points").html(totPts);
+                setStorage("game_total_points", app.game_total_points);
+                console.log("STORAGE", window.localStorage);
             } // escape anim
         }, 100); // end of animPointsDelay
     } // end of if level assignment has been completed
@@ -3129,6 +3136,9 @@ function rewardUser() {
 
         // add values to inventory
         rewardsArr.forEach(rew => app.inventory.unshift(rew));
+
+        // update storage
+        setStorage("inventory", app.inventory);
 
         // give a message about the newly recieved rewards gem(s)
         const
@@ -3222,7 +3232,7 @@ var app = {
     "game_total_points": 0,      // points earned throughout the game
     "game_level_points": 0,      // points on the actual level
     "game_matches": [],          // some functions have no scope on matches so they reach the apps matches
-    "game_max_points": [],      // an array holding the best points user made on a particular level
+    "game_max_points": [0],      // an array holding the best points user made on a particular level
     "game_is_on": false,
     "game_is_paused": false,
     "game_partial_points": 0,    // collects all points a turn makes, so it can be displayed together
@@ -3364,6 +3374,11 @@ function displayInventoryItems() {
             } // end of item is not a diamond (it has no fruit number)
         }); // end of item iteration
     } // end of if inventory is an array
+
+
+    // update storage every time displayInventory is invoked
+    setStorage("inventory", app.inventory);
+
 
     // add fruits and diamond imgs
     const img = {
@@ -3606,6 +3621,7 @@ function localStorageIsAvailable() {
         return true;
     } // end of try to set local storage key value pair
     catch (e) {
+        console.log("LOCAL STORAGE IS NOT AVAILABLE");
         return false;
     } // end of catch local storage test error
 } // end of localStorageIsAvailable
@@ -3644,14 +3660,12 @@ function setAppValuesFromLocalStorage() {
         storage.getItem("game_max_points") === null ||
         storage.getItem("inventory") === null) {
         setStorage("game_total_points", 0);
-        setStorage("game_max_points", []);
+        setStorage("game_max_points", [0]);
         setStorage("inventory", []);
-        console.log("STORAGE", storage);
     } // end of if local storage hasn't been set on the page
     else {
         app.game_total_points = Number(JSON.parse(storage.getItem("game_total_points")));
         app.game_max_points = JSON.parse(storage.getItem("game_max_points")).map(Number);
         app.inventory = JSON.parse(storage.getItem("inventory"));
     } // end of if local storage has been set
-
 } // end of setAppValuesFromLocalStorage
