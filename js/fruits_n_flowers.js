@@ -3155,11 +3155,10 @@ function rewardUser() {
 
         $(rewardMsgDiv)
             .addClass("levelHasNotBeenCompletedDiv reward-div")  // level... class matches our needs here
-            .html(`<div>You collected ${extraFlowers} more flower${pluralS(extraFlowers.length)} than the level requirement.` +
+            .html(`<div>You collected ${extraFlowers} more flower${pluralS(extraFlowers)} than the level requirement.` +
                 ` Find your reward gem${pluralS(rewardsArr.length)} in your inventory!</div>`)
             .append(gemDiv)
             .append(okBtn);
-
 
         // add div to level-menu as usual (only because it looks great)
         $(".level-menu")
