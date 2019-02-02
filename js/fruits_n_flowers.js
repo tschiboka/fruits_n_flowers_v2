@@ -624,6 +624,60 @@ function menuFunctions(action) {
                 txt = "Game is paused! Press OK if you want to return to the game!",
                 callBackYes = () => { app.game_is_paused = false; closeSelf(); };
 
+            /*
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            PERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENTPERMANENT
+            PERMANENTPERMANENT
+            
+            PERMANENT
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            */
+
+
+
+            app.game_turn_is_over = true;
+
+
+
+
             app.game_is_paused = true;
             giveMessage(txt, callBackYes, null, "OK");
             break;
@@ -1643,8 +1697,6 @@ function addShopEvents() {
 // Multiple matches return multiple arrays
 function checkMatches() {
     debug();
-    // app is entering a turn
-    app.game_turn_is_over = false;
 
     const matches = [];
     /* Patterns need to be divided by sections
@@ -1655,6 +1707,12 @@ function checkMatches() {
            The reason is that the match I3 is found before the loop gets to
            the higher ranking O4 match 
     */
+
+
+    // app is entering a turn
+    if (matches.length) app.game_turn_is_over = false;  // start a turn only if there are matches at all
+    console.log("CHECK MATCHES GAMETURN IS OVER", app.game_turn_is_over);
+
 
 
     for (r = 0; r < 11; r++) {
@@ -1806,6 +1864,7 @@ function checkMatches() {
     if (matches.length > 1) app.game_partial_points *= 2;
 
     if (!matches.length && checkFlowersOverBasket === 0) app.game_turn_is_over = true;
+    console.log("CHECK MATCHES GAMETURN IS OVER", app.game_turn_is_over, matches, checkFlowersOverBasket);
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
@@ -2062,7 +2121,7 @@ function fillBoardWithNewFruits() {
 function cycleMatches() {
     debug();
     const matches = checkMatches();
-    console.log("CYCLE MATHCES CHECKPOINT 1", matches);
+    console.log("\n\n\n\n\n\n\nCYCLE MATHCES CHECKPOINT 1", matches);
     displayBoard();
     destroyFlowersOverBasket();
     if (matches) {
@@ -2074,6 +2133,7 @@ function cycleMatches() {
         console.log("CYCLE MATHCES CHECKPOINT 3", possibleMatches);
         if (possibleMatches.length === 0) {
             console.log("CYCLE MATCHES CHECKPOINT 4");
+            app.game_turn_is_over = true;
             noMoreMovesMessage();
         } // end of there are no more moves on board
         else {
@@ -2090,7 +2150,7 @@ function cycleMatches() {
     } // end of if there are no further matches
     console.log("CYCLE MATCHES CHECKPOINT 8");
     destroyFlowersOverBasket();
-    console.log("CYCLE MATCHES CHECKPOINT 9");
+    console.log("CYCLE MATCHES CHECKPOINT 9 gameturnisover", app.game_turn_is_over, "\n\n\n\n");
 } // end of cycleMatches
 
 
@@ -3043,6 +3103,13 @@ function showLevelStats() {
         $(".level-menu").append(notCompletedDiv);
 
         $(notCompletedDiv).show();
+
+        console.log("HERE I RESET LEVEL POINTS");
+        // reset level-points
+        app.game_level_points = 0;
+        $(".game-board__level-points")
+            .html()
+            .replace(/\d+/, "0");
     } // end of if level task hasn't been completed
     // if the requrement has been completed show level stats and add points
     else {
@@ -3327,6 +3394,7 @@ function startLevel(level) {
     app.game_is_on = true;
     app.game_is_paused = false;
     app.game_time_left = levels[app.currentLevel - 1].time;
+    app.game_time_left = 6;
     app.game_level_points = 0;
     app.game_interaction_locked = false;
     console.log("LOCKED CHECKPOINT 2", app.game_interaction_locked);
@@ -3348,6 +3416,17 @@ function startLevel(level) {
         divTxt = $(".game-board__level-points").html().replace(/\/\d+/, "/" + levelTarget);
 
     $(".game-board__level-points").html(divTxt);
+
+    // reset level-points
+    $(".game-board__level-points")
+        .html(
+            $(".game-board__level-points")
+                .html()
+                .replace(/\d+/, "0")
+        );
+
+    console.log("LEVEL POINTS ", app.game_level_points, $(".game-board__level-points").html());
+
 
     // level timer
     displayTime(app.game_time_left); // prime timer
@@ -3731,7 +3810,7 @@ function setAppValuesFromLocalStorage() {
 // the page often freese without apparent reason or error log
 // so ill try to narrow it down by using a full log when a function executes
 function debug() {
-    console.log("FUNCTION", debug.caller.name);
-    console.log("\t\tARGuMENTS", debug.caller.arguments.length ? JSON.stringify(debug.caller.arguments) : "NONE");
-    console.log("\t\tAPP", app);
+    //console.log("FUNCTION", debug.caller.name);
+    //console.log("\t\tARGuMENTS", debug.caller.arguments.length ? JSON.stringify(debug.caller.arguments) : "NONE");
+    //console.log("\t\tAPP", app);
 } // end of debug
