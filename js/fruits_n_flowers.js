@@ -565,6 +565,10 @@ function menuFunctions(action) {
         app.game_interaction_enabled = false; // user can not interact the board after this point
         app.game_interaction_locked = true; // don't let further functions set interaction back as a side effect
 
+
+        // stop timer
+        clearInterval(levelTimer);
+
         // close shop if it was open
         $(".shop").hide();
 
@@ -3348,7 +3352,9 @@ function startLevel(level) {
     // level timer
     displayTime(app.game_time_left); // prime timer
 
-    const levelTimer = setInterval(() => {
+
+    // level timer is global therefore it can be stopped from outside of this function (restart / back)
+    levelTimer = setInterval(() => {
         if (app.game_is_on && !app.game_is_paused) {
             // decrement time if it's greater than 0
             if (app.game_time_left > 0) {

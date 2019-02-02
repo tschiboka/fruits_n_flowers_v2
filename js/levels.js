@@ -249,14 +249,14 @@ var levels = [
         "minimumFlowersOnBoard": 1,
         "flowersToCompleteTheLevel": 2,
         "targetPoints": 2000,
-        "time": 200,
+        "time": 240,
     },
 
 
     // level 9
     {
         "blueprint": [
-            "F...#....",
+            "F...#...F",
             "....#....",
             "....#....",
             "....#....",
