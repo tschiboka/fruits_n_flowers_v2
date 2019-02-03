@@ -6,6 +6,7 @@
     height: 95%;
     background: $panel-bg-color;
     text-shadow: -2px -2px black;
+    will-change: transform;
     clip-path: polygon(
         0 5%,
         5% 0,

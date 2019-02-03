@@ -1376,9 +1376,14 @@ function addInventoryEvents() {
     // the mousedown / touchstart event is on the inventory item
     // on the other hand mousemove / touchmove and mouseup / touchup event happens on the body
 
-    let dragObj = {};
+    let dragObj = {},
+        isMouseDown = false;
+
     $(".inventory-item").each(function () {
-        $(this).on("mousedown touchstart", function (e) { dragObj = inventoryItemStart(e, dragObj); });
+        $(this).on("mousedown touchstart", function (e) {
+            dragObj = inventoryItemStart(e, dragObj);
+            isMouseDown = true;
+        }); // end of mousedown / touchstart on inventory item
     }); // end of inventory-item iteration
 
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
@@ -3394,7 +3399,6 @@ function startLevel(level) {
     app.game_is_on = true;
     app.game_is_paused = false;
     app.game_time_left = levels[app.currentLevel - 1].time;
-    app.game_time_left = 6;
     app.game_level_points = 0;
     app.game_interaction_locked = false;
     console.log("LOCKED CHECKPOINT 2", app.game_interaction_locked);
