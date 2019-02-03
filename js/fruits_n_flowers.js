@@ -1377,24 +1377,27 @@ function addInventoryEvents() {
     // on the other hand mousemove / touchmove and mouseup / touchup event happens on the body
 
     let dragObj = {},
-        isMouseDown = false;
+        isMouseDownDrag = false;
 
     $(".inventory-item").each(function () {
         $(this).on("mousedown touchstart", function (e) {
             dragObj = inventoryItemStart(e, dragObj);
-            isMouseDown = true;
+
+            isMouseDownDrag = true;
         }); // end of mousedown / touchstart on inventory item
     }); // end of inventory-item iteration
 
     $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
 
     $("body").on("mouseup touchend", function (e) {
-        if (dragObj.dragClone) {
+        if (dragObj.dragClone && isMouseDownDrag) {
             if (dragObj.validItemUnderCursor) {
                 dropInventoryItem();
                 e.stopPropagation();
             } // end of if valid item under cursor
             cancelInventoryItemDrag();
+
+            isMouseDownDrag = false;
         } // end of if there is a dragObj
     }); // end of body mouse / touch up
 } // end of addInventoryEvents
