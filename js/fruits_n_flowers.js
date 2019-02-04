@@ -3055,9 +3055,9 @@ function showLevelStats() {
         $(container)
             .addClass("end-of-level-stat")
             .html("" +
-                "<div id='end-of-level-stat-txt'>Total money</div>" +
+                "<div id='end-of-level-stat-txt-total'>Total money</div>" +
                 "<div id='level-stat__total-points'></div>" +
-                "<div id='end-of-level-stat-txt'>Earned on this level</div>" +
+                "<div id='end-of-level-stat-txt-level'>Earned on this level</div>" +
                 "<div id='level-stat__level-points'></div>" +
                 "<button id='level-stat__ok-btn'>OK</button>");
 
@@ -3109,6 +3109,10 @@ function showLevelStats() {
             } // while there are still points to increment / decrement
             if (counter <= 0) {
                 clearInterval(animPointsDelay);
+                $("#end-of-level-stat-txt-level").remove();
+
+                $("#level-stat__level-points").remove();
+
                 $("#level-stat__ok-btn")
                     .show()
                     .on("click", () => {

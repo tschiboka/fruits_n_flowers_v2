@@ -87,7 +87,7 @@ var levels = [
         "minimumFlowersOnBoard": 2,
         "flowersToCompleteTheLevel": 1,
         "targetPoints": 5000,
-        "time": 180,
+        "time": 60,
     },
 
 
@@ -411,8 +411,8 @@ var levels = [
             ".........",
             ".........",
             ".........",
-            ".........",
             "...###...",
+            "....S....",
             "...SUS...",
             "...###...",
             "...###...",
