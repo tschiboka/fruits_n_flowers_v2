@@ -78,6 +78,7 @@
     width: 90%;
     padding: 5%;
     background: rgba(20, 16, 23, 0.995);
+    color: $main-text-color;
 
     .walkthrough-inner {
         width: 100%;
@@ -85,11 +86,41 @@
         display: flex;
         flex-flow: row nowrap;
         justify-content: center;
+        overflow: hidden;
         border: 1px solid rgb(43, 34, 49);
 
         .walkthrough__content {
             height:100%;
             width: 100%;
+            text-align: justify;
+
+            h2 {
+                display: flex;
+                justify-content: center;
+                font-size: 3vh;
+                text-align: center;
+            }
+
+            h2:before,
+            h2:after {
+                content: '';
+                border-top: 1px solid;
+                margin: 0 20px;
+                flex: 1 0 20px;
+                transform: translateY(50%);
+                opacity: 0.8;
+            }
+
+            p {
+                margin: 5%;
+                padding: 5%;
+                font-size: 2.3vh;
+                font-family: 'Courier New', Courier, monospace;
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgb(43, 34, 49);
+                border-left: none;
+                border-right: none;
+            }
         }
 
         .walkthrough__scrollbar {
