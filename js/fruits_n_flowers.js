@@ -3744,17 +3744,19 @@ function offerWalkthrough() {
     // append elements into each other
     $(offerMsgTextDiv)
         .addClass("offer-msg-text")
-        .html("Hi, it looks like this is your first time visiting this page! Let me offer a quick walkthrough of the game-play in case you are not familiar with it.");
+        .html("Hi, it looks like this is your first time visiting this page!<br /><br />Let me offer you a quick walkthrough of the game-play in case you are not familiar with it.");
 
     $(offerMsgSkipBtn)
         .addClass("offer-msg-button")
         .attr("id", "offer-msg-skip-btn")
-        .html("Skip");
+        .html("Skip")
+        .on("click", () => { $(offerMsgDiv).remove(); });
 
     $(offerMsgOkBtn)
         .addClass("offer-msg-button")
         .attr("id", "offer-msg-ok-btn")
-        .html("OK");
+        .html("OK")
+        .on("click", () => { $(offerMsgDiv).remove(); openWalkthrough(); });
 
     $(offerMsgButtonsDiv)
         .addClass("offer-msg-buttons-box")
@@ -3771,5 +3773,11 @@ function offerWalkthrough() {
         .append(offerMsgInnerDiv);
 
     // add element to level-page (thematically has nothing to do with it, just its layout fits the design)
-    $(".level-menu__page").append(offerMsgDiv);
+    $(".level-menu").append(offerMsgDiv);
 } // end of offerWalkthrough
+
+
+
+function openWalkthrough() {
+    $(".walkthrough").show();
+} // end of openWalkthrough
