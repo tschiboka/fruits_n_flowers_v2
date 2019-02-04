@@ -1,0 +1,58 @@
+.offer-msg {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    padding: 5%;
+    background: rgba(20, 16, 23, 0.995);
+    color: $main-text-color;
+    font-size: 2.7vh;
+    z-index: 12000;
+
+    .offer-msg-inner {
+        width: 90%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10% 5%;
+        border: 1px solid rgb(43, 34, 49);
+
+        .offer-msg-text {
+            width: 100%;
+            height: 100%;
+        }
+
+        .offer-msg-buttons-box {
+            width: 100%;
+            height: 20%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgb(43, 34, 49);
+            border-left: none;
+            border-right: none;
+
+            button {
+                width: 33%;
+                height: 80%;
+                margin: 2% 7%;
+                background: rgba(0, 0, 0, 0.1);
+                border: 1px solid rgb(43, 34, 49);
+                color: $main-text-color;
+                font-family: "main-game-font";
+                font-size: 2.4vh;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.05);
+                }
+
+                &:active {
+                    background: rgba(19, 246, 242, 0.95);
+                    color: rgba(0, 0, 0, 0.9);
+                }
+            }
+        }
+    }
+}

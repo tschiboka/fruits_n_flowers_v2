@@ -215,7 +215,7 @@ function setLevelMax() {
                     case percent >= 1 && percent < 25: { className = "under-twentyfive-percent"; break; }
                     case percent >= 25 && percent < 50: { className = "under-fifty-percent"; break; }
                     case percent >= 50 && percent < 75: { className = "under-seventyfive-percent"; break; }
-                    case percent >= 75 && percent < 100: { className = "under-hundred-percent"; break;}
+                    case percent >= 75 && percent < 100: { className = "under-hundred-percent"; break; }
                     case percent >= 100: { className = "maxed"; }
                 } // end of switch percent
 
@@ -1343,7 +1343,9 @@ function addInventoryEvents() {
         }); // end of mousedown / touchstart on inventory item
     }); // end of inventory-item iteration
 
-    $("body").on("mousemove touchmove", function (e) { dragInventoryItem(e, dragObj); }); // end of body onmousemove / ontouchmove
+    $("body").on("mousemove touchmove", function (e) {
+        if (isMouseDownDrag) { dragInventoryItem(e, dragObj); }
+    }); // end of body onmousemove / ontouchmove
 
     $("body").on("mouseup touchend", function (e) {
         if (dragObj.dragClone && isMouseDownDrag) {
@@ -3714,10 +3716,60 @@ function setAppValuesFromLocalStorage() {
         setStorage("game_total_points", 0);
         setStorage("game_max_points", [0]);
         setStorage("inventory", []);
+
     } // end of if local storage hasn't been set on the page
     else {
         app.game_total_points = Number(JSON.parse(storage.getItem("game_total_points")));
         app.game_max_points = JSON.parse(storage.getItem("game_max_points")).map(Number);
         app.inventory = JSON.parse(storage.getItem("inventory"));
     } // end of if local storage has been set
+    offerWalkthrough();
 } // end of setAppValuesFromLocalStorage
+
+
+
+
+
+// if browser has no localstorage set, offer a quick walkthrough
+function offerWalkthrough() {
+    const // create elements
+        offerMsgDiv = document.createElement("div"),
+        offerMsgInnerDiv = document.createElement("div"),
+        offerMsgTextDiv = document.createElement("div"),
+        offerMsgButtonsDiv = document.createElement("div"),
+        offerMsgSkipBtn = document.createElement("button"),
+        offerMsgOkBtn = document.createElement("button");
+
+
+    // append elements into each other
+    $(offerMsgTextDiv)
+        .addClass("offer-msg-text")
+        .html("Hi, it looks like this is your first time visiting this page! Let me offer a quick walkthrough of the game-play in case you are not familiar with it.");
+
+    $(offerMsgSkipBtn)
+        .addClass("offer-msg-button")
+        .attr("id", "offer-msg-skip-btn")
+        .html("Skip");
+
+    $(offerMsgOkBtn)
+        .addClass("offer-msg-button")
+        .attr("id", "offer-msg-ok-btn")
+        .html("OK");
+
+    $(offerMsgButtonsDiv)
+        .addClass("offer-msg-buttons-box")
+        .append(offerMsgSkipBtn)
+        .append(offerMsgOkBtn);
+
+    $(offerMsgInnerDiv)
+        .addClass("offer-msg-inner")
+        .append(offerMsgTextDiv)
+        .append(offerMsgButtonsDiv);
+
+    $(offerMsgDiv)
+        .addClass("offer-msg")
+        .append(offerMsgInnerDiv);
+
+    // add element to level-page (thematically has nothing to do with it, just its layout fits the design)
+    $(".level-menu__page").append(offerMsgDiv);
+} // end of offerWalkthrough

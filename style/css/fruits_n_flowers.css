@@ -1693,20 +1693,20 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(0) translateY(0) scale(0) rotate(0);
   }
   20% {
-    -webkit-transform: translateX(11px) translateY(-9px) scale(1.5) rotate(4deg);
-            transform: translateX(11px) translateY(-9px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(12px) translateY(-6px) scale(1.5) rotate(4deg);
+            transform: translateX(12px) translateY(-6px) scale(1.5) rotate(4deg);
   }
   60% {
-    -webkit-transform: translateX(44px) translateY(-38px) scale(1.2) rotate(7deg);
-            transform: translateX(44px) translateY(-38px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(46px) translateY(-35px) scale(1.2) rotate(7deg);
+            transform: translateX(46px) translateY(-35px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(94px) translateY(-86px) scale(0.3) rotate(50deg);
-            transform: translateX(94px) translateY(-86px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(93px) translateY(-87px) scale(0.3) rotate(50deg);
+            transform: translateX(93px) translateY(-87px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1717,68 +1717,68 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(0) translateY(0) scale(0) rotate(0);
   }
   20% {
-    -webkit-transform: translateX(11px) translateY(-9px) scale(1.5) rotate(4deg);
-            transform: translateX(11px) translateY(-9px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(12px) translateY(-6px) scale(1.5) rotate(4deg);
+            transform: translateX(12px) translateY(-6px) scale(1.5) rotate(4deg);
   }
   60% {
-    -webkit-transform: translateX(44px) translateY(-38px) scale(1.2) rotate(7deg);
-            transform: translateX(44px) translateY(-38px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(46px) translateY(-35px) scale(1.2) rotate(7deg);
+            transform: translateX(46px) translateY(-35px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(94px) translateY(-86px) scale(0.3) rotate(50deg);
-            transform: translateX(94px) translateY(-86px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(93px) translateY(-87px) scale(0.3) rotate(50deg);
+            transform: translateX(93px) translateY(-87px) scale(0.3) rotate(50deg);
   }
 }
 
 @-webkit-keyframes shard2-anim {
   0% {
     opacity: 1;
-    -webkit-transform: translateX(3px) translateY(3px) scale(0) rotate(0);
-            transform: translateX(3px) translateY(3px) scale(0) rotate(0);
+    -webkit-transform: translateX(2px) translateY(5px) scale(0) rotate(0);
+            transform: translateX(2px) translateY(5px) scale(0) rotate(0);
   }
   10% {
-    -webkit-transform: translateX(14px) translateY(15px) scale(1.5) rotate(4deg);
-            transform: translateX(14px) translateY(15px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(12px) translateY(11px) scale(1.5) rotate(4deg);
+            transform: translateX(12px) translateY(11px) scale(1.5) rotate(4deg);
   }
   50% {
-    -webkit-transform: translateX(47px) translateY(41px) scale(1.2) rotate(7deg);
-            transform: translateX(47px) translateY(41px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(48px) translateY(49px) scale(1.2) rotate(7deg);
+            transform: translateX(48px) translateY(49px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(92px) translateY(94px) scale(0.3) rotate(50deg);
-            transform: translateX(92px) translateY(94px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(91px) translateY(94px) scale(0.3) rotate(50deg);
+            transform: translateX(91px) translateY(94px) scale(0.3) rotate(50deg);
   }
 }
 
 @keyframes shard2-anim {
   0% {
     opacity: 1;
-    -webkit-transform: translateX(3px) translateY(3px) scale(0) rotate(0);
-            transform: translateX(3px) translateY(3px) scale(0) rotate(0);
+    -webkit-transform: translateX(2px) translateY(5px) scale(0) rotate(0);
+            transform: translateX(2px) translateY(5px) scale(0) rotate(0);
   }
   10% {
-    -webkit-transform: translateX(14px) translateY(15px) scale(1.5) rotate(4deg);
-            transform: translateX(14px) translateY(15px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(12px) translateY(11px) scale(1.5) rotate(4deg);
+            transform: translateX(12px) translateY(11px) scale(1.5) rotate(4deg);
   }
   50% {
-    -webkit-transform: translateX(47px) translateY(41px) scale(1.2) rotate(7deg);
-            transform: translateX(47px) translateY(41px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(48px) translateY(49px) scale(1.2) rotate(7deg);
+            transform: translateX(48px) translateY(49px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(92px) translateY(94px) scale(0.3) rotate(50deg);
-            transform: translateX(92px) translateY(94px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(91px) translateY(94px) scale(0.3) rotate(50deg);
+            transform: translateX(91px) translateY(94px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1789,20 +1789,20 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateY(0) scale(0) rotate(0, 0, 0, 0);
   }
   15% {
-    -webkit-transform: translateY(13px) scale(1.5) rotate(4deg);
-            transform: translateY(13px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateY(11px) scale(1.5) rotate(4deg);
+            transform: translateY(11px) scale(1.5) rotate(4deg);
   }
   40% {
-    -webkit-transform: translateY(44px) scale(1.2) rotate(7deg);
-            transform: translateY(44px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateY(41px) scale(1.2) rotate(7deg);
+            transform: translateY(41px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateY(96px) scale(0.3) rotate(50deg);
-            transform: translateY(96px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateY(98px) scale(0.3) rotate(50deg);
+            transform: translateY(98px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1813,20 +1813,20 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateY(0) scale(0) rotate(0, 0, 0, 0);
   }
   15% {
-    -webkit-transform: translateY(13px) scale(1.5) rotate(4deg);
-            transform: translateY(13px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateY(11px) scale(1.5) rotate(4deg);
+            transform: translateY(11px) scale(1.5) rotate(4deg);
   }
   40% {
-    -webkit-transform: translateY(44px) scale(1.2) rotate(7deg);
-            transform: translateY(44px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateY(41px) scale(1.2) rotate(7deg);
+            transform: translateY(41px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateY(96px) scale(0.3) rotate(50deg);
-            transform: translateY(96px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateY(98px) scale(0.3) rotate(50deg);
+            transform: translateY(98px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1837,20 +1837,20 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(0) translateY(0) scale(0) rotate(0, 0, 0, 0);
   }
   20% {
-    -webkit-transform: translateX(-6px) translateY(12px) scale(1.5) rotate(4deg);
-            transform: translateX(-6px) translateY(12px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(-6px) translateY(17px) scale(1.5) rotate(4deg);
+            transform: translateX(-6px) translateY(17px) scale(1.5) rotate(4deg);
   }
   40% {
-    -webkit-transform: translateX(-36px) translateY(42px) scale(1.2) rotate(7deg);
-            transform: translateX(-36px) translateY(42px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(-38px) translateY(43px) scale(1.2) rotate(7deg);
+            transform: translateX(-38px) translateY(43px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(-83px) translateY(97px) scale(0.3) rotate(50deg);
-            transform: translateX(-83px) translateY(97px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(-86px) translateY(92px) scale(0.3) rotate(50deg);
+            transform: translateX(-86px) translateY(92px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1861,20 +1861,20 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(0) translateY(0) scale(0) rotate(0, 0, 0, 0);
   }
   20% {
-    -webkit-transform: translateX(-6px) translateY(12px) scale(1.5) rotate(4deg);
-            transform: translateX(-6px) translateY(12px) scale(1.5) rotate(4deg);
+    -webkit-transform: translateX(-6px) translateY(17px) scale(1.5) rotate(4deg);
+            transform: translateX(-6px) translateY(17px) scale(1.5) rotate(4deg);
   }
   40% {
-    -webkit-transform: translateX(-36px) translateY(42px) scale(1.2) rotate(7deg);
-            transform: translateX(-36px) translateY(42px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(-38px) translateY(43px) scale(1.2) rotate(7deg);
+            transform: translateX(-38px) translateY(43px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(-83px) translateY(97px) scale(0.3) rotate(50deg);
-            transform: translateX(-83px) translateY(97px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(-86px) translateY(92px) scale(0.3) rotate(50deg);
+            transform: translateX(-86px) translateY(92px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1889,16 +1889,16 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(-5px) translateY(-7px) scale(1.5) rotate(4deg);
   }
   60% {
-    -webkit-transform: translateX(-38px) translateY(-37px) scale(1.2) rotate(7deg);
-            transform: translateX(-38px) translateY(-37px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(-36px) translateY(-34px) scale(1.2) rotate(7deg);
+            transform: translateX(-36px) translateY(-34px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(-89px) translateY(-86px) scale(0.3) rotate(50deg);
-            transform: translateX(-89px) translateY(-86px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(-89px) translateY(-75px) scale(0.3) rotate(50deg);
+            transform: translateX(-89px) translateY(-75px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -1913,16 +1913,16 @@ header .header__flowers-txt .header__flowers--flower {
             transform: translateX(-5px) translateY(-7px) scale(1.5) rotate(4deg);
   }
   60% {
-    -webkit-transform: translateX(-38px) translateY(-37px) scale(1.2) rotate(7deg);
-            transform: translateX(-38px) translateY(-37px) scale(1.2) rotate(7deg);
+    -webkit-transform: translateX(-36px) translateY(-34px) scale(1.2) rotate(7deg);
+            transform: translateX(-36px) translateY(-34px) scale(1.2) rotate(7deg);
   }
   80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    -webkit-transform: translateX(-89px) translateY(-86px) scale(0.3) rotate(50deg);
-            transform: translateX(-89px) translateY(-86px) scale(0.3) rotate(50deg);
+    -webkit-transform: translateX(-89px) translateY(-75px) scale(0.3) rotate(50deg);
+            transform: translateX(-89px) translateY(-75px) scale(0.3) rotate(50deg);
   }
 }
 
@@ -2981,6 +2981,81 @@ header .header__flowers-txt .header__flowers--flower {
 #shop__back:active, #shop__buy:active,
 .shop__fruits > div:active, .shop__bonuses > div:active,
 #shop__fast-hint:active, #shop__best-hint:active, #shop__diamond:active {
+  background: rgba(19, 246, 242, 0.95);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.offer-msg {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  padding: 5%;
+  background: rgba(20, 16, 23, 0.995);
+  color: #13f6f3;
+  font-size: 2.7vh;
+  z-index: 12000;
+}
+
+.offer-msg .offer-msg-inner {
+  width: 90%;
+  height: 80%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 10% 5%;
+  border: 1px solid #2b2231;
+}
+
+.offer-msg .offer-msg-inner .offer-msg-text {
+  width: 100%;
+  height: 100%;
+}
+
+.offer-msg .offer-msg-inner .offer-msg-buttons-box {
+  width: 100%;
+  height: 20%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #2b2231;
+  border-left: none;
+  border-right: none;
+}
+
+.offer-msg .offer-msg-inner .offer-msg-buttons-box button {
+  width: 33%;
+  height: 80%;
+  margin: 2% 7%;
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid #2b2231;
+  color: #13f6f3;
+  font-family: "main-game-font";
+  font-size: 2.4vh;
+}
+
+.offer-msg .offer-msg-inner .offer-msg-buttons-box button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.offer-msg .offer-msg-inner .offer-msg-buttons-box button:active {
   background: rgba(19, 246, 242, 0.95);
   color: rgba(0, 0, 0, 0.9);
 }
