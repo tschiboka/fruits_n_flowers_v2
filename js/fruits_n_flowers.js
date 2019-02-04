@@ -24,6 +24,7 @@ function start() {
     addLevelEvents();
     addInventoryEvents();
     addShopEvents();
+    createWalkthroughEvents();
 } // end of start
 
 function toggleFullScreen() {
@@ -3778,6 +3779,18 @@ function offerWalkthrough() {
 
 
 
+
+
 function openWalkthrough() {
     $(".walkthrough").show();
 } // end of openWalkthrough
+
+
+
+
+
+
+function createWalkthroughEvents() {
+    // CREATE CUSTOM SCROLLBAR
+
+} // end of createWalkthroughEvents

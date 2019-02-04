@@ -8,6 +8,11 @@
     src: url(../../fonts/MainGameFont.ttf);
 }
 
+@font-face {
+    font-family: mono;
+    src: url(../../fonts/SourceCodePro-ExtraLight.ttf);
+}
+
 @import "_main.scss";
 @import "_header.scss";
 @import "_logo.scss";
