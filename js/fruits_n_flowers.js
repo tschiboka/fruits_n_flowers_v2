@@ -51,7 +51,6 @@ function toggleFullScreen() {
 } // end of toggleFullScreen
 
 function preloadPics() {
-    debug();
     path = [
         "fruits/strawberry",
         "fruits/peach",
@@ -209,14 +208,27 @@ function setLevelMax() {
                             ((app.game_max_points[ind] / levels[ind].targetPoints) || 0) * 100
                         ), 100);
 
-                $(progress).
-                    addClass("progress" + (percent === 100 ? " maxed" : "")). // when maxed let it be different color
-                    css("width", percent + "%");
+                let className = "";
+
+                switch (true) {
+                    case percent <= 0: { className = "zero"; break; }
+                    case percent >= 1 && percent < 25: { className = "twentyfive-percent"; break; }
+                    case percent >= 25 && percent < 50: { className = "fifty-percent"; break; }
+                    case percent >= 50 && percent < 75: { className = "seventyfive-percent"; break; }
+                    case percent >= 100: { className = "maxed"; }
+                } // end of switch percent
+
+
+                $(progress)
+                    .removeClass()
+                    .addClass("progress " + className) // different color for different percentage
+                    .css("width", percent + "%");
 
                 $(progressBar)
                     .empty() // so it won't be duplicated, if function is called multiple times
                     .append(progress);
             } // end of there is any progress so far
+
 
             // ADD PADLOCKS
             const
@@ -224,7 +236,7 @@ function setLevelMax() {
                     ? app.game_max_points.length
                     : app.game_max_points.length + 1;
 
-            // if previous level has been completed aka its not level max is not 0 or undefined
+            // if previous level has been completed aka its level max is not 0 or undefined
             if (ind >= lockedFrom) {
                 $(this).addClass("locked");
             } // end of locked cells
@@ -624,60 +636,6 @@ function menuFunctions(action) {
                 txt = "Game is paused! Press OK if you want to return to the game!",
                 callBackYes = () => { app.game_is_paused = false; closeSelf(); };
 
-            /*
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            PERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENTPERMANENT
-            PERMANENTPERMANENT
-            
-            PERMANENT
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            */
-
-
-
-            app.game_turn_is_over = true;
-
-
-
-
             app.game_is_paused = true;
             giveMessage(txt, callBackYes, null, "OK");
             break;
@@ -796,7 +754,6 @@ function addGameBoardEvents() {
 // Check if swipe is valid in terms of immobile characters
 // And return the row and column coords.
 function checkswipeMobility(startId, dir) {
-    debug();
     if (["LEFT", "RIGHT", "UP", "DOWN"].find(dirs => dirs === dir)) {
         const [R1, C1] = startId.match(/\d+/g).map(Number);  // ROW COL
 
@@ -826,9 +783,7 @@ function checkswipeMobility(startId, dir) {
 
 // function returns true if swipe had bonus matches 
 function swipeCharacters(swipeArgs) {
-    debug();
     function swapCharacters(r1, c1, r2, c2) {
-        debug();
         const temp = app.board[r1][c1];
 
         app.board[r1][c1] = app.board[r2][c2];
@@ -1704,7 +1659,6 @@ function addShopEvents() {
 // Check all possible match patterns and return them in an array
 // Multiple matches return multiple arrays
 function checkMatches() {
-    debug();
 
     const matches = [];
     /* Patterns need to be divided by sections
@@ -1719,9 +1673,6 @@ function checkMatches() {
 
     // app is entering a turn
     if (matches.length) app.game_turn_is_over = false;  // start a turn only if there are matches at all
-    console.log("CHECK MATCHES GAMETURN IS OVER", app.game_turn_is_over);
-
-
 
     for (r = 0; r < 11; r++) {
         for (c = 0; c < 9; c++) {
@@ -1872,14 +1823,13 @@ function checkMatches() {
     if (matches.length > 1) app.game_partial_points *= 2;
 
     if (!matches.length && checkFlowersOverBasket === 0) app.game_turn_is_over = true;
-    console.log("CHECK MATCHES GAMETURN IS OVER", app.game_turn_is_over, matches, checkFlowersOverBasket);
+
     return matches.length ? matches : false; // return false if no matches 
 } // end of checkMatches
 
 
 
 function animateExplosions(matches) {
-    debug();
     // several function can call animateExplosions, in cases matches might be even empty
     if (matches.length) {
         // disable interaction with the gameboard while animation is going 
@@ -1947,7 +1897,6 @@ function animateExplosions(matches) {
 
 
 function gravity() {
-    debug();
     let currentBoard = app.board;
     // each column need to be tested against column gravity
     const columnGravityDone = Array(9).fill(false);
@@ -2025,7 +1974,6 @@ function gravity() {
     // function iterates all columns, if column needs gravity, apply
     // else correct columnGravityDone array 
     function gravitiseBoard(board) {
-        debug();
         const updateColumnGravityDone = (c, cn) => {
             columnGravityDone[cn] = checkColumnGravity(c);
             return columnGravityDone[cn];
@@ -2070,7 +2018,6 @@ function gravity() {
 
 
 function fillBoardWithNewFruits() {
-    debug();
     const idsToFill = [];
 
     for (r = 10; r >= 0; r--) {
@@ -2127,43 +2074,32 @@ function fillBoardWithNewFruits() {
 
 
 function cycleMatches() {
-    debug();
     const matches = checkMatches();
-    console.log("\n\n\n\n\n\n\nCYCLE MATHCES CHECKPOINT 1", matches);
     displayBoard();
     destroyFlowersOverBasket();
     if (matches) {
-        console.log("CYCLE MATHCES CHECKPOINT 2");
         animateExplosions(matches);
     } // if there are further matches
     else {
         const possibleMatches = possibleMoves();
-        console.log("CYCLE MATHCES CHECKPOINT 3", possibleMatches);
         if (possibleMatches.length === 0) {
-            console.log("CYCLE MATCHES CHECKPOINT 4");
             app.game_turn_is_over = true;
             noMoreMovesMessage();
         } // end of there are no more moves on board
         else {
-            console.log("CYCLE MATCHES CHECKPOINT 5", possibleMatches);
             // app is exiting a turn
             app.game_turn_is_over = true;
-            console.log("CYCLE MATCHES CHECKPOINT 6, APP TURN IS OVER", app.game_turn_is_over);
             if (!app.game_interaction_locked) {
-                console.log("CYCLE MATCHES CHECKPOINT 7");
                 app.game_interaction_enabled = true; // give interaction back to player
                 app.game_hint_is_paused = false; // hint can count time again
             } // end of if interaction is not locked because of the end-game
         } // end of if there are possible matches
     } // end of if there are no further matches
-    console.log("CYCLE MATCHES CHECKPOINT 8");
     destroyFlowersOverBasket();
-    console.log("CYCLE MATCHES CHECKPOINT 9 gameturnisover", app.game_turn_is_over, "\n\n\n\n");
 } // end of cycleMatches
 
 
 function displayLevelPoints() {
-    debug();
     // double the points if level has been maxed out
     if (app.game_current_level_maxed) app.game_partial_points *= 2;
 
@@ -2278,7 +2214,6 @@ function displayLevelPoints() {
 
 // just a helper function, when game is finishing, it won't let the game finish while there is flowers above any basket
 function checkFlowersOverBasket() {
-    debug();
     // check if character above is flower
     const isFlower = (e) => ["A", "B", "C", "D", "E"].find(fl => fl === e);
     let flowerOverBasket = 0;
@@ -2295,7 +2230,6 @@ function checkFlowersOverBasket() {
 
 
 function destroyFlowersOverBasket() {
-    debug();
     // get the basket positions
     basketsPos = []
     app.board.forEach((row, rowPos) =>
@@ -2364,7 +2298,6 @@ function destroyFlowersOverBasket() {
 
 
 function getSpecialGems(matches) {
-    debug();
     const getRandomPos = (posArr) => Math.floor(Math.random() * posArr.length);
 
     matches.forEach(match => {
@@ -2544,7 +2477,6 @@ function checkBonuses() {
 
 // explose bonuses in different patterns according to bonusType
 function bonusExplode(bonusType, rowInd, cellInd) {
-    debug();
     function explose(r, c) {
         // prevent any invalid value to cause error
         if (r < 0 || r > 10 || c < 0 || c > 8) return void (0);
@@ -2652,7 +2584,6 @@ function bonusExplode(bonusType, rowInd, cellInd) {
 // function check if any gap created by an explosion or match has any stones around
 // Large stones become medium, medium small, small becomes a gap
 function destroyStones(coordsArr) {
-    debug();
     coordsArr.forEach(coords => {
         coords.forEach(coord => {
             // check if any of the cells around is stone [North, South, West, East]
@@ -2695,7 +2626,6 @@ function destroyStones(coordsArr) {
 
 // function returns possible matches, or null if none left
 function possibleMoves() {
-    debug();
     function checkPattern(patternName, indices, r, c, r1, c1) {
         const valsOnIndex = [];
         // return false if any of the indices are out of boards range
@@ -2878,7 +2808,6 @@ function possibleMoves() {
 
 
 function giveHint() {
-    debug();
     const hints = possibleMoves();
     if (hints.length > 0) {
         let hint;
@@ -2927,7 +2856,6 @@ function giveHint() {
 
 // puts a message out when there are no more moves found on the gameboard
 function noMoreMovesMessage() {
-    debug();
     const msgDiv = document.createElement("div");
 
     $(msgDiv)
@@ -2943,7 +2871,6 @@ function noMoreMovesMessage() {
 
 // put randomly new fruits on board, but they can not match 
 function createFreshBoard(msgDiv) {
-    debug();
     fruits = [...Array(levels[app.currentLevel - 1].fruitVariationNumber).keys()].map(el => ++el);
 
     app.board.map((row, rowInd) => row.map((cell, cellInd) => {
@@ -3002,13 +2929,10 @@ function displayTime(time) {
 
 
 function closeLevel() {
-    debug();
     app.game_interaction_enabled = false; // user can not interact the board after this point
-    console.log("LOCKED CHECKPOINT 1", app.game_interaction_locked);
     app.game_interaction_locked = true; // don't let further functions set interaction back as a side effect
     //app.game_turn_is_over = true;
 
-    console.log("CHECKPOINT 1");
     // close shop if it was open
     $(".shop").hide();
     $(".main-menu-msg").remove(); // remove message if it was left open
@@ -3017,7 +2941,6 @@ function closeLevel() {
     // display time is up label
     const timeIsUp = document.createElement("div");
 
-    console.log("CHECKPOINT 2");
     $(timeIsUp)
         .html("TIME IS UP!")
         .attr("id", "time-is-up");
@@ -3028,7 +2951,6 @@ function closeLevel() {
     // search for the last bonus gem
 
     function endGameTurn() {
-        debug();
         const bonuses = [...$(".bonus")].reverse();
 
         if (bonuses.length) {
@@ -3045,7 +2967,6 @@ function closeLevel() {
 
 
     let bonusesLeft;
-    console.log("CHECKPOINT 3");
     const turnDelay = setInterval(() => {
         // if no more bonus left get out of Interval
         if (bonusesLeft === 0) {
@@ -3061,7 +2982,6 @@ function closeLevel() {
             // some cases level point didn't match the displayed one so now I simply copy it
             app.game_level_points = Number($(".game-board__level-points").html().match(/\d+/g)[0]);
 
-            console.log("CHECKPOINT 4", bonusesLeft);
             setLevelMax();
             showLevelStats();
             clearInterval(turnDelay);
@@ -3069,10 +2989,8 @@ function closeLevel() {
 
         // when turn is over destroy next gem
         if (app.game_turn_is_over) {
-            console.log("CHECKPOINT 5", bonusesLeft);
             bonusesLeft = endGameTurn();
         }
-        console.log("CHECKPOINT 6", bonusesLeft, "GameTURNISOVER", app);
     }, 1000); // end of setInterval
 
     // set up variables
@@ -3084,7 +3002,6 @@ function closeLevel() {
 
 
 function showLevelStats() {
-    debug();
     // if level has not been completed create a message div: level has not been completed
     if (app.flowers < levels[app.currentLevel - 1].flowersToCompleteTheLevel) {
         const
@@ -3112,7 +3029,6 @@ function showLevelStats() {
 
         $(notCompletedDiv).show();
 
-        console.log("HERE I RESET LEVEL POINTS");
         // reset level-points
         app.game_level_points = 0;
         $(".game-board__level-points")
@@ -3227,7 +3143,6 @@ function showLevelStats() {
 
 
 function rewardUser() {
-    debug();
     // if you have had extra flowers collected apart from the level requirement
     // user recieves reward gems:
     //      - > 5 extra, divide the numbers by five eg (12 = 5 + 5 + 2) 
@@ -3379,7 +3294,6 @@ var app = {
 
 
 function startLevel(level) {
-    debug();
     app.currentLevel = level;
     toggleFullScreen();
 
@@ -3404,7 +3318,6 @@ function startLevel(level) {
     app.game_time_left = levels[app.currentLevel - 1].time;
     app.game_level_points = 0;
     app.game_interaction_locked = false;
-    console.log("LOCKED CHECKPOINT 2", app.game_interaction_locked);
     app.game_interaction_enabled = true;
     app.flowers = 0;
     app.game_best_hint = false;
@@ -3431,8 +3344,6 @@ function startLevel(level) {
                 .html()
                 .replace(/\d+/, "0")
         );
-
-    console.log("LEVEL POINTS ", app.game_level_points, $(".game-board__level-points").html());
 
 
     // level timer
@@ -3600,7 +3511,6 @@ function displayInventoryItems() {
 
 
 function createGameBoard() {
-    debug();
     const board = document.createElement("table"),
         tbody = document.createElement("tbody");
 
@@ -3634,7 +3544,6 @@ function createGameBoard() {
 
 
 function createBoardArray(level) {
-    debug();
     const board = levels[level]["blueprint"].map(row => [...row]);
 
     // check if level is crafted correctly
@@ -3762,7 +3671,6 @@ function localStorageIsAvailable() {
         return true;
     } // end of try to set local storage key value pair
     catch (e) {
-        console.log("LOCAL STORAGE IS NOT AVAILABLE");
         return false;
     } // end of catch local storage test error
 } // end of localStorageIsAvailable
@@ -3784,7 +3692,6 @@ function setStorage(key, val) {
 
 // function loads app values to app obj
 function setAppValuesFromLocalStorage() {
-    debug();
     // test local storage
     if (!localStorageIsAvailable) return void (0); // quit function if localStorage is not available
 
@@ -3809,15 +3716,3 @@ function setAppValuesFromLocalStorage() {
         app.inventory = JSON.parse(storage.getItem("inventory"));
     } // end of if local storage has been set
 } // end of setAppValuesFromLocalStorage
-
-
-
-
-// function is for debugging purposes only
-// the page often freese without apparent reason or error log
-// so ill try to narrow it down by using a full log when a function executes
-function debug() {
-    //console.log("FUNCTION", debug.caller.name);
-    //console.log("\t\tARGuMENTS", debug.caller.arguments.length ? JSON.stringify(debug.caller.arguments) : "NONE");
-    //console.log("\t\tAPP", app);
-} // end of debug

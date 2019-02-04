@@ -92,8 +92,25 @@ $green: rgb(141, 238, 121);
                         background: rgba(255, 255, 255, 0.3);
                     }
 
+                    .zero {
+                        background: transparent;
+                    }
+
+                    .twentyfive-percent {
+                        background: rgba(214, 132, 187, 0.493);
+                    }
+
+                    .fifty-percent {
+                        background: #ffba9793;
+                    }
+
+                    .seventyfive-percent {
+                        background: #9df5fd9a;
+
+                    }
+
                     .maxed {
-                        background: rgba(112, 252, 159, 0.6);
+                        background: $green;
                     }
                 }
             }
