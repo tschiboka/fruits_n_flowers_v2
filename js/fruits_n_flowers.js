@@ -212,9 +212,10 @@ function setLevelMax() {
 
                 switch (true) {
                     case percent <= 0: { className = "zero"; break; }
-                    case percent >= 1 && percent < 25: { className = "twentyfive-percent"; break; }
-                    case percent >= 25 && percent < 50: { className = "fifty-percent"; break; }
-                    case percent >= 50 && percent < 75: { className = "seventyfive-percent"; break; }
+                    case percent >= 1 && percent < 25: { className = "under-twentyfive-percent"; break; }
+                    case percent >= 25 && percent < 50: { className = "under-fifty-percent"; break; }
+                    case percent >= 50 && percent < 75: { className = "under-seventyfive-percent"; break; }
+                    case percent >= 75 && percent < 100: { className = "under-hundred-percent"; break;}
                     case percent >= 100: { className = "maxed"; }
                 } // end of switch percent
 

@@ -86,9 +86,13 @@ $green: rgb(141, 238, 121);
                     border-bottom : 1px solid rgb(90, 71, 104);
 
                     .progress {
+                        margin: 0;
+                        padding: 0;
+                        transform: translate(-0.25px, 0.5px); // progress bar had a wierd 1px gap so thats the only solution I found
                         position: relative;
                         width: 100%;
                         height: 100%;
+                        border-radius: 1.15px;
                         background: rgba(255, 255, 255, 0.3);
                     }
 
@@ -96,17 +100,20 @@ $green: rgb(141, 238, 121);
                         background: transparent;
                     }
 
-                    .twentyfive-percent {
-                        background: rgba(214, 132, 187, 0.493);
+                    .under-twentyfive-percent {
+                        background: #d684bbaf;
                     }
 
-                    .fifty-percent {
-                        background: #ffba9793;
+                    .under-fifty-percent {
+                        background: #ffd297d5;
                     }
 
-                    .seventyfive-percent {
-                        background: #9df5fd9a;
-
+                    .under-seventyfive-percent {
+                        background: #ffffa4af;
+                    }
+                    
+                    .under-hundred-percent {
+                        background: #9df5fdb0;
                     }
 
                     .maxed {
