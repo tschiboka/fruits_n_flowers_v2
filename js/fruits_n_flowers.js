@@ -508,6 +508,22 @@ function addMenuEvents() {
     $(".pause-btn").on("click", () => { menuFunctions("pause"); });
 
     $(".restart-btn").on("click", () => { menuFunctions("restart"); });
+
+    $(".intro-btn").on("click", () => {
+        if (app.game_is_on) app.game_is_paused = true; // pause game, if user were playing
+
+        // close main menu
+        $(".menu")
+            .removeClass("menu-open")
+            .addClass("menu-close");
+
+        $(".menu__open-close-arrow")
+            .addClass("arrow-close")
+            .removeClass("arrow-open");
+
+
+        $(".walkthrough").show();
+    }); // end of intro btn click
 } // end of add MenuEvents
 
 
@@ -1339,6 +1355,7 @@ function addInventoryEvents() {
     $(".inventory-item").each(function () {
         $(this).on("mousedown touchstart", function (e) {
             dragObj = inventoryItemStart(e, dragObj);
+            console.log("START");
 
             isMouseDownDrag = true;
         }); // end of mousedown / touchstart on inventory item
@@ -3718,13 +3735,13 @@ function setAppValuesFromLocalStorage() {
         setStorage("game_max_points", [0]);
         setStorage("inventory", []);
 
+        offerWalkthrough();
     } // end of if local storage hasn't been set on the page
     else {
         app.game_total_points = Number(JSON.parse(storage.getItem("game_total_points")));
         app.game_max_points = JSON.parse(storage.getItem("game_max_points")).map(Number);
         app.inventory = JSON.parse(storage.getItem("inventory"));
     } // end of if local storage has been set
-    offerWalkthrough();
 } // end of setAppValuesFromLocalStorage
 
 
@@ -3859,4 +3876,10 @@ function createWalkthroughEvents() {
     $(".walkthrough").on("mouseup touchend", () => {
         scrollBtnDown = false;
     }); // end of scrollbar down
+
+    $("#walkthrough-back-btn").on("click", () => {
+        if (app.game_is_on) app.game_is_paused = false; // resume game, if user were playing
+
+        $(".walkthrough").hide();
+    }); // end of back btn click
 } // end of createWalkthroughEvents
