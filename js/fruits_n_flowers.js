@@ -3841,6 +3841,11 @@ function createWalkthroughEvents() {
 
                 // move thumb according to percentage
                 console.log("percent", percent + "%");
+
+                // set scroll thumbs position
+                const newThumbPos = Math.floor(((scrollBarHeight - scrollThumbHeight) / 100) * percent);
+
+                $("#scrollbar-thumb").css("bottom", newThumbPos + "px");
             } // end of if scroll is in ranges
         } // end of if scrollBtnDonw
     }); // end of scrollbar move
