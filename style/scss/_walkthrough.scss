@@ -88,13 +88,12 @@ $scrollbar-color: $main-text-color;
         display: flex;
         flex-flow: row nowrap;
         justify-content: center;
-        overflow: hidden;
         border: 1px solid rgb(43, 34, 49);
 
         .walkthrough__content {
-            height:100%;
             width: 100%;
             text-align: justify;
+            overflow: hidden;
 
             h2 {
                 display: flex;

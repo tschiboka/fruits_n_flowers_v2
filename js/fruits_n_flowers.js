@@ -3784,6 +3784,7 @@ function offerWalkthrough() {
 function openWalkthrough() {
     $(".walkthrough").show();
 
+    $(".walkthrough__content")[0].scrollTop = 0;
     // get the height of the scrollbar thumb
     const
         contentHeight = $(".walkthrough__content")[0].scrollHeight,
@@ -3805,24 +3806,28 @@ function createWalkthroughEvents() {
         scrollBarHeight = 0,
         scrollBtnHeight = 0,
         scrollThumbHeight = 0,
+        contentHeight = 0,
+        contentScrollHeight = 0,
         startCursorY = 0,
         grabbedAtY = 0, // where the mouse grabbed the button
         percent = 0;
 
 
     $("#scrollbar-btn").on("mousedown touchstart", (event) => {
+        // set values every time scroll is activated, in case page would have been resized
         scrollBtnTop = $("#scrollbar-btn")[0].getBoundingClientRect().top;
         scrollBarTop = $(".walkthrough__scrollbar")[0].getBoundingClientRect().top;
         scrollBarHeight = $(".walkthrough__scrollbar")[0].getBoundingClientRect().height;
         scrollBtnHeight = $("#scrollbar-btn")[0].getBoundingClientRect().height;
         scrollThumbHeight = $("#scrollbar-thumb")[0].getBoundingClientRect().height;
+        contentScrollHeight = $(".walkthrough__content")[0].scrollHeight;
+        contentHeight = $(".walkthrough__content")[0].getBoundingClientRect().height;
 
         scrollBtnDown = true;
 
         startCursorY = event.pageY || event.changedTouches[0].pageY;
 
         grabbedAtY = startCursorY - scrollBtnTop;
-        console.log("SCROLL BTN DOWN", grabbedAtY);
     }); // end of scrollbar down
 
     $(".walkthrough").on("mousemove touchmove", (event) => {
@@ -3839,20 +3844,19 @@ function createWalkthroughEvents() {
                 // set percentage
                 percent = ((newY / (scrollBarHeight - scrollBtnHeight)) * 100).toFixed(1);
 
-                // move thumb according to percentage
-                console.log("percent", percent + "%");
-
                 // set scroll thumbs position
                 const newThumbPos = Math.floor(((scrollBarHeight - scrollThumbHeight) / 100) * percent);
 
                 $("#scrollbar-thumb").css("bottom", newThumbPos + "px");
+
+                // scroll content
+                const newContentPos = Math.floor(((contentScrollHeight - contentHeight) / 100) * percent);
+                $(".walkthrough__content")[0].scrollTop = newContentPos;
             } // end of if scroll is in ranges
         } // end of if scrollBtnDonw
     }); // end of scrollbar move
 
     $(".walkthrough").on("mouseup touchend", () => {
         scrollBtnDown = false;
-
-        console.log("SCROLL BTN UP", scrollBtnDown);
     }); // end of scrollbar down
 } // end of createWalkthroughEvents
