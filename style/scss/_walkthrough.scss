@@ -1,3 +1,5 @@
+$scrollbar-color: $main-text-color;
+
 .offer-msg {
     position: absolute;
     top: 8%;
@@ -126,31 +128,78 @@
         .walkthrough__scrollbar {
             position: relative;
             height: calc(100% - 20px);
-            width: 2px;
+            width: 3px;
             margin: 10px;
             border: 1px solid rgb(79, 63, 90);
-            border: 1px solid $main-text-color;
+            border: 1px solid $scrollbar-color;
             background: rgb(43, 34, 49);
             border-radius: 1px;
 
-            #thumb {
-                width: 10px;
-                height: 40px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: rgba(20, 16, 23, 0.995);
-                border: 2px solid $main-text-color;
-                transform: translate(-6px, -2px);
+            #scrollbar-thumb {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 3px;
+                height: 25%; // it changes by js
+                background: #fc41a3;
+                border-radius: 1px;
+            }
 
-                .groove {
-                    width: 70%;
-                    height: 1px;
-                    margin: 15% 0;
-                    background: $main-text-color;
+            #scroll-btn {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 15px;
+                height: 50px;
+                background: $scrollbar-color;
+                transform: translate(-6px, -4px);
+                clip-path: polygon(
+                    0 15%,
+                    25% 0,
+                    75% 0,
+                    100% 15%,
+                    100% 85%,
+                    75% 100%,
+                    25% 100%,
+                    0 85%
+                );
+
+                #scrollbar-btn__inner {
+                    position: relative;
+                    width: 11px;
+                    height: 46px;
+                    display: flex;
+                    margin-left: 2px;
+                    transform: translateY(2px);
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(20, 16, 23, 0.995);
+                    //border: 2px solid $main-text-color;
+                    cursor: pointer;
+    
+                    clip-path: polygon(
+                        0 15%,
+                        25% 0,
+                        75% 0,
+                        100% 15%,
+                        100% 85%,
+                        75% 100%,
+                        25% 100%,
+                        0 85%
+                    );
+                
+                
+                    .groove {
+                        width: 70%;
+                        height: 1px;
+                        margin: 15% 0;
+                        background: $scrollbar-color;
+                    }
                 }
             }
+
+            
         }
     }
 }

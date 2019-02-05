@@ -3783,6 +3783,14 @@ function offerWalkthrough() {
 
 function openWalkthrough() {
     $(".walkthrough").show();
+
+    // get the height of the scrollbar thumb
+    const
+        contentHeight = $(".walkthrough__content")[0].scrollHeight,
+        scrollbarHeight = Math.round($(".walkthrough__scrollbar")[0].getBoundingClientRect().height),
+        thumbHeight = Math.round((scrollbarHeight / contentHeight) * 100);
+
+    $("#scrollbar-thumb").css("height", thumbHeight + "%");
 } // end of openWalkthrough
 
 
@@ -3791,6 +3799,5 @@ function openWalkthrough() {
 
 
 function createWalkthroughEvents() {
-    // CREATE CUSTOM SCROLLBAR
 
 } // end of createWalkthroughEvents
