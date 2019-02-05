@@ -24,7 +24,7 @@ function start() {
     addLevelEvents();
     addInventoryEvents();
     addShopEvents();
-    createWalkthroughEvents();
+    createWalkthroughAndAboutEvents();
 } // end of start
 
 function toggleFullScreen() {
@@ -512,18 +512,19 @@ function addMenuEvents() {
     $(".intro-btn").on("click", () => {
         if (app.game_is_on) app.game_is_paused = true; // pause game, if user were playing
 
-        // close main menu
-        $(".menu")
-            .removeClass("menu-open")
-            .addClass("menu-close");
-
-        $(".menu__open-close-arrow")
-            .addClass("arrow-close")
-            .removeClass("arrow-open");
-
+        closeAllMenuWindows();
 
         $(".walkthrough").show();
     }); // end of intro btn click
+
+    $(".info-btn").on("click", () => {
+        if (app.game_is_on) app.game_is_paused = true; // pause game, if user were playing
+
+        closeAllMenuWindows();
+
+        $(".about").show();
+    }); // end of intro btn click
+
 } // end of add MenuEvents
 
 
@@ -3815,8 +3816,24 @@ function openWalkthrough() {
 
 
 
+function closeAllMenuWindows() {
+    $(".walkthrough,.about").hide();
 
-function createWalkthroughEvents() {
+    // close main menu
+    $(".menu")
+        .removeClass("menu-open")
+        .addClass("menu-close");
+
+    $(".menu__open-close-arrow")
+        .addClass("arrow-close")
+        .removeClass("arrow-open");
+
+} // end of closeAllMenuWindows
+
+
+
+
+function createWalkthroughAndAboutEvents() {
     let
         scrollBtnDown = false,
         scrollBarTop = 0,
@@ -3881,5 +3898,12 @@ function createWalkthroughEvents() {
         if (app.game_is_on) app.game_is_paused = false; // resume game, if user were playing
 
         $(".walkthrough").hide();
-    }); // end of back btn click
-} // end of createWalkthroughEvents
+    }); // end of walkthrough back btn click
+
+    $("#about-back-btn").on("click", () => {
+        if (app.game_is_on) app.game_is_paused = false; // resume game, if user were playing
+
+        $(".about").hide();
+    }); // end of about back btn click
+
+} // end of createWalkthroughAndAboutEvents
