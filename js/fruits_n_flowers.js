@@ -3799,5 +3799,43 @@ function openWalkthrough() {
 
 
 function createWalkthroughEvents() {
+    let scrollBtnDown = false,
+        startCursorY = 0,
+        grabbedAtY = 0; // where the mouse grabbed the button
 
+    $("#scrollbar-btn").on("mousedown touchstart", (event) => {
+        const btnTop = $("#scrollbar-btn")[0].getBoundingClientRect().top;
+
+        scrollBtnDown = true;
+
+        startCursorY = event.pageY || event.changedTouches[0].pageY;
+
+        grabbedAtY = startCursorY - btnTop;
+        console.log("SCROLL BTN DOWN", grabbedAtY);
+    }); // end of scrollbar down
+
+    $(".walkthrough").on("mousemove touchmove", (event) => {
+        if (scrollBtnDown) {
+            const
+                newCursorY = event.pageY || event.changedTouches[0].pageY,
+                scrollBarTop = $(".walkthrough__scrollbar")[0].getBoundingClientRect().top,
+                scrollbarHeight = $(".walkthrough__scrollbar")[0].getBoundingClientRect().height,
+                scrollBtnHeight = $("#scrollbar-btn")[0].getBoundingClientRect().height,
+                newY = newCursorY - scrollBarTop - grabbedAtY;
+
+            console.log(newY, scrollbarHeight - scrollBtnHeight);
+
+            // set ranges
+            if (newY > 0 && newY <= scrollbarHeight - scrollBtnHeight) {
+                // set new btn position
+                $("#scrollbar-btn").css("top", newY + "px");
+            } // end of if scroll is in ranges
+        } // end of if scrollBtnDonw
+    }); // end of scrollbar move
+
+    $(".walkthrough").on("mouseup touchend", () => {
+        scrollBtnDown = false;
+
+        console.log("SCROLL BTN UP", scrollBtnDown);
+    }); // end of scrollbar down
 } // end of createWalkthroughEvents

@@ -145,14 +145,14 @@ $scrollbar-color: $main-text-color;
                 border-radius: 1px;
             }
 
-            #scroll-btn {
+            #scrollbar-btn {
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 15px;
                 height: 50px;
                 background: $scrollbar-color;
-                transform: translate(-6px, -4px);
+                transform: translate(-6px, 0);
                 clip-path: polygon(
                     0 15%,
                     25% 0,
