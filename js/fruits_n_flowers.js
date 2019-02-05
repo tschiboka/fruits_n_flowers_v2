@@ -3799,18 +3799,29 @@ function openWalkthrough() {
 
 
 function createWalkthroughEvents() {
-    let scrollBtnDown = false,
+    let
+        scrollBtnDown = false,
+        scrollBarTop = 0,
+        scrollBarHeight = 0,
+        scrollBtnHeight = 0,
+        scrollThumbHeight = 0,
         startCursorY = 0,
-        grabbedAtY = 0; // where the mouse grabbed the button
+        grabbedAtY = 0, // where the mouse grabbed the button
+        percent = 0;
+
 
     $("#scrollbar-btn").on("mousedown touchstart", (event) => {
-        const btnTop = $("#scrollbar-btn")[0].getBoundingClientRect().top;
+        scrollBtnTop = $("#scrollbar-btn")[0].getBoundingClientRect().top;
+        scrollBarTop = $(".walkthrough__scrollbar")[0].getBoundingClientRect().top;
+        scrollBarHeight = $(".walkthrough__scrollbar")[0].getBoundingClientRect().height;
+        scrollBtnHeight = $("#scrollbar-btn")[0].getBoundingClientRect().height;
+        scrollThumbHeight = $("#scrollbar-thumb")[0].getBoundingClientRect().height;
 
         scrollBtnDown = true;
 
         startCursorY = event.pageY || event.changedTouches[0].pageY;
 
-        grabbedAtY = startCursorY - btnTop;
+        grabbedAtY = startCursorY - scrollBtnTop;
         console.log("SCROLL BTN DOWN", grabbedAtY);
     }); // end of scrollbar down
 
@@ -3818,17 +3829,18 @@ function createWalkthroughEvents() {
         if (scrollBtnDown) {
             const
                 newCursorY = event.pageY || event.changedTouches[0].pageY,
-                scrollBarTop = $(".walkthrough__scrollbar")[0].getBoundingClientRect().top,
-                scrollbarHeight = $(".walkthrough__scrollbar")[0].getBoundingClientRect().height,
-                scrollBtnHeight = $("#scrollbar-btn")[0].getBoundingClientRect().height,
                 newY = newCursorY - scrollBarTop - grabbedAtY;
 
-            console.log(newY, scrollbarHeight - scrollBtnHeight);
-
             // set ranges
-            if (newY > 0 && newY <= scrollbarHeight - scrollBtnHeight) {
+            if (newY > 0 && newY <= scrollBarHeight - scrollBtnHeight) {
                 // set new btn position
                 $("#scrollbar-btn").css("top", newY + "px");
+
+                // set percentage
+                percent = ((newY / (scrollBarHeight - scrollBtnHeight)) * 100).toFixed(1);
+
+                // move thumb according to percentage
+                console.log("percent", percent + "%");
             } // end of if scroll is in ranges
         } // end of if scrollBtnDonw
     }); // end of scrollbar move
