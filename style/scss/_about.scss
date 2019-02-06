@@ -89,9 +89,27 @@
     }
 
 
+    .anchor-div {
+        padding-top:0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .anchor-underline {
+        width: 100;
+        background: red;
+        height: 1px;
+        background: linear-gradient(to right, #251e2a, #3b2f43, #52415d, #6a5479, #836896, #836896, #836896, #836896, #6a5479, #52415d, #3b2f43, #251e2a);
+        animation: anchor-underline-anim 5s ease-in-out infinite;
+    }
+
+
     a {
         text-decoration: none;
         color: #fc41a3;
+        line-height: 2vh;
+        animation: anchor-anim 5s ease-in-out infinite;
         &:hover {
             text-decoration: underline;
         }
@@ -114,8 +132,8 @@
         left: calc(50% - 120px);
         width: 150px;
         height: 1px;
-        background: rgb(65, 52, 75);
-        animation: stripe-horizontal-anim 2s ease-in-out infinite;
+        background: linear-gradient(to left, #251e2a, #42354b, #624e70, #836896, #a684be);
+        animation: stripe-horizontal-anim 3s ease-in-out infinite;
     }
 
     .stripe2 {
@@ -124,8 +142,8 @@
         right: calc(50% - 120px);
         width: 150px;
         height: 1px;
-        background: rgb(65, 52, 75);
-        animation: stripe-horizontal-anim 2s ease-in-out infinite;
+        background: linear-gradient(to right, #251e2a, #42354b, #624e70, #836896, #a684be);
+        animation: stripe-horizontal-anim 3s ease-in-out infinite;
     }
 
     .stripe3 {
@@ -134,8 +152,8 @@
         right: calc(50% - 105px);
         width: 1px;
         height: 150px;
-        background: rgb(65, 52, 75);
-        animation: stripe-vertical-anim 2s ease-in-out infinite;
+        background: linear-gradient(to bottom, #251e2a, #42354b, #624e70, #836896, #a684be);
+        animation: stripe-vertical-anim 3s ease-in-out infinite;
     }
 
     .stripe4 {
@@ -144,41 +162,75 @@
         left: calc(50% - 105px);
         width: 1px;
         height: 150px;
-        background: rgb(65, 52, 75);
-        animation: stripe-vertical-anim 2s ease-in-out infinite;
+        background: linear-gradient(to top, #251e2a, #42354b, #624e70, #836896, #a684be);
+        animation: stripe-vertical-anim 3s ease-in-out infinite;
     }
 
 }
 
 @keyframes stripe-horizontal-anim {
     0% {
-        width: 20px;
+        width: 10px;
         opacity: 0.4;
     }
 
     50% {
-        width: 150px;
-        opacity: 1;
+        width: 240px;
+        opacity: 0.9;
     }
     100% {
-        width: 20px;
+        width: 10px;
         opacity: 0.4;
     }
 }
 
 @keyframes stripe-vertical-anim {
     0% {
-        height: 20px;
+        height: 10px;
         opacity: 0.4;
     }
 
     50% {
-        height: 150px;
-        opacity: 1;
+        height: 230px;
+        opacity: 0.9;
     }
     100% {
-        height: 20px;
+        height: 10px;
         opacity: 0.4;
     }
 }
 
+@keyframes anchor-anim {
+    0% {
+        color: #fc41a3;
+    }
+    50% {
+        color: #fdcde6;
+    }
+    100% {
+        color: #fc41a3;
+    }
+}
+
+@keyframes anchor-underline-anim {
+    0% {
+        width: 2%;
+        margin-left: 0;
+    }
+    25% {
+        width: 80%;
+        margin-left: 18%;
+    }
+    50% {
+        width: 2%;
+        margin-left: 98%;
+    }
+    75% {
+        width: 80%;
+        margin-left: 18%;
+    }
+    100% {
+        width: 2%;
+        margin-left: 0;
+    }
+}
