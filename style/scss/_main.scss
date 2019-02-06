@@ -38,6 +38,7 @@ $vertical-gradient: linear-gradient(
 }
 
 body {
+    height: 100%;
     margin: 0;
     padding: 0;
     background: $bg-color;
@@ -71,6 +72,7 @@ body {
     background: $primary-color1;
     background: linear-gradient(180deg, $primary-color3 1%, $primary-color2 50%, $primary-color1 100%);
     box-shadow: 5px 5px 5px black;
+    overflow: hidden;
 
     @include breakpoint(sm) {
         width: 100vw;
@@ -107,3 +109,16 @@ body {
         }
     }
 }
+
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+    html {
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+  }

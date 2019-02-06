@@ -1,0 +1,16 @@
+{
+    "name": "Fruits n Flowers",
+    "description": "logic game match three",
+    "app": {
+        "urls": [
+            "http://tschiboka.co.uk/projects/fruits_n_flowers_v2/fruits_n_flowers.html"
+        ],
+        "launch": {
+            "web_url": "http://tschiboka.co.uk/projects/fruits_n_flowers_v2/fruits_n_flowers.html"
+        }
+    },
+    "version": "0.0.0.1",
+    "manifest_version": 2,
+    "display": "fullscreen",
+    "orientation": "portrait"
+}

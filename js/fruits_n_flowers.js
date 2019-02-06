@@ -27,30 +27,6 @@ function start() {
     createWalkthroughAndAboutEvents();
 } // end of start
 
-function toggleFullScreen() {
-    const // get document, request fullscreen, get window width 
-        doc = window.document,
-        docEl = doc.documentElement,
-        requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen,
-        cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen,
-        windowWidth = $(window).width();
-
-    // decide if full screen is necessary
-    if (app.toggle_fullscreen === "?") {
-        app.toggle_fullscreen = windowWidth < 480 ? true : false;
-    } // end of setting app.togglefullscreen
-
-    // 
-    if (app.toggle_fullscreen && !app.isFullScreen) {
-        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-            requestFullScreen.call(docEl);
-
-            app.isFullScreen = true;
-        } // end of fullscreen possible
-        // in case i decide to cancel fullScreen else { cancelFullScreen.call(doc); }
-    } // end of if toggleScreen but hasn't been toggled
-} // end of toggleFullScreen
-
 function preloadPics() {
     path = [
         "fruits/strawberry",
@@ -1361,6 +1337,8 @@ function addInventoryEvents() {
             isMouseDownDrag = true;
         }); // end of mousedown / touchstart on inventory item
     }); // end of inventory-item iteration
+
+    $("body").on("mousedown touchstart", () => { fullScreen(); });
 
     $("body").on("mousemove touchmove", function (e) {
         if (isMouseDownDrag) { dragInventoryItem(e, dragObj); }
@@ -3310,8 +3288,6 @@ var app = {
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
-    "toggle_fullscreen": "?",    // for mobile screen sizes it will be true
-    "isFullScreen": false,       // if once set won't be toggled every level (it needs to be triggered by a user action, so I chose level selection -> level start) 
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
 }; // end of app global object
 
@@ -3321,7 +3297,6 @@ var app = {
 
 function startLevel(level) {
     app.currentLevel = level;
-    toggleFullScreen();
 
     // arrange new layout
     $(".level-menu").hide();
@@ -3865,6 +3840,8 @@ function createWalkthroughAndAboutEvents() {
     }); // end of scrollbar down
 
     $(".walkthrough").on("mousemove touchmove", (event) => {
+        event.preventDefault();
+
         if (scrollBtnDown) {
             const
                 newCursorY = event.pageY || event.changedTouches[0].pageY,
@@ -3907,3 +3884,21 @@ function createWalkthroughAndAboutEvents() {
     }); // end of about back btn click
 
 } // end of createWalkthroughAndAboutEvents
+
+
+function fullScreen() {
+    const isFullScreen = window.innerWidth == screen.width && window.innerHeight == screen.height;
+
+    if (window.innerHeight < 700 && !isFullScreen) {
+        var elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        }
+    } // end of if height is mobule size
+} // end of fullScreen
