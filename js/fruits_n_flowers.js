@@ -59,6 +59,8 @@ function preloadPics() {
         "shards/plum_shard1", "shards/plum_shard2", "shards/plum_shard3", "shards/plum_shard4", "shards/plum_shard5",
         "shards/strawberry_shard1", "shards/strawberry_shard2", "shards/strawberry_shard3", "shards/strawberry_shard4", "shards/strawberry_shard5",
         "shards/blood_orange_shard1", "shards/blood_orange_shard2", "shards/blood_orange_shard3", "shards/blood_orange_shard4", "shards/blood_orange_shard5",
+        "icons/back-icon", "icons/flower-icon", "icons/info-icon", "icons/intro-icon",
+        "icons/padlock-icon", "icons/pause-icon", "icons/restart-icon", "icons/shop-icon"
     ]; // end of fileName
 
     try {
