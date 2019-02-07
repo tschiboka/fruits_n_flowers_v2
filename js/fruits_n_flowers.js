@@ -66,7 +66,7 @@ function preloadPics() {
             const picVarName = p.match(/\/.+/g)[0].match(/\w+/)[0],
                 img = new Image();
 
-            img.src = `http://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/${p}.png`;
+            img.src = `https://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/${p}.png`;
             app.images[picVarName] = img;
         }); // end of forEach path
     } // end of try loading images
@@ -3286,6 +3286,7 @@ var app = {
     "images": [],                // the preloaded pictures
     "inventory": [],             // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
+    "match_table_ind": 0,        // walkthrough match point table ind
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
@@ -3882,6 +3883,16 @@ function createWalkthroughAndAboutEvents() {
 
         $(".about").hide();
     }); // end of about back btn click
+
+    $("#match-table-prev-btn").on("click", () => {
+        if (app.match_table_ind > 0) app.match_table_ind--;
+        console.log(app.match_table_ind);
+    }); // end of match-table prev click
+
+    $("#match-table-next-btn").on("click", () => {
+        if (app.match_table_ind < 8) app.match_table_ind++;
+        console.log(app.match_table_ind);
+    });
 
 } // end of createWalkthroughAndAboutEvents
 
