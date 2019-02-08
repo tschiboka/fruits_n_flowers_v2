@@ -3894,21 +3894,29 @@ function createWalkthroughAndAboutEvents() {
         $(".match-page-tab").removeClass("active");
 
         $(`#match-page-tab${app.match_table_ind}`).addClass("active");
+
+        // set picture
+        const matchNames = [`I3`, `I4H`, `I4V`, `O4`, `T5`, `L5`, `I5`, `T6`, `T7`];
+
+        $(".table-picture").css("background-image", `url("/images/walkthrough/matches-${matchNames[app.match_table_ind - 1]}.gif")`);
+
+        // set points
+        const matchPoints = [3, 5, 5, 5, 10, 10, 10, 25, 100];
+        $(".table-match-points").html(matchPoints[app.match_table_ind - 1] + " points");
     } // end of setMatchTable
 
 
     $("#match-table-prev-btn").on("click", () => {
         if (app.match_table_ind > 1) app.match_table_ind--;
-        else app.match_table_ind = 7;
+        else app.match_table_ind = 9;
         setMatchTable();
         console.log(app.match_table_ind);
     }); // end of match-table prev click
 
     $("#match-table-next-btn").on("click", () => {
-        if (app.match_table_ind < 7) app.match_table_ind++;
+        if (app.match_table_ind < 9) app.match_table_ind++;
         else app.match_table_ind = 1;
         setMatchTable();
-        console.log(app.match_table_ind);
     }); // end of match-table next click
 } // end of createWalkthroughAndAboutEvents
 
