@@ -3910,7 +3910,6 @@ function createWalkthroughAndAboutEvents() {
         setMatchTable();
         console.log(app.match_table_ind);
     }); // end of match-table next click
-
 } // end of createWalkthroughAndAboutEvents
 
 
