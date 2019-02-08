@@ -3888,7 +3888,10 @@ function createWalkthroughAndAboutEvents() {
 
 
 
+    // MATCH TABLE
+
     // sets the walkthrough matches / points tables tab and picture
+    // table index starts with 1!!
     function setMatchTable() {
         // set tab
         $(".match-page-tab").removeClass("active");
@@ -3903,6 +3906,49 @@ function createWalkthroughAndAboutEvents() {
         // set points
         const matchPoints = [3, 5, 5, 5, 10, 10, 10, 25, 100];
         $(".table-match-points").html(matchPoints[app.match_table_ind - 1] + " points");
+
+        // set bonus div content accordingly
+        let bonusContent = "";
+        switch (app.match_table_ind) {
+            case 1: {
+                bonusContent = "No bonus";
+                break;
+            } // end of case I3
+            case 2: {
+                bonusContent = "Bonus <img src='/images/walkthrough/bonus-I4H.gif' alt='bonus' />"
+                break;
+            } // end of case I4H
+            case 3: {
+                bonusContent = "Bonus <img src='/images/walkthrough/bonus-I4V.gif' alt='bonus' />"
+                break;
+            } // end of case I4V
+            case 4: {
+                bonusContent = "+5 second"
+                break;
+            } // end of case O4
+            case 5: {
+                bonusContent = "Bonus <img src='/images/walkthrough/bonus-T5.gif' alt='bonus' />"
+                break;
+            } // end of case T5
+            case 6: {
+                bonusContent = "<img src='/images/walkthrough/bonus-L51.gif' alt='bonus' /> or <img src='/images/walkthrough/bonus-L52.gif' alt='bonus' />"
+                break;
+            } // end of case L5
+            case 7: {
+                bonusContent = "<img src='/images/walkthrough/bonus-I5X.gif' alt='bonus' /> or <img src='/images/walkthrough/bonus-I5CR.gif' alt='bonus' />"
+                break;
+            } // end of case I5
+            case 8: {
+                bonusContent = "Bonus <img src='/images/walkthrough/bonus-T6.gif' alt='bonus' />"
+                break;
+            } // end of case T6
+            case 9: {
+                bonusContent = "Diamond <img src='/images/misc/diamond.png' alt='bonus' />"
+                break;
+            } // end of case T7
+        } // end of switch match table index
+
+        $(".table-match-bonuses").html(bonusContent);
     } // end of setMatchTable
 
 
@@ -3910,7 +3956,6 @@ function createWalkthroughAndAboutEvents() {
         if (app.match_table_ind > 1) app.match_table_ind--;
         else app.match_table_ind = 9;
         setMatchTable();
-        console.log(app.match_table_ind);
     }); // end of match-table prev click
 
     $("#match-table-next-btn").on("click", () => {
