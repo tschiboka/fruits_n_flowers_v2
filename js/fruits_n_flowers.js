@@ -60,7 +60,7 @@ function preloadPics() {
         "shards/strawberry_shard1", "shards/strawberry_shard2", "shards/strawberry_shard3", "shards/strawberry_shard4", "shards/strawberry_shard5",
         "shards/blood_orange_shard1", "shards/blood_orange_shard2", "shards/blood_orange_shard3", "shards/blood_orange_shard4", "shards/blood_orange_shard5",
         "icons/back-icon", "icons/flower-icon", "icons/info-icon", "icons/intro-icon",
-        "icons/padlock-icon", "icons/pause-icon", "icons/restart-icon", "icons/shop-icon"
+        "icons/padlock-icon", "icons/pause-icon", "icons/restart-icon", "icons/shop-icon",
     ]; // end of fileName
 
     try {
@@ -3288,7 +3288,7 @@ var app = {
     "images": [],                // the preloaded pictures
     "inventory": [],             // all the bonus items you buy in the game
     "inventoryAt": 0,            // the item the inventory start to display from if there were more than 5 (5 places are available)
-    "match_table_ind": 0,        // walkthrough match point table ind
+    "match_table_ind": 1,        // walkthrough match point table ind
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
@@ -3886,15 +3886,30 @@ function createWalkthroughAndAboutEvents() {
         $(".about").hide();
     }); // end of about back btn click
 
+
+
+    // sets the walkthrough matches / points tables tab and picture
+    function setMatchTable() {
+        // set tab
+        $(".match-page-tab").removeClass("active");
+
+        $(`#match-page-tab${app.match_table_ind}`).addClass("active");
+    } // end of setMatchTable
+
+
     $("#match-table-prev-btn").on("click", () => {
-        if (app.match_table_ind > 0) app.match_table_ind--;
+        if (app.match_table_ind > 1) app.match_table_ind--;
+        else app.match_table_ind = 7;
+        setMatchTable();
         console.log(app.match_table_ind);
     }); // end of match-table prev click
 
     $("#match-table-next-btn").on("click", () => {
-        if (app.match_table_ind < 8) app.match_table_ind++;
+        if (app.match_table_ind < 7) app.match_table_ind++;
+        else app.match_table_ind = 1;
+        setMatchTable();
         console.log(app.match_table_ind);
-    });
+    }); // end of match-table next click
 
 } // end of createWalkthroughAndAboutEvents
 
