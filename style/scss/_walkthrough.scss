@@ -311,19 +311,24 @@ $scrollbar-color: $main-text-color;
                 .table-picture {
                     width: 100%;
                     height: calc(85% - 6px);
-                    background-image: url("/images/walkthrough/matches-I3.gif");
+                    background-image: url("/images/walkthrough/matches-I4O.gif");
                     background-size: contain;
                     background-repeat: no-repeat;
                     background-position: center;
                 }
 
-                .table-match-points {
+                .table-match-points-bonuses {
                     width: 100%;
                     height: 15%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
+                    
+                    .table-match-points {
+                        width: 50%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                    }
                 }
             }
 
