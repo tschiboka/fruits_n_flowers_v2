@@ -11,6 +11,9 @@ $(document).ready(
     } // end of ready
 );
 
+
+
+
 function start() {
     $(".logo").hide();
     $("header, .level-menu, .menu").show();
@@ -25,9 +28,16 @@ function start() {
     addInventoryEvents();
     addShopEvents();
     createWalkthroughAndAboutEvents();
+
+    preloadRest(); // preload imgs that are not essencial for the gameplay
 } // end of start
 
+
+
+
+
 function preloadPics() {
+    console.log("PRELOAD REST");
     path = [
         "fruits/strawberry",
         "fruits/peach",
@@ -76,6 +86,49 @@ function preloadPics() {
         throw Error("404 One or more picture couldn't be loaded from server!");
     } // end of catch
 } // end of preloadPics
+
+
+
+
+// preload walkthrough gifs
+function preloadRest() {
+    const path =
+        [
+            "walkthrough/bonus-I4H", "walkthrough/bonus-I4V", "walkthrough/bonus-I5CR", "walkthrough/bonus-I5X",
+            "walkthrough/bonus-L51", "walkthrough/bonus-L52", "walkthrough/bonus-T5", "walkthrough/bonus-T6",
+            "walkthrough/destroy-stones", "walkthrough/diamond-creation", "walkthrough/double-explosion",
+            "walkthrough/flower-falls", "walkthrough/flower-horizontal-move", "walkthrough/inventory",
+            "walkthrough/match-three", "walkthrough/match-I3", "walkthrough/match-I4H", "walkthrough/match-I4V",
+            "walkthrough/match-I5", "walkthrough/match-L5", "walkthrough/match-O4", "walkthrough/match-T5",
+            "walkthrough/match-T6", "walkthrough/match-T7", "walkthrough/menu", "walkthrough/shop",
+            "walkthrough/swipe-flower-down", "walkthrough/three-flowers",
+        ];
+
+
+    try {
+        path.forEach(p => {
+            const picVarName = p.match(/\/.+/g)[0].match(/\w+/)[0],
+                img = new Image();
+
+            img.src = `https://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/${p}.gif`;
+            app.images[picVarName] = img;
+        }); // end of forEach path
+
+        // preload face photo (.jpg)
+        const photo = new Image();
+
+        photo.src = "https://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/misc/photo.jpg";
+        app.images.photo = photo;
+
+    } // end of try loading images
+    catch (e) {
+        throw Error("404 One or more picture couldn't be loaded from server!");
+    } // end of catch
+} // end of preloadRest
+
+
+
+
 
 
 function createLevelPageIndicator() {
@@ -3899,9 +3952,10 @@ function createWalkthroughAndAboutEvents() {
         $(`#match-page-tab${app.match_table_ind}`).addClass("active");
 
         // set picture
-        const matchNames = [`I3`, `I4H`, `I4V`, `O4`, `T5`, `L5`, `I5`, `T6`, `T7`];
+        const matchNames = [`I3`, `I4H`, `I4V`, `O4`, `T5`, `L5`, `I5`, `T6`, `T7`],
+            dir = "https://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/walkthrough/";
 
-        $(".table-picture").css("background-image", `url("/images/walkthrough/matches-${matchNames[app.match_table_ind - 1]}.gif")`);
+        $(".table-picture").css("background-image", `url("${dir}matches-${matchNames[app.match_table_ind - 1]}.gif")`);
 
         // set points
         const matchPoints = [3, 5, 5, 5, 10, 10, 10, 25, 100];
@@ -3915,11 +3969,11 @@ function createWalkthroughAndAboutEvents() {
                 break;
             } // end of case I3
             case 2: {
-                bonusContent = "Bonus <img src='/images/walkthrough/bonus-I4H.gif' alt='bonus' />"
+                bonusContent = `Bonus <img src='${dir}bonus-I4H.gif' alt='bonus' />`;
                 break;
             } // end of case I4H
             case 3: {
-                bonusContent = "Bonus <img src='/images/walkthrough/bonus-I4V.gif' alt='bonus' />"
+                bonusContent = `Bonus <img src='${dir}bonus-I4V.gif' alt='bonus' />`;
                 break;
             } // end of case I4V
             case 4: {
@@ -3927,24 +3981,23 @@ function createWalkthroughAndAboutEvents() {
                 break;
             } // end of case O4
             case 5: {
-                bonusContent = "Bonus <img src='/images/walkthrough/bonus-T5.gif' alt='bonus' />"
+                bonusContent = `Bonus <img src='${dir}bonus-T5.gif' alt='bonus' />`;
                 break;
             } // end of case T5
             case 6: {
-                bonusContent = "<img src='/images/walkthrough/bonus-L51.gif' alt='bonus' /> or <img src='/images/walkthrough/bonus-L52.gif' alt='bonus' />"
+                bonusContent = `<img src='${dir}bonus-L51.gif' alt='bonus' /> or <img src='${dir}bonus-L52.gif' alt='bonus' />`;
                 break;
             } // end of case L5
             case 7: {
-                bonusContent = "<img src='/images/walkthrough/bonus-I5X.gif' alt='bonus' /> or <img src='/images/walkthrough/bonus-I5CR.gif' alt='bonus' />"
+                bonusContent = `<img src='${dir}bonus-I5X.gif' alt='bonus' /> or <img src='${dir}bonus-I5CR.gif' alt='bonus' />`;
                 break;
             } // end of case I5
             case 8: {
-                bonusContent = "Bonus <img src='/images/walkthrough/bonus-T6.gif' alt='bonus' />"
+                bonusContent = `Bonus <img src='${dir}bonus-T6.gif' alt='bonus' />`;
                 break;
             } // end of case T6
             case 9: {
-                bonusContent = "Diamond <img src='/images/misc/diamond.png' alt='bonus' />"
-                break;
+                bonusContent = "Diamond <img src='https://tschiboka.co.uk/projects/fruits_n_flowers_v2/images/misc/diamond.png' alt='bonus' />";
             } // end of case T7
         } // end of switch match table index
 
@@ -3964,6 +4017,9 @@ function createWalkthroughAndAboutEvents() {
         setMatchTable();
     }); // end of match-table next click
 } // end of createWalkthroughAndAboutEvents
+
+
+
 
 
 function fullScreen() {

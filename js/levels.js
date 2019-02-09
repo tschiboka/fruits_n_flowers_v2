@@ -890,7 +890,7 @@ var levels = [
             "UUUUUUUUU",
         ],
         "fruitVariationNumber": 6,
-        "minimumFlowersOnBoard": 20,
+        "minimumFlowersOnBoard": 9,
         "flowersToCompleteTheLevel": 15,
         "targetPoints": 5000,
         "time": 180,
