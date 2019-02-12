@@ -96,7 +96,7 @@ function preloadRest() {
         [
             "walkthrough/bonus-I4H", "walkthrough/bonus-I4V", "walkthrough/bonus-I5CR", "walkthrough/bonus-I5X",
             "walkthrough/bonus-L51", "walkthrough/bonus-L52", "walkthrough/bonus-T5", "walkthrough/bonus-T6",
-            "walkthrough/destroy-stones", "walkthrough/diamond-creation", "walkthrough/double-explosion",
+            "walkthrough/destroy-stones", "walkthrough/diamondcreation", "walkthrough/double-explosion",
             "walkthrough/flower-falls", "walkthrough/flower-horizontal-move", "walkthrough/inventory",
             "walkthrough/match-three", "walkthrough/match-I3", "walkthrough/match-I4H", "walkthrough/match-I4V",
             "walkthrough/match-I5", "walkthrough/match-L5", "walkthrough/match-O4", "walkthrough/match-T5",
