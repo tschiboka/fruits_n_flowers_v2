@@ -1,6 +1,7 @@
 module.exports = function () {
     const mongoose = require("mongoose");
-    const connectionString = "mongodb+srv://tschiboka:@fruits-n-flowers-oloki.mongodb.net/test?retryWrites=true&w=majority";
+    const password = process.env.MONGO_PASSWORD;
+    const connectionString = `mongodb+srv://tschiboka:${password}@fruits-n-flowers-oloki.mongodb.net/test?retryWrites=true&w=majority`;
 
 
 
