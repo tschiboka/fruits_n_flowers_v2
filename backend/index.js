@@ -15,6 +15,23 @@ mongoose.connect("mongodb://localhost/fruits_n_flowers", { useNewUrlParser: true
 
 
 
-app.get("/api/counter", (req, res) => {
-    res.send("GET");
+app.get("/api/visitors", async (req, res) => {
+    try {
+        let visitorCounter = {
+            total: 77,
+            unique: 13
+        };
+
+
+
+        res.send(visitorCounter);
+    } catch (err) { res.send(`Error while getting counter... ${err}`); }
+});
+
+
+
+app.post("/api/visitors", async (req, res) => {
+    try {
+        res.send("POST VISITOR");
+    } catch (err) { res.send(`Error while posting new visitor... ${err}`); }
 });
