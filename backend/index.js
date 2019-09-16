@@ -32,6 +32,7 @@ app.get("/api/visitors", async (req, res) => {
 
 app.post("/api/visitors", async (req, res) => {
     try {
-        res.send("POST VISITOR");
+        const IP = req.connection.remoteAddress;
+        res.send(`POST VISITOR WITH IP ${IP}`);
     } catch (err) { res.send(`Error while posting new visitor... ${err}`); }
 });
