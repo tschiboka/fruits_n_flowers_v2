@@ -23,12 +23,9 @@ mongoose.set('useCreateIndex', true); // current version needs this setting othe
 
 app.get("/api/visitors", async (req, res) => {
     try {
-        let visitorCounter = {
-            total: 77,
-            unique: 13
-        };
+        const visitors = await Visitor.find();
 
-        res.send(visitorCounter);
+        res.send({ "total": visitors.map(v => v.visitNum).reduce((acc, curr) => acc + curr), "unique": visitors.length });
     } catch (err) { res.send(`Error while getting counter... ${err}`); }
 });
 
