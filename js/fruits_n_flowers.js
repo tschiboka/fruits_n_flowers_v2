@@ -6,6 +6,9 @@ $(document).ready(
         // set app values from local storage
         setAppValuesFromLocalStorage();
 
+        // post and get views
+        requestVisitorsInfo();
+
         // delay start while logo animation is running
         setTimeout(() => { start(); }, 3000);
     } // end of ready
@@ -31,6 +34,39 @@ function start() {
 
     preloadRest(); // preload imgs that are not essencial for the gameplay
 } // end of start
+
+
+
+
+
+function requestVisitorsInfo() {
+    const url = "http://localhost:3000/api/visitors";
+    const meta = {
+        mode: "no-cors",
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+    };
+
+    const postVisit = async (url, meta) => {
+        try { await fetch(url, meta); }
+        catch (err) { console.log(`Error ${err}`) };
+    }
+
+    postVisit(url, meta);
+
+    const getVisits = async (url) => {
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            console.log("RES : " + JSON.stringify(json));
+        } catch (err) { console.log(`Error ${err}`) };
+    };
+
+    getVisits(url);
+}
 
 
 
