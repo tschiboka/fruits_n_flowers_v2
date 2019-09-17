@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/tschiboka/fruits_n_flowers_v2#readme",
   "dependencies": {
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.7.1"
-  }
+  },
+  "start": "backend/index.js"
 }

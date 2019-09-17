@@ -4,6 +4,7 @@ module.exports = function () {
     const connectionString = `mongodb+srv://tschiboka:${password}@fruits-n-flowers-oloki.mongodb.net/test?retryWrites=true&w=majority`;
 
 
+
     mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => console.log("Connected to database..."))
         .catch((err) => console.log(`Could not connect to database: ${err}`));
