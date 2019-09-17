@@ -60,9 +60,13 @@ function requestVisitorsInfo() {
     const getVisits = async (url) => {
         try {
             const response = await fetch(url);
-            app.visits = await response.json();
+            const visits = await response.json();
+
+            app.visits = visits;
 
             console.log("VISITORS: ", JSON.stringify(app.visits));
+            $("#visitors--total").html(visits.total);
+            $("#visitors--unique").html(visits.unique);
         } catch (err) { console.log(`Error ${err}`) };
     };
 
