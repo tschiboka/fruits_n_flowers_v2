@@ -60,8 +60,9 @@ function requestVisitorsInfo() {
     const getVisits = async (url) => {
         try {
             const response = await fetch(url);
-            const json = await response.json();
-            console.log("RES : " + JSON.stringify(json));
+            app.visits = await response.json();
+
+            console.log("VISITORS: ", JSON.stringify(app.visits));
         } catch (err) { console.log(`Error ${err}`) };
     };
 
@@ -3381,6 +3382,7 @@ var app = {
     "shop_basket": {},           // {fruit, bonus, fast-hint, besthint, diamond}
     "shop_price": 0,             // the amount needs to be paid in the shop
     "valid_board_characters": ["X", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#", "S", "M", "L", "A", "B", "C", "D", "E", "U", "*"],
+    "visits": { total: 0, unique: 0 } // tracks visits, default in case, when app starts its set by backend
 }; // end of app global object
 
 
